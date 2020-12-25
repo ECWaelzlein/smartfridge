@@ -3,9 +3,10 @@ package de.isemwaf.smartFridge.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import de.isemwaf.smartFridge.model.Recipe;
 
 @Entity
-public class mealModel {
+public class Meal {
     long id;
     Date date;
     Recipe recipe;
