@@ -32,7 +32,7 @@ Der Request Body besteht aus einem JSON String.
 | FoodInventoryController    |/api/food-inventory/:*id*                       | GET          |/| foodInventory oder   [foodInventory]   |   Bekommt ein FoodInventory-Objekt oder eine Liste von allen Objekten.    |
 | FoodInventoryController    |/api/food-inventory/*id*                        | DELETE       |/|/ (HTTP Status Code: 204)    |   Löscht ein Food-Objekt aus dem FoodInventory.    |
 | RecipeController           |/api/recipe/                                    | POST         |[ingredients] |recipe    |   Erstellt ein Rezept.    |
-| RecipeController           |/api/recipe?random=True&tags=veggie,dessert     | POST         |/|recipe    |   Erstellt ein zufälliges Rezept.    |
+| RecipeController           |/api/recipe/random?tags=veggie,dessert     | POST         |/|recipe    |   Erstellt ein zufälliges Rezept.    |
 | RecipeController           |/api/recipe/*id*                                | GET          |/|recipe    |   Bekommt ein Rezept zu einer ID.    |
 | MealController             |/api/meal/                                      | POST         |date, mealName |meal    |   Erstellt eine Mahlzeit.    |
 | MealController             |/api/meal/:*id*                                 | GET          |/|meal oder [meal]    |   Bekommt eine Mahlzeit oder eine Liste an Mahlzeiten.    |
