@@ -11,8 +11,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class MealController {
@@ -29,36 +31,52 @@ public class MealController {
      * @param id Id des Meals. Wenn nicht angegeben, werden alle Meals zurückgegeben.
      * @return Gibt die Liste als Json zurück.
      */
-    @GetMapping(value = "api/meal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "api/meal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<Meal> getMeals(@PathVariable Optional<Long> id){
+    public ResponseEntity<List<Meal>> getMeals(@PathVariable Optional<Long> id){
         if(id.isEmpty()) {
-            return mealService.fetchAllMeals();
-
+            return new ResponseEntity<>(mealService.fetchAllMeals(),HttpStatus.OK);
         }
         else {
-            List<Meal> list = new ArrayList<>();
-            mealService.findMeal(id.get()).ifPresent(list::add);
-            return list;
+            List<Meal> mealList= mealService.findMeal(id.get()).stream().collect(Collectors.toList());
+            return new ResponseEntity<>(mealList,HttpStatus.OK);
         }
     }
 
-    @DeleteMapping("/api/meal/{id}")
+    @DeleteMapping(path ="/api/meal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity deleteMeal(@PathVariable long id){
+    public ResponseEntity<String> deleteMeal(@PathVariable long id){
         boolean deleted = mealService.deleteMeal(id);
         if(deleted){
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         else {
-            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
-    @PostMapping("/api/meal/")
+    @PostMapping(path ="/api/meal/", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Meal addMeal(@RequestBody Meal meal, BindingResult bindingResult){
-        //TODO check bindingResult and return meal
-        return null;
+    public ResponseEntity<Meal> addMeal(@RequestBody Meal meal, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return new ResponseEntity<>(null,HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        mealService.saveMeal(meal);
+        //Hier wird noch nicht die gespeicherte Entity zurückgegeben. SaveMeal gibt nur die ID zurück.
+        return new ResponseEntity<>(meal,HttpStatus.OK);
+    }
+
+    @PostMapping(path ="/api/meal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Meal> changeMeal(@RequestBody Date newDate, @PathVariable long id){
+        Optional<Meal> mealOptional = mealService.findMeal(id);
+        if(mealOptional.isEmpty()){
+            return new ResponseEntity<>(null,HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        Meal meal= mealOptional.get();
+        meal.setDate(newDate);
+        mealService.saveMeal(meal);
+        //Hier wird noch nicht die gespeicherte Entity zurückgegeben. SaveMeal gibt nur die ID zurück.
+        return new ResponseEntity<>(meal,HttpStatus.OK);
     }
 }
