@@ -3,13 +3,13 @@ package de.isemwaf.smartFridge.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import de.isemwaf.smartFridge.model.Recipe;
 
 @Entity
-public class Meal {
+public class Meal extends SuperEntity{
     long id;
     Date date;
     Recipe recipe;
+    class Recipe{}
 
 
     @Id
@@ -40,7 +40,8 @@ public class Meal {
         this.date = date;
     }
 
-    @ManyToOne
+    //Ist ManyToOne die richtige Beziehung? (Jedes Meal hat genau ein Rezept)
+    //@ManyToOne
     public Recipe getRecipe() {
         return recipe;
     }
