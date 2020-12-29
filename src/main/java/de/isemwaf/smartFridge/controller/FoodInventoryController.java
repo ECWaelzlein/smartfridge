@@ -40,7 +40,7 @@ public class FoodInventoryController {
        return responseId;
     }
     @DeleteMapping("/{id}")
-    public void deleteFoodInventory(long id, HttpServletResponse httpServletResponse)
+    public void deleteFoodInventory(@PathVariable long id, HttpServletResponse httpServletResponse)
     {
         int response = foodInventoryService.deleteItem(id);
         httpServletResponse.setStatus(response);
