@@ -5,7 +5,7 @@ import de.isemwaf.smartFridge.model.Food;
 import java.util.List;
 
 public interface FoodService {
-    long createFood(Food food);
+    Food createFood(Food food);
 
     List<Food> getFood(long id);
 

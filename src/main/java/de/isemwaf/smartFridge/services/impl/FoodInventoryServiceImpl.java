@@ -1,12 +1,17 @@
-package de.isemwaf.smartFridge.services;
+package de.isemwaf.smartFridge.services.impl;
 
 import de.isemwaf.smartFridge.model.FoodInventory;
 import de.isemwaf.smartFridge.repositories.FoodInventoryRepository;
+import de.isemwaf.smartFridge.services.FoodInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class FoodInventoryServiceImpl implements FoodInventoryService {
 
     private final FoodInventoryRepository foodInventoryRepository;
@@ -22,10 +27,11 @@ public class FoodInventoryServiceImpl implements FoodInventoryService {
 
     @Override
     public List<FoodInventory> getItem(long id) {
-        List<FoodInventory> foodInventoryList = null;
+        List<FoodInventory> foodInventoryList = new ArrayList<>();
         if(id >= 0)
         {
-            foodInventoryList.add(foodInventoryRepository.findById(id).get());
+            Optional<FoodInventory> foodInventory = foodInventoryRepository.findById(id);
+            foodInventory.ifPresent(foodInventoryList::add);
         }
         else
         {

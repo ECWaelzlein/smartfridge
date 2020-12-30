@@ -1,17 +1,18 @@
 package de.isemwaf.smartFridge.controller;
 
-import de.isemwaf.smartFridge.enums.Category;
 import de.isemwaf.smartFridge.model.Food;
 import de.isemwaf.smartFridge.services.FoodService;
 import de.isemwaf.smartFridge.utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.http.MediaType;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 
+@RestController
 public class FoodController {
 
     private final FoodService foodService;
@@ -21,33 +22,30 @@ public class FoodController {
         this.foodService = foodService;
     }
 
-    @GetMapping(path = {"/api/food"})
-    @ResponseBody
-    public long createFoodWithBarcode(String barcode, HttpServletResponse httpServletResponse) {
+    // TODO BindingResult als Parameter übergeben?
+    @PostMapping(path = {"/api/food"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Food createFoodWithBarcode(@RequestBody String barcode, HttpServletResponse httpServletResponse) {
         String foodInformation = foodService.getFoodInformation(barcode);
 
         String name = Utility.getProductName(foodInformation);
-        String quantity = "0"; //TODO
-        Category category = Category.MEAT; //TODO
+        String quantity = Utility.getQuantity(foodInformation);
 
         Food food = new Food();
         food.setBarcode(barcode);
         food.setName(name);
         food.setQuantity(quantity);
-        food.setCategory(category);
 
-        foodService.createFood(food);
+        food = foodService.createFood(food);
 
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-        return food.getId(); //TODO
+        return food;
     }
 
-    @GetMapping(path = {"/api/food/{id}"})
-    @ResponseBody
-    public List<Food> getFoodWithId(@PathVariable Long id, HttpServletResponse httpServletResponse) {
+    @GetMapping(path = {"/api/food/{id}", "/api/food"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Food> getFoodWithId(@PathVariable Optional<Long> id, HttpServletResponse httpServletResponse) {
 
-
-        List<Food> foodList = foodService.getFood(id);
+        long id_food = id.isPresent() ? id.get() : -1;
+        List<Food> foodList = foodService.getFood(id_food);
         if (foodList.isEmpty()) {
             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
         } else {
@@ -57,8 +55,7 @@ public class FoodController {
         return foodList;
     }
 
-    @GetMapping(path = {"/api/food/{id}"})
-    @ResponseBody
+    @DeleteMapping(path = {"/api/food/{id}"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteFoodWithId(@PathVariable Long id, HttpServletResponse httpServletResponse) {
 
         int response = foodService.deleteFood(id);

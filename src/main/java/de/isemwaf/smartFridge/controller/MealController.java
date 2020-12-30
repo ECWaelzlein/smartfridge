@@ -6,17 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 public class MealController {
     private final MealServiceImpl mealService;
 
@@ -32,7 +30,6 @@ public class MealController {
      * @return Gibt die Liste als Json zurück.
      */
     @GetMapping(path = "api/meal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
     public ResponseEntity<List<Meal>> getMeals(@PathVariable Optional<Long> id){
         if(id.isEmpty()) {
             return new ResponseEntity<>(mealService.fetchAllMeals(),HttpStatus.OK);
@@ -44,7 +41,6 @@ public class MealController {
     }
 
     @DeleteMapping(path ="/api/meal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
     public ResponseEntity<String> deleteMeal(@PathVariable long id){
         boolean deleted = mealService.deleteMeal(id);
         if(deleted){
@@ -56,7 +52,6 @@ public class MealController {
     }
 
     @PostMapping(path ="/api/meal/", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
     public ResponseEntity<Meal> addMeal(@RequestBody Meal meal, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return new ResponseEntity<>(null,HttpStatus.UNPROCESSABLE_ENTITY);
@@ -67,7 +62,6 @@ public class MealController {
     }
 
     @PostMapping(path ="/api/meal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
     public ResponseEntity<Meal> changeMeal(@RequestBody Date newDate, @PathVariable long id){
         Optional<Meal> mealOptional = mealService.findMeal(id);
         if(mealOptional.isEmpty()){

@@ -1,8 +1,10 @@
-package de.isemwaf.smartFridge.services;
+package de.isemwaf.smartFridge.services.impl;
 
 import de.isemwaf.smartFridge.model.Food;
 import de.isemwaf.smartFridge.repositories.FoodRepository;
+import de.isemwaf.smartFridge.services.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -13,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class FoodServiceImpl implements FoodService {
 
     private final FoodRepository foodRepository;
@@ -24,8 +27,8 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public long createFood(Food food) {
-        return foodRepository.save(food).getId();
+    public Food createFood(Food food) {
+        return foodRepository.save(food);
     }
 
     @Override

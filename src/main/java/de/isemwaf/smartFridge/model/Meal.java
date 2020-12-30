@@ -9,8 +9,6 @@ public class Meal extends SuperEntity{
     long id;
     Date date;
     Recipe recipe;
-    class Recipe{}
-
 
     @Id
     @GeneratedValue(
@@ -40,8 +38,7 @@ public class Meal extends SuperEntity{
         this.date = date;
     }
 
-    //Ist ManyToOne die richtige Beziehung? (Jedes Meal hat genau ein Rezept)
-    //@ManyToOne
+    @ManyToOne
     public Recipe getRecipe() {
         return recipe;
     }

@@ -1,7 +1,6 @@
 package de.isemwaf.smartFridge.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 import javax.persistence.Entity;
 import java.util.Date;
@@ -10,7 +9,17 @@ import java.util.Date;
 public class FoodInventory extends SuperEntity {
     private long Id;
     private Food food;
+
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "SEQUENCE_FOODINVENTORY_ID"
+    )
+    @SequenceGenerator(
+            name = "SEQUENCE_FOODINVENTORY_ID",
+            sequenceName = "SEQUENCE_FOODINVENTORY_ID",
+            allocationSize = 1
+    )
     public long getId() {
         return Id;
     }
@@ -18,8 +27,8 @@ public class FoodInventory extends SuperEntity {
     public void setId(long id) {
         Id = id;
     }
+
     @ManyToOne
-    @JoinColumn(name = "food_id") //muss geändert werden
     public Food getFood() {
         return food;
     }
@@ -27,6 +36,7 @@ public class FoodInventory extends SuperEntity {
     public void setFood(Food food) {
         this.food = food;
     }
+
     @Column
     public Date getExpirationDate() {
         return expirationDate;
@@ -37,6 +47,4 @@ public class FoodInventory extends SuperEntity {
     }
 
     private Date expirationDate;
-    class Food{}
-
 }

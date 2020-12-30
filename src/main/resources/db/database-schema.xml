@@ -11,4 +11,61 @@
         <runningAs  username="smartFridge"/>
     </preConditions>
 
+    <changeSet  author="smartFridge"  id="createSequence_food_id">
+        <createSequence  dataType="int"
+                         incrementBy="1"
+                         sequenceName="sequence_food_id"
+                         startValue="1"
+        />
+    </changeSet>
+
+    <changeSet  author="smartFridge"  id="createSequence_foodinventory_id">
+        <createSequence  dataType="int"
+                         incrementBy="1"
+                         sequenceName="sequence_foodinventory_id"
+                         startValue="1"
+        />
+    </changeSet>
+
+    <changeSet  author="smartFridge"  id="createSequence_recipe_id">
+        <createSequence  dataType="int"
+                         incrementBy="1"
+                         sequenceName="sequence_recipe_id"
+                         startValue="1"
+        />
+    </changeSet>
+
+    <changeSet  author="smartFridge"  id="createSequence_fridge_id">
+        <createSequence  dataType="int"
+                         incrementBy="1"
+                         sequenceName="sequence_fridge_id"
+                         startValue="1"
+        />
+    </changeSet>
+
+    <changeSet  author="smartFridge"  id="createSequence_meal_id">
+        <createSequence  dataType="int"
+                         incrementBy="1"
+                         sequenceName="sequence_meal_id"
+                         startValue="1"
+        />
+    </changeSet>
+
+    <changeSet  author="smartFridge"  id="createSequence_revision_seq">
+        <createSequence  dataType="int"
+                         sequenceName="revision_seq"
+        />
+    </changeSet>
+
+    <changeSet id="addTableRevision" author="reinhard">
+        <createTable tableName="revision">
+            <column name="id" type="BigInt">
+                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_revision"/>
+            </column>
+            <column  name="created"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

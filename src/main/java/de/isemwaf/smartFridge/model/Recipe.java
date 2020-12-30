@@ -1,8 +1,6 @@
 package de.isemwaf.smartFridge.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -18,6 +16,15 @@ public class Recipe extends SuperEntity{
     private float servings;
 
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "SEQUENCE_RECIPE_ID"
+    )
+    @SequenceGenerator(
+            name = "SEQUENCE_RECIPE_ID",
+            sequenceName = "SEQUENCE_RECIPE_ID",
+            allocationSize = 1
+    )
     public long getId() {
         return id;
     }

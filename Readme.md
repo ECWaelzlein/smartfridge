@@ -25,7 +25,7 @@ Der Request Body besteht aus einem JSON String.
 
 | Service                    | Endpunkt                                       |Request Method| Request Body | Response Body | Description
 | ---------------------------|:-----------------------------------------------|:------------:|:-------------|:--------------|:---------------------------------------------------------|
-| FoodController             |/api/food                                       | POST         |barcode|id| Erstellt ein Lebensmittel.                               |
+| FoodController             |/api/food                                       | POST         |barcode|food| Erstellt ein Lebensmittel.                               |
 | FoodController             |/api/food/*id*                                  | GET          |/|food| Fragt ein Lebensmittel an.                               |
 | FoodController             |/api/food/*id*                                  | DELETE       |/|/ (HTTP Status Code: 204)| Löscht ein Lebensmittel.                                 |
 | FoodInventoryController    |/api/food-inventory/                            | POST         |food, amount, expDate| id      |   Legt ein Food-Objekt in das FoodInventory.    |

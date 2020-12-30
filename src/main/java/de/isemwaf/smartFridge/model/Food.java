@@ -1,20 +1,24 @@
 package de.isemwaf.smartFridge.model;
 
-import de.isemwaf.smartFridge.enums.Category;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Food extends SuperEntity {
     private long id;
     private String barcode;
-    private Category category;
     private String quantity;
     private String name;
 
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "SEQUENCE_FOOD_ID"
+    )
+    @SequenceGenerator(
+            name = "SEQUENCE_FOOD_ID",
+            sequenceName = "SEQUENCE_FOOD_ID",
+            allocationSize = 1
+    )
     public long getId() {
         return id;
     }
@@ -30,15 +34,6 @@ public class Food extends SuperEntity {
 
     public void setBarcode(String barcode) {
         this.barcode = barcode;
-    }
-
-    @Column
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
     @Column
