@@ -1,11 +1,14 @@
 package de.isemwaf.smartFridge.model;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 
 import javax.persistence.Entity;
 import java.util.Date;
 
 @Entity
+@Audited(withModifiedFlag = true)
 public class FoodInventory extends SuperEntity {
     private long Id;
     private Food food;

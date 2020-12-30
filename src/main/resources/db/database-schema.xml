@@ -57,7 +57,7 @@
         />
     </changeSet>
 
-    <changeSet id="addTableRevision" author="reinhard">
+    <changeSet id="addTableRevision" author="smartFridge">
         <createTable tableName="revision">
             <column name="id" type="BigInt">
                 <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_revision"/>
@@ -65,6 +65,30 @@
             <column  name="created"  type="timestamp">
                 <constraints  nullable="false"/>
             </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet  id="createTableFoodInventory"  author="smartFridge">
+        <createTable  tableName="FoodInventory">
+            <column  name="id"  type="BigInt"  autoIncrement="true">
+                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_foodinventory"/>
+            </column>
+            <column  name="food"  type="BigInt">
+                <constraints  nullable="false" foreignKeyName="fk_id_food" references="food(id)"/>
+            </column>
+            <column  name="expirationDate"  type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="addTableFoodInventoryAud" author="smartFridge">
+        <createTable tableName="foodinventory_aud">
+            <column name="id" type="BigInt">
+                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_foodinventory_aud"/>
+            </column>
+            <column name="rev" type="BigInt"/>
+            <column name="revtype" type="TinyInt"/>
+            <column name="expirationDate_mod" type="Boolean"/>
+            <column name="food_mod" type="Boolean"/>
         </createTable>
     </changeSet>
 
