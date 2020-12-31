@@ -1,5 +1,6 @@
 package de.isemwaf.smartFridge.services.impl;
 
+import de.isemwaf.smartFridge.model.Food;
 import de.isemwaf.smartFridge.model.FoodInventory;
 import de.isemwaf.smartFridge.repositories.FoodInventoryRepository;
 import de.isemwaf.smartFridge.services.FoodInventoryService;
@@ -21,8 +22,8 @@ public class FoodInventoryServiceImpl implements FoodInventoryService {
     }
 
     @Override
-    public int saveItem(FoodInventory foodInventory) {
-        return ((int) foodInventoryRepository.save(foodInventory).getId());
+    public Food saveItem(FoodInventory foodInventory) {
+        return foodInventoryRepository.save(foodInventory).getFood();
     }
 
     @Override
@@ -41,8 +42,13 @@ public class FoodInventoryServiceImpl implements FoodInventoryService {
     }
 
     @Override
-    public int deleteItem(long id) {
-        foodInventoryRepository.deleteById(id);
-        return HttpServletResponse.SC_OK;
+    public long deleteItem(long id) {
+        try {
+            foodInventoryRepository.deleteById(id);
+            return id;
+        }
+        catch(Exception e){
+         return -1;
+        }
     }
 }
