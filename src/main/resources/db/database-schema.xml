@@ -3,9 +3,7 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <preConditions>
         <runningAs  username="smartFridge"/>
@@ -110,6 +108,56 @@
             <column name="fats" type="float"/>
             <column name="calories" type="float"/>
             <column name="servings" type="float"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet  id="createTableFoodInventory"  author="smartFridge">
+        <createTable  tableName="FoodInventory">
+            <column  name="id"  type="BigInt"  autoIncrement="true">
+                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_foodinventory"/>
+            </column>
+            <column  name="food"  type="BigInt">
+                <constraints  nullable="false" foreignKeyName="fk_id_food" references="food(id)"/>
+            </column>
+            <column  name="expirationDate"  type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="addTableFoodInventoryAud" author="smartFridge">
+        <createTable tableName="foodinventory_aud">
+            <column name="id" type="BigInt">
+                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_foodinventory_aud"/>
+            </column>
+            <column name="rev" type="BigInt"/>
+            <column name="revtype" type="TinyInt"/>
+            <column name="expirationDate_mod" type="Boolean"/>
+            <column name="food_mod" type="Boolean"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="createTableFood" author="smartFridge">
+        <createTable tableName="Food">
+            <column name="id" type="BigInt" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_food"/>
+            </column>
+            <column name="barcode" type="varchar(20)"/>
+            <column name="category" type="varchar(20)"/>
+            <column name="quantity" type="varchar(20)"/>
+            <column name="name" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="addTableFoodAud" author="smartFridge">
+        <createTable tableName="food_aud">
+            <column name="id" type="BigInt">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_food_aud"/>
+            </column>
+            <column name="rev" type="BigInt"/>
+            <column name="revtype" type="TinyInt"/>
+            <column name="barcode_mod" type="varchar(20)"/>
+            <column name="category_mod" type="varchar(20)"/>
+            <column name="quantity_mod" type="varchar(20)"/>
+            <column name="name_mod" type="varchar(20)"/>
         </createTable>
     </changeSet>
 
