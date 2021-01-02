@@ -26,8 +26,8 @@ public class MealServiceImpl implements MealService {
      * @return gibt die ID des gespeicherten Meals zurück
      */
     @Override
-    public Long saveMeal(Meal meal) {
-        return mealRepository.save(meal).getId();
+    public Meal saveMeal(Meal meal) {
+        return mealRepository.save(meal);
     }
 
     /**
