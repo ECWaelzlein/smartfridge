@@ -68,4 +68,30 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="addTableMeal" author="Thorben">
+        <createTable tableName="meal">
+            <column name="id" type="BigInt">
+                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_meal"/>
+            </column>
+            <column  name="date"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="recipe"  type="BigInt">
+                <constraints  nullable="false" foreignKeyName="fk_id_recipe" references="recipe(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="addTableMealAud" author="Thorben">
+        <createTable tableName="meal_aud">
+            <column name="id" type="BigInt">
+                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_meal_aud"/>
+            </column>
+            <column name="rev" type="BigInt"/>
+            <column name="revtype" type="TinyInt"/>
+            <column name="date" type="timestamp"/>
+            <column name="date_mod" type="Boolean"/>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
