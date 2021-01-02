@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,11 @@ public class MealController {
         }
     }
 
+    /**
+     * Löscht ein Meal mid der übergebenen ID.
+     * @param id ID des Meals
+     * @return HTTP-Code 204 für erfolg, HTTP-Code 422 für nicht gefunden.
+     */
     @DeleteMapping(path ="/api/meal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteMeal(@PathVariable long id){
         boolean deleted = mealService.deleteMeal(id);
@@ -51,26 +57,36 @@ public class MealController {
         }
     }
 
+    /**
+     * Speichert ein Meal in die Datenbank.
+     * @param meal Meal, welches gespeichert werden soll
+     * @param bindingResult überprüft ob param valide sind
+     * @return gibt das Meal zurück, wenn erfolgreich, ansonsten HTTP-Code 422
+     */
     @PostMapping(path ="/api/meal/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Meal> addMeal(@RequestBody Meal meal, BindingResult bindingResult){
+    public ResponseEntity<Meal> addMeal(@RequestBody @Valid Meal meal, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return new ResponseEntity<>(null,HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        mealService.saveMeal(meal);
-        //Hier wird noch nicht die gespeicherte Entity zurückgegeben. SaveMeal gibt nur die ID zurück.
+        meal = mealService.saveMeal(meal);
         return new ResponseEntity<>(meal,HttpStatus.OK);
     }
 
+    /**
+     * Ändert das datum eines Meals
+     * @param newDate neues Datum des Meals
+     * @param id ID des Meals, welches geändert werden soll
+     * @return Gibt bei Erfolg das veränderte Meal zurück, sonst HTTP-Code 422
+     */
     @PostMapping(path ="/api/meal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Meal> changeMeal(@RequestBody Date newDate, @PathVariable long id){
+    public ResponseEntity<Meal> changeMeal(@RequestBody @Valid Date newDate, @PathVariable long id){
         Optional<Meal> mealOptional = mealService.findMeal(id);
         if(mealOptional.isEmpty()){
             return new ResponseEntity<>(null,HttpStatus.UNPROCESSABLE_ENTITY);
         }
         Meal meal= mealOptional.get();
         meal.setDate(newDate);
-        mealService.saveMeal(meal);
-        //Hier wird noch nicht die gespeicherte Entity zurückgegeben. SaveMeal gibt nur die ID zurück.
+        meal = mealService.saveMeal(meal);
         return new ResponseEntity<>(meal,HttpStatus.OK);
     }
 }
