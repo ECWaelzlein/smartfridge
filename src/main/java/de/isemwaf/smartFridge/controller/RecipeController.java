@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -33,9 +34,14 @@ public class RecipeController {
     }
 
     @PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Recipe> createRecipeBasedOnIngredients(@RequestBody IngredientList ingredientList) {
-        //search for recipes based on the ingredients and return 1 recipe
+    public ResponseEntity<Recipe> createRecipeBasedOnIngredients(@RequestBody IngredientList ingredientList, BindingResult bindingResult) {
         Recipe recipe = new Recipe();
+
+        //search for recipes based on the ingredients and return 1 recipe
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         recipe = recipeService.saveRecipe(recipe);
 
         return new ResponseEntity<>(recipe, HttpStatus.CREATED);
