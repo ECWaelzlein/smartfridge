@@ -9,7 +9,15 @@ public class Utility {
 
         try {
             JSONObject jsonObject = new JSONObject(productJson).getJSONObject("product");
-            return jsonObject.getString("product_name_de"); //TODO If Abfrage, ob der name nicht gefunden wurde -> 'brands' verwenden
+
+            String productName = jsonObject.getString("product_name_de");
+
+            if (productName.isEmpty()) {
+                productName = jsonObject.getString("brands");
+            }
+
+            return productName;
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -17,7 +25,7 @@ public class Utility {
         return "Not Found";
     }
 
-    public static String getQuantity(String productJson) {
+    public static String getProductQuantity(String productJson) {
 
         try {
             JSONObject jsonObject = new JSONObject(productJson).getJSONObject("product");
