@@ -161,7 +161,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="addTableMeal" author="Thorben">
+    <changeSet id="addTableMeal" author="smartFridge">
         <createTable tableName="meal">
             <column name="id" type="BigInt">
                 <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_meal"/>
@@ -175,7 +175,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="addTableMealAud" author="Thorben">
+    <changeSet id="addTableMealAud" author="smartFridge">
         <createTable tableName="meal_aud">
             <column name="id" type="BigInt">
                 <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_meal_aud"/>
