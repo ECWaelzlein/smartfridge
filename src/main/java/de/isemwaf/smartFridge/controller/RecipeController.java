@@ -4,7 +4,9 @@ import de.isemwaf.smartFridge.model.Recipe;
 import de.isemwaf.smartFridge.model.json.IngredientList;
 import de.isemwaf.smartFridge.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,34 +22,31 @@ public class RecipeController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Recipe getRecipe(@PathVariable String id, HttpServletResponse httpServletResponse) {
+    public ResponseEntity<Recipe> getRecipe(@PathVariable String id) {
         Recipe recipe = recipeService.getRecipe(Long.parseLong(id));
-        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 
         if (recipe == null) {
-            httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return recipe;
+        return new ResponseEntity<>(recipe, HttpStatus.OK);
     }
 
     @PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Recipe createRecipeBasedOnIngredients(@RequestBody IngredientList ingredientList, HttpServletResponse httpServletResponse) {
+    public ResponseEntity<Recipe> createRecipeBasedOnIngredients(@RequestBody IngredientList ingredientList) {
         //search for recipes based on the ingredients and return 1 recipe
         Recipe recipe = new Recipe();
         recipe = recipeService.saveRecipe(recipe);
 
-        httpServletResponse.setStatus(HttpServletResponse.SC_CREATED);
-        return recipe;
+        return new ResponseEntity<>(recipe, HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/random", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Recipe createRecipeBasedOnIngredients(@RequestParam List<String> tags, HttpServletResponse httpServletResponse) {
+    public ResponseEntity<Recipe> createRecipeBasedOnIngredients(@RequestParam List<String> tags) {
         //search for a random recipe based on the tags and return 1 recipe
         Recipe recipe = new Recipe();
         recipe = recipeService.saveRecipe(recipe);
 
-        httpServletResponse.setStatus(HttpServletResponse.SC_CREATED);
-        return recipe;
+        return new ResponseEntity<>(recipe, HttpStatus.CREATED);
     }
 }

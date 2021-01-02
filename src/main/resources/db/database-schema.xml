@@ -57,7 +57,7 @@
         />
     </changeSet>
 
-    <changeSet id="addTableRevision" author="reinhard">
+    <changeSet id="addTableRevision" author="smartFridge">
         <createTable tableName="revision">
             <column name="id" type="BigInt">
                 <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_revision"/>
@@ -65,6 +65,51 @@
             <column  name="created"  type="timestamp">
                 <constraints  nullable="false"/>
             </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="addTableRecipe" author="smartFridge">
+        <createTable tableName="recipe">
+            <column name="id" type="BigInt">
+                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_recipe"/>
+            </column>
+            <column name="name" type="varchar(50)"/>
+            <column name="ingredients" type="varchar(250)"/>
+            <column name="steps" type="varchar(500)"/>
+            <column name="proteins" type="float"/>
+            <column name="carbs" type="float"/>
+            <column name="fats" type="float"/>
+            <column name="calories" type="float"/>
+            <column name="servings" type="float"/>
+            <column name="created" type="timestamp"/>
+            <column name="lastModified" type="timestamp"/>
+            <column name="version" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="addTableRecipeAud" author="smartFridge">
+        <createTable tableName="account_aud">
+            <column name="id" type="BigInt">
+                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_recipe_aud"/>
+            </column>
+            <column name="rev" type="BigInt"/>
+            <column name="revtype" type="TinyInt"/>
+            <column name="name_mod" type="Boolean"/>
+            <column name="ingredients_mod" type="Boolean"/>
+            <column name="steps_mod" type="Boolean"/>
+            <column name="proteins_mod" type="Boolean"/>
+            <column name="carbs_mod" type="Boolean"/>
+            <column name="fats_mod" type="Boolean"/>
+            <column name="calories_mod" type="Boolean"/>
+            <column name="servings_mod" type="Boolean"/>
+            <column name="name" type="varchar(50)"/>
+            <column name="ingredients" type="varchar(250)"/>
+            <column name="steps" type="varchar(500)"/>
+            <column name="proteins" type="float"/>
+            <column name="carbs" type="float"/>
+            <column name="fats" type="float"/>
+            <column name="calories" type="float"/>
+            <column name="servings" type="float"/>
         </createTable>
     </changeSet>
 
