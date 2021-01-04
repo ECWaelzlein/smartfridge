@@ -3,9 +3,9 @@ services:
   database:
     image: postgres:12-alpine
     environment:
-      POSTGRES_USER=smartFridge
-      POSTGRES_PASSWORD=password1234
-      POSTGRES_DB=smartFridge
+      - POSTGRES_USER=smartFridge
+      - POSTGRES_PASSWORD=password1234
+      - POSTGRES_DB=smartFridge
     volumes:
       - database-data:/var/lib/postgresql/data/
 volumes:
