@@ -10,10 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@RestController("/api/recipe")
+@RestController()
 public class RecipeController {
     private final RecipeService recipeService;
 
@@ -22,7 +21,7 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/api/recipe/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Recipe> getRecipe(@PathVariable String id) {
         Recipe recipe = recipeService.getRecipe(Long.parseLong(id));
 
@@ -33,7 +32,7 @@ public class RecipeController {
         return new ResponseEntity<>(recipe, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/api/recipe/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Recipe> createRecipeBasedOnIngredients(@RequestBody IngredientList ingredientList, BindingResult bindingResult) {
         Recipe recipe = new Recipe();
 
@@ -47,7 +46,7 @@ public class RecipeController {
         return new ResponseEntity<>(recipe, HttpStatus.CREATED);
     }
 
-    @PostMapping(path = "/random", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/api/recipe/random", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Recipe> createRecipeBasedOnIngredients(@RequestParam List<String> tags) {
         //search for a random recipe based on the tags and return 1 recipe
         Recipe recipe = new Recipe();

@@ -1,9 +1,12 @@
 package de.isemwaf.smartFridge.model;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
+@Audited(withModifiedFlag = true)
 public class Recipe extends SuperEntity{
     private long id;
     private String name;

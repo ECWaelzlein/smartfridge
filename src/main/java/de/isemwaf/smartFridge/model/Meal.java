@@ -1,10 +1,14 @@
 package de.isemwaf.smartFridge.model;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
+@Audited(withModifiedFlag = true)
 public class Meal extends SuperEntity{
     long id;
     Date date;
@@ -39,6 +43,7 @@ public class Meal extends SuperEntity{
     }
 
     @ManyToOne
+    @NotAudited
     public Recipe getRecipe() {
         return recipe;
     }
