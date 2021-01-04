@@ -1,4 +1,6 @@
 # Smart Fridge
+## Dokumentation
+Die Dokumentation ist zu finden unter: https://www.overleaf.com/6247266947qxvpqtqspqcc
 ## Food API
 Es wird folgende Api verwendet, um mit Hilfe eines Barcodes ein Lebensmittel zu erkennen: https://world.openfoodfacts.org/api/v0/product/barcode.json.
 ## Recipe API
