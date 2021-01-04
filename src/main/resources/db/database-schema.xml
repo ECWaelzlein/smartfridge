@@ -55,6 +55,37 @@
         />
     </changeSet>
 
+    <changeSet  author="smartFridge"  id="createSequence_account_id">
+        <createSequence  dataType="int"
+                         incrementBy="1"
+                         sequenceName="sequence_account_id"
+                         startValue="1"
+        />
+    </changeSet>
+
+    <changeSet  id="createTableAccount"  author="smartFridge">
+        <createTable  tableName="account">
+            <column  name="id"  type="BigInt"  autoIncrement="true">
+                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_account"/>
+            </column>
+            <column  name="firstname"  type="varchar(50)">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="lastname"  type="varchar(50)">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="created"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="last_modified"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column name="version" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
     <changeSet id="addTableRevision" author="smartFridge">
         <createTable tableName="revision">
             <column name="id" type="BigInt">
@@ -62,6 +93,27 @@
             </column>
             <column  name="created"  type="timestamp">
                 <constraints  nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="createTableFood" author="smartFridge">
+        <createTable tableName="food">
+            <column name="id" type="BigInt" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_food"/>
+            </column>
+            <column name="barcode" type="varchar(20)"/>
+            <column name="category" type="varchar(20)"/>
+            <column name="quantity" type="varchar(20)"/>
+            <column name="name" type="varchar(20)"/>
+            <column  name="created"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="last_modified"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column name="version" type="int">
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
@@ -79,14 +131,20 @@
             <column name="fats" type="float"/>
             <column name="calories" type="float"/>
             <column name="servings" type="float"/>
-            <column name="created" type="timestamp"/>
-            <column name="lastModified" type="timestamp"/>
-            <column name="version" type="int"/>
+            <column  name="created"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="last_modified"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column name="version" type="int">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
     <changeSet id="addTableRecipeAud" author="smartFridge">
-        <createTable tableName="account_aud">
+        <createTable tableName="recipe_aud">
             <column name="id" type="BigInt">
                 <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_recipe_aud"/>
             </column>
@@ -112,38 +170,39 @@
     </changeSet>
 
     <changeSet  id="createTableFoodInventory"  author="smartFridge">
-        <createTable  tableName="FoodInventory">
+        <createTable  tableName="food_inventory">
             <column  name="id"  type="BigInt"  autoIncrement="true">
                 <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_foodinventory"/>
             </column>
-            <column  name="food"  type="BigInt">
+            <column  name="food_id"  type="BigInt">
                 <constraints  nullable="false" foreignKeyName="fk_id_food" references="food(id)"/>
             </column>
-            <column  name="expirationDate"  type="timestamp"/>
+            <column  name="expiration_date"  type="timestamp"/>
+            <column  name="created"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="last_modified"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column name="version" type="int">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
     <changeSet id="addTableFoodInventoryAud" author="smartFridge">
-        <createTable tableName="foodinventory_aud">
+        <createTable tableName="food_inventory_aud">
             <column name="id" type="BigInt">
                 <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_foodinventory_aud"/>
             </column>
             <column name="rev" type="BigInt"/>
             <column name="revtype" type="TinyInt"/>
-            <column name="expirationDate_mod" type="Boolean"/>
+            <column name="expiration_date_mod" type="Boolean"/>
             <column name="food_mod" type="Boolean"/>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="createTableFood" author="smartFridge">
-        <createTable tableName="Food">
-            <column name="id" type="BigInt" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_food"/>
+            <column  name="food_id"  type="BigInt">
+                <constraints  nullable="false" foreignKeyName="fk_id_food" references="food(id)"/>
             </column>
-            <column name="barcode" type="varchar(20)"/>
-            <column name="category" type="varchar(20)"/>
-            <column name="quantity" type="varchar(20)"/>
-            <column name="name" type="varchar(20)"/>
+            <column  name="expiration_date"  type="timestamp"/>
         </createTable>
     </changeSet>
 
@@ -154,10 +213,14 @@
             </column>
             <column name="rev" type="BigInt"/>
             <column name="revtype" type="TinyInt"/>
-            <column name="barcode_mod" type="varchar(20)"/>
-            <column name="category_mod" type="varchar(20)"/>
-            <column name="quantity_mod" type="varchar(20)"/>
-            <column name="name_mod" type="varchar(20)"/>
+            <column name="barcode_mod" type="Boolean"/>
+            <column name="category_mod" type="Boolean"/>
+            <column name="quantity_mod" type="Boolean"/>
+            <column name="name_mod" type="Boolean"/>
+            <column name="barcode" type="varchar(20)"/>
+            <column name="category" type="varchar(20)"/>
+            <column name="quantity" type="varchar(20)"/>
+            <column name="name" type="varchar(20)"/>
         </createTable>
     </changeSet>
 
@@ -169,8 +232,17 @@
             <column  name="date"  type="timestamp">
                 <constraints  nullable="false"/>
             </column>
-            <column  name="recipe"  type="BigInt">
+            <column  name="recipe_id"  type="BigInt">
                 <constraints  nullable="false" foreignKeyName="fk_id_recipe" references="recipe(id)"/>
+            </column>
+            <column  name="created"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="last_modified"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column name="version" type="int">
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
@@ -184,6 +256,24 @@
             <column name="revtype" type="TinyInt"/>
             <column name="date" type="timestamp"/>
             <column name="date_mod" type="Boolean"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="addTableAccountAud" author="smartFridge">
+        <createTable tableName="account_aud">
+            <column name="id" type="BigInt">
+                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_account_aud"/>
+            </column>
+            <column name="rev" type="BigInt"/>
+            <column name="revtype" type="TinyInt"/>
+            <column name="lastname_mod" type="Boolean"/>
+            <column name="firstname_mod" type="Boolean"/>
+            <column  name="firstname"  type="varchar(50)">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="lastname"  type="varchar(50)">
+                <constraints  nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
