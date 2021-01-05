@@ -69,7 +69,7 @@
                 <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_account"/>
             </column>
             <column  name="username"  type="varchar(50)">
-                <constraints  nullable="false"/>
+                <constraints  nullable="false" unique="true"/>
             </column>
             <column  name="password"  type="varchar(120)">
                 <constraints  nullable="false"/>
@@ -169,6 +169,26 @@
         </createTable>
     </changeSet>
 
+    <changeSet  id="createTableFridge"  author="smartFridge">
+        <createTable  tableName="fridge">
+            <column  name="id"  type="BigInt"  autoIncrement="true">
+                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_fridge"/>
+            </column>
+            <column  name="account_id"  type="BigInt">
+                <constraints  nullable="false" foreignKeyName="fk_id_account" references="account(id)"/>
+            </column>
+            <column  name="created"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="last_modified"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column name="version" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
     <changeSet  id="createTableFoodInventory"  author="smartFridge">
         <createTable  tableName="food_inventory">
             <column  name="id"  type="BigInt"  autoIncrement="true">
@@ -206,23 +226,6 @@
                 <constraints  nullable="false" foreignKeyName="fk_id_food" references="food(id)"/>
             </column>
             <column  name="expiration_date"  type="timestamp"/>
-        </createTable>
-    </changeSet>
-
-    <changeSet  id="createTableFridge"  author="smartFridge">
-        <createTable  tableName="fridge">
-            <column  name="id"  type="BigInt"  autoIncrement="true">
-                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_fridge"/>
-            </column>
-            <column  name="created"  type="timestamp">
-                <constraints  nullable="false"/>
-            </column>
-            <column  name="last_modified"  type="timestamp">
-                <constraints  nullable="false"/>
-            </column>
-            <column name="version" type="int">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
     </changeSet>
 

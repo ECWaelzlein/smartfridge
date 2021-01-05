@@ -34,7 +34,7 @@ public class FridgeController {
     }
 
 
-    @PostMapping(path = "/api/fridge/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/api/fridge", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Fridge> createRecipeBasedOnIngredients(@RequestBody String userId) {
         Fridge fridge = new Fridge();
         Account account = new Account();

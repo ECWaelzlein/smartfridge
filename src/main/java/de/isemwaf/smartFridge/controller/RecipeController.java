@@ -32,7 +32,7 @@ public class RecipeController {
         return new ResponseEntity<>(recipe, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/api/recipe/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/api/recipe", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Recipe> createRecipeBasedOnIngredients(@RequestBody IngredientList ingredientList, BindingResult bindingResult) {
         Recipe recipe = new Recipe();
 

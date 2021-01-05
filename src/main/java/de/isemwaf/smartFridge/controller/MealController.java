@@ -63,7 +63,7 @@ public class MealController {
      * @param bindingResult überprüft ob param valide sind
      * @return gibt das Meal zurück, wenn erfolgreich, ansonsten HTTP-Code 422
      */
-    @PostMapping(path ="/api/meal/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path ="/api/meal", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Meal> addMeal(@RequestBody @Valid Meal meal, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return new ResponseEntity<>(null,HttpStatus.UNPROCESSABLE_ENTITY);

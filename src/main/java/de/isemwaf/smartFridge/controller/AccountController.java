@@ -32,12 +32,12 @@ public class AccountController {
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/api/account/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/api/account", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Account> createAccount(@Valid @RequestBody AccountModel accountModel, BindingResult bindingResult) {
         Account account = new Account();
 
         if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         account.setPassword(accountModel.getPasswordHash());

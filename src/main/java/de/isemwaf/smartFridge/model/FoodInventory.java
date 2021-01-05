@@ -1,6 +1,7 @@
 package de.isemwaf.smartFridge.model;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 
@@ -12,6 +13,7 @@ import java.util.Date;
 public class FoodInventory extends SuperEntity {
     private long Id;
     private Food food;
+    private Fridge fridge;
 
     @Id
     @GeneratedValue(
@@ -50,4 +52,14 @@ public class FoodInventory extends SuperEntity {
     }
 
     private Date expirationDate;
+
+    @ManyToOne
+    @NotAudited
+    public Fridge getFridge() {
+        return fridge;
+    }
+
+    public void setFridge(Fridge fridge) {
+        this.fridge = fridge;
+    }
 }

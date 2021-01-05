@@ -27,8 +27,7 @@ public class Fridge {
         this.id = id;
     }
 
-    @OneToMany
-    @Column
+    @OneToMany(mappedBy = "fridge")
     public List<FoodInventory> getInventory() {
         return inventory;
     }
@@ -38,7 +37,6 @@ public class Fridge {
     }
 
     @OneToOne
-    @Column
     public Account getAccount() {
         return account;
     }
