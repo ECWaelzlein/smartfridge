@@ -40,3 +40,5 @@ Der Request Body besteht aus einem JSON String.
 | MealController             |/api/meal/:*id*                                 | GET          |/|meal oder [meal]    |   Bekommt eine Mahlzeit oder eine Liste an Mahlzeiten.    |
 | MealController             |/api/meal/*id*                                  | DELETE       |/|/ (HTTP Status Code: 204)    |   Löscht eine Mahlzeit.    |
 | MealController             |/api/meal/*id*                                  | POST         |date|meal    |   Ändert eine Mahlzeit.    |
+| AccountController          |/api/account/                                   | POST         |username,passwordHash|account (ohne password)    |   Erstellt einen Account.    |
+| AccountController          |/api/account/*id*                               | GET          |/|account (ohne password)   |   Erhält einen Account.    |
