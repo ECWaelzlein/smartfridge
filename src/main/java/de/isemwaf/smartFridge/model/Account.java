@@ -9,8 +9,8 @@ import javax.validation.constraints.NotBlank;
 @Audited(withModifiedFlag = true)
 public class Account extends SuperEntity {
     private long id;
-    private String firstname;
-    private String lastname;
+    private String username;
+    private String password;
 
     @Id
     @GeneratedValue(
@@ -33,21 +33,21 @@ public class Account extends SuperEntity {
 
     @Column(length = 50, nullable = false)
     @NotBlank
-    public String getFirstname() {
-        return firstname;
+    public String getUsername() {
+        return username;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 120, nullable = false)
     @NotBlank
-    public String getLastname() {
-        return lastname;
+    public String getPassword() {
+        return password;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

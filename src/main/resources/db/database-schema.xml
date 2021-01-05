@@ -68,10 +68,10 @@
             <column  name="id"  type="BigInt"  autoIncrement="true">
                 <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_account"/>
             </column>
-            <column  name="firstname"  type="varchar(50)">
+            <column  name="username"  type="varchar(50)">
                 <constraints  nullable="false"/>
             </column>
-            <column  name="lastname"  type="varchar(50)">
+            <column  name="password"  type="varchar(120)">
                 <constraints  nullable="false"/>
             </column>
             <column  name="created"  type="timestamp">
@@ -177,6 +177,9 @@
             <column  name="food_id"  type="BigInt">
                 <constraints  nullable="false" foreignKeyName="fk_id_food" references="food(id)"/>
             </column>
+            <column  name="fridge_id"  type="BigInt">
+                <constraints  nullable="false" foreignKeyName="fk_id_fridge" references="fridge(id)"/>
+            </column>
             <column  name="expiration_date"  type="timestamp"/>
             <column  name="created"  type="timestamp">
                 <constraints  nullable="false"/>
@@ -203,6 +206,23 @@
                 <constraints  nullable="false" foreignKeyName="fk_id_food" references="food(id)"/>
             </column>
             <column  name="expiration_date"  type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet  id="createTableFridge"  author="smartFridge">
+        <createTable  tableName="fridge">
+            <column  name="id"  type="BigInt"  autoIncrement="true">
+                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_fridge"/>
+            </column>
+            <column  name="created"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="last_modified"  type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+            <column name="version" type="int">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
@@ -266,12 +286,12 @@
             </column>
             <column name="rev" type="BigInt"/>
             <column name="revtype" type="TinyInt"/>
-            <column name="lastname_mod" type="Boolean"/>
-            <column name="firstname_mod" type="Boolean"/>
-            <column  name="firstname"  type="varchar(50)">
+            <column name="username_mod" type="Boolean"/>
+            <column name="password_mod" type="Boolean"/>
+            <column  name="username"  type="varchar(50)">
                 <constraints  nullable="false"/>
             </column>
-            <column  name="lastname"  type="varchar(50)">
+            <column  name="password"  type="varchar(120)">
                 <constraints  nullable="false"/>
             </column>
         </createTable>
