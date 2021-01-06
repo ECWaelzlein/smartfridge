@@ -7,9 +7,11 @@ import java.util.List;
 public interface FoodService {
     Food createFood(Food food);
 
-    List<Food> getFood(long id);
+    Food getFood(long id);
 
-    int deleteFood(long id);
+    List<Food> getAllFood();
+
+    void deleteFood(long id);
 
     String getFoodInformation(String barcode);
 }

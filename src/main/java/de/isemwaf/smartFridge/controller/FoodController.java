@@ -9,7 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,9 +24,8 @@ public class FoodController {
         this.foodService = foodService;
     }
 
-    // TODO BindingResult als Parameter übergeben?
     @PostMapping(path = {"/api/food"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Food> createFoodWithBarcode(@RequestBody String barcode, HttpServletResponse httpServletResponse) {
+    public ResponseEntity<Food> createFoodWithBarcode(@RequestBody String barcode) {
         String foodInformation = foodService.getFoodInformation(barcode);
 
         String name = Utility.getProductName(foodInformation);
@@ -42,11 +42,16 @@ public class FoodController {
     }
 
     @GetMapping(path = {"/api/food/{id}", "/api/food"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Food>> getFoodWithId(@PathVariable Optional<Long> id, HttpServletResponse httpServletResponse) {
+    public ResponseEntity<List<Food>> getFoodWithId(@PathVariable Optional<Long> id) {
+        List<Food> foodList = new ArrayList<>();
 
-        long id_food = id.isPresent() ? id.get() : -1;
-        List<Food> foodList = foodService.getFood(id_food);
-        if (foodList.isEmpty()) {
+        if (id.isEmpty()) {
+            foodList.addAll(foodService.getAllFood());
+        }
+
+        id.ifPresent(foodId -> foodList.add(foodService.getFood(foodId)));
+
+        if(foodList.isEmpty()) {
             return new ResponseEntity<>(foodList, HttpStatus.NO_CONTENT);
         }
 
@@ -54,9 +59,8 @@ public class FoodController {
     }
 
     @DeleteMapping(path = {"/api/food/{id}"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<HttpServletResponse> deleteFoodWithId(@PathVariable Long id, HttpServletResponse httpServletResponse) {
-
-        int response = foodService.deleteFood(id);
+    public ResponseEntity<Food> deleteFoodWithId(@PathVariable Long id) {
+        foodService.deleteFood(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

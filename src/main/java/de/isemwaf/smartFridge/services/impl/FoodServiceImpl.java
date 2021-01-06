@@ -32,22 +32,18 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public List<Food> getFood(long id) {
-        List<Food> foodList = new ArrayList<>();
-        if (id >= 0) {
-            if (foodRepository.findById(id).isPresent()) {
-                foodList.add(foodRepository.findById(id).get());
-            }
-        } else {
-            foodList.addAll(foodRepository.findAll());
-        }
-        return foodList;
+    public List<Food> getAllFood() {
+        return new ArrayList<>(foodRepository.findAll());
     }
 
     @Override
-    public int deleteFood(long id) {
+    public Food getFood(long id) {
+        return foodRepository.findById(id).isPresent() ? foodRepository.findById(id).get() : null;
+    }
+
+    @Override
+    public void deleteFood(long id) {
         foodRepository.deleteById(id);
-        return HttpServletResponse.SC_NO_CONTENT;
     }
 
     @Override
