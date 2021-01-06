@@ -45,12 +45,8 @@ public class MealServiceImpl implements MealService {
      * @return Liste aller Meals
      */
     @Override
-    public List<Meal> fetchAllMeals() {
-        /*
-         * An dieser Stelle muss vielleicht auch die accountID übergeben werden,
-         * damit nur die Meals der Person angezeigt werden
-         */
-        return mealRepository.findAll();
+    public List<Meal> fetchAllMeals(long userId) {
+        return mealRepository.findAllByAccount_Id(userId);
     }
 
     /**

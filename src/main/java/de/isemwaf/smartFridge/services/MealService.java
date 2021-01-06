@@ -9,6 +9,6 @@ public interface MealService {
     Meal saveMeal(Meal meal);
 
     Optional<Meal> findMeal(long id);
-    List<Meal> fetchAllMeals();
+    List<Meal> fetchAllMeals(long userId);
     boolean deleteMeal(long id);
 }

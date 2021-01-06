@@ -13,6 +13,7 @@ public class Meal extends SuperEntity{
     long id;
     Date date;
     Recipe recipe;
+    Account account;
 
     @Id
     @GeneratedValue(
@@ -50,5 +51,15 @@ public class Meal extends SuperEntity{
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
+    }
+
+    @ManyToOne
+    @NotAudited
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }
