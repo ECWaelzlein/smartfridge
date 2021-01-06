@@ -6,7 +6,10 @@ import de.isemwaf.smartFridge.repositories.RecipeRepository;
 import de.isemwaf.smartFridge.services.RecipeService;
 import de.isemwaf.smartFridge.utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.net.URL;
 
 @Service
@@ -47,16 +50,33 @@ public class RecipeServiceImpl implements RecipeService {
         try {
             String json = Utility.getJsonAnswer(new URL(spectacularQuery));
             long recipeID = Utility.getFirstRecipeId(json);
-            json = Utility.getJsonAnswer(new URL(spoonacularRecipeURL +recipeID+"/information?includeNutrition=true&apiKey="+ spoonacularAPIKey));
-            Recipe newRecipe = Utility.getRecipeInformationFromJson(json);
-            json = Utility.getJsonAnswer(new URL(spoonacularRecipeURL +recipeID+"/analyzedInstructions"));
-            newRecipe = Utility.addStepsToRecipe(json,newRecipe);
-            return newRecipe;
+            return composeRecipeByID(recipeID);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    @Override
+    public Recipe getRandomRecipe(String tags) {
+        try {
+            String json = Utility.getJsonAnswer(new URL(spoonacularRecipeURL+"random?number=1&tags="+tags));
+            long recipeID = Utility.getFirstRandomRecipeId(json);
+            return composeRecipeByID(recipeID);
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private Recipe composeRecipeByID(long recipeID) throws JSONException, IOException {
+        String json = Utility.getJsonAnswer(new URL(spoonacularRecipeURL +recipeID+"/information?includeNutrition=true&apiKey="+ spoonacularAPIKey));
+        Recipe newRecipe = Utility.getRecipeInformationFromJson(json);
+        json = Utility.getJsonAnswer(new URL(spoonacularRecipeURL +recipeID+"/analyzedInstructions"));
+        newRecipe = Utility.addStepsToRecipe(json,newRecipe);
+        return newRecipe;
     }
 }

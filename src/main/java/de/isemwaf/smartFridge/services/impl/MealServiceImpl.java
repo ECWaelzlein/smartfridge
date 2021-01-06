@@ -56,7 +56,7 @@ public class MealServiceImpl implements MealService {
     /**
      * Löscht ein Meal mit der entsprechenden ID
      * @param id ID des Meals
-     * @return Gibt true zurück, falls die ID gefunden und das Meal gelöscht wurde.
+     * @return Gibt true zurück, falls die ID nicht null ist.
      */
     @Override
     public boolean deleteMeal(long id) {

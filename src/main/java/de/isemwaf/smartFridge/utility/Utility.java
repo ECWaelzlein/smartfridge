@@ -85,6 +85,20 @@ public class Utility {
     }
 
     /**
+     * Sucht aus der spoonacular GETRandom-Antwort die erste Recipe-ID heraus
+     * @param json spoonacular Antwort
+     * @return erste Recipe-ID
+     * @throws JSONException falls das parsen nicht funktioniert
+     */
+    public static long getFirstRandomRecipeId(String json) throws JSONException {
+
+        JSONObject jsonObject = new JSONObject(json).getJSONArray("recipes").getJSONObject(0);
+
+        return jsonObject.getLong("id");
+
+    }
+
+    /**
      * Erstellt aus der json-Antwort von spoonacular die richtigen Informationen für ein Recipe heraus.
      * @param jsonString json-Antwort von spoonacular
      * @return ein neues Recipe
@@ -130,7 +144,7 @@ public class Utility {
      * @throws JSONException falls das parsen nicht funktioniert
      */
     public static Recipe addStepsToRecipe(String json, Recipe recipe) throws JSONException{
-        recipe.setSteps(json);
+        if(recipe != null) recipe.setSteps(json);
         return recipe;
     }
 }

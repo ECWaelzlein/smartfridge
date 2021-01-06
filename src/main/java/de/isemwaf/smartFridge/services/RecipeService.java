@@ -11,4 +11,6 @@ public interface RecipeService {
     Recipe getRecipe(long id);
 
     Recipe getRecipeBasedOnIngredients(IngredientList ingredientList);
+
+    Recipe getRandomRecipe(String tags);
 }
