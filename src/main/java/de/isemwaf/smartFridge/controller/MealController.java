@@ -1,7 +1,7 @@
 package de.isemwaf.smartFridge.controller;
 
 import de.isemwaf.smartFridge.model.Meal;
-import de.isemwaf.smartFridge.services.impl.MealServiceImpl;
+import de.isemwaf.smartFridge.services.MealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 
 @RestController
 public class MealController {
-    private final MealServiceImpl mealService;
+    private final MealService mealService;
 
     @Autowired
-    public MealController(MealServiceImpl mealService) {
+    public MealController(MealService mealService) {
         this.mealService = mealService;
     }
 
