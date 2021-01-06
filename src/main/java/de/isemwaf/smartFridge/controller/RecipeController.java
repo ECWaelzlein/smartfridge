@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController()
@@ -33,15 +32,16 @@ public class RecipeController {
         return new ResponseEntity<>(recipe, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/api/recipe", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Recipe> createRecipeBasedOnIngredients(@Valid @RequestBody IngredientList ingredientList, BindingResult bindingResult) {
-        Recipe recipe = new Recipe();
-
+    @PostMapping(path = "/api/recipe/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Recipe> createRecipeBasedOnIngredients(@RequestBody IngredientList ingredientList, BindingResult bindingResult) {
         //search for recipes based on the ingredients and return 1 recipe
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
+        Recipe recipe = recipeService.getRecipeBasedOnIngredients(ingredientList);
+        if(recipe == null){
+            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         recipe = recipeService.saveRecipe(recipe);
 
         return new ResponseEntity<>(recipe, HttpStatus.CREATED);
@@ -50,7 +50,10 @@ public class RecipeController {
     @PostMapping(path = "/api/recipe/random", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Recipe> createRecipeBasedOnIngredients(@RequestParam List<String> tags) {
         //search for a random recipe based on the tags and return 1 recipe
-        Recipe recipe = new Recipe();
+        Recipe recipe =  recipeService.getRandomRecipe(String.join(",", tags));
+        if(recipe == null){
+            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         recipe = recipeService.saveRecipe(recipe);
 
         return new ResponseEntity<>(recipe, HttpStatus.CREATED);

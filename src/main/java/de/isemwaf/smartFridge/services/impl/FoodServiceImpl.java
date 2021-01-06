@@ -3,6 +3,7 @@ package de.isemwaf.smartFridge.services.impl;
 import de.isemwaf.smartFridge.model.Food;
 import de.isemwaf.smartFridge.repositories.FoodRepository;
 import de.isemwaf.smartFridge.services.FoodService;
+import de.isemwaf.smartFridge.utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,8 @@ import java.util.List;
 @Service
 public class FoodServiceImpl implements FoodService {
 
-    private final FoodRepository foodRepository;
     public static final String OPEN_FOOD_FACTS_URL = "https://world.openfoodfacts.org/api/v0/product/";
+    private final FoodRepository foodRepository;
 
     @Autowired
     public FoodServiceImpl(FoodRepository foodRepository) {
@@ -48,28 +49,14 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public String getFoodInformation(String barcode) {
-
         try {
             URL url = new URL(OPEN_FOOD_FACTS_URL + barcode + ".json");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-
-            if (con.getResponseCode() != HttpServletResponse.SC_NOT_FOUND) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                StringBuilder content = new StringBuilder();
-                while ((inputLine = in.readLine()) != null) {
-                    content.append(inputLine);
-                }
-                in.close();
-
-                return content.toString();
-            }
-
+            String json = Utility.getJsonAnswer(url);
+            if(json != null && !json.isEmpty())
+                return json;
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return "";
     }
 }
