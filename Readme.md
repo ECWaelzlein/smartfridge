@@ -30,15 +30,15 @@ Der Request Body besteht aus einem JSON String.
 | FoodController             |/api/food                                       | POST         |barcode|food| Erstellt ein Lebensmittel.                               |
 | FoodController             |/api/food/*id*                                  | GET          |/|food| Fragt ein Lebensmittel an.                               |
 | FoodController             |/api/food/*id*                                  | DELETE       |/|/ (HTTP Status Code: 204)| Löscht ein Lebensmittel.                                 |
-| FoodInventoryController    |/api/food-inventory/                            | POST         |food, amount, expDate| id      |   Legt ein Food-Objekt in das FoodInventory.    |
+| FoodInventoryController    |/api/food-inventory/                            | POST         |foodId, userId, expDate| foodInventory      |   Legt ein Food-Objekt in das FoodInventory.    |
 | FoodInventoryController    |/api/food-inventory/:*id*                       | GET          |/| foodInventory oder   [foodInventory]   |   Bekommt ein FoodInventory-Objekt oder eine Liste von allen Objekten.    |
 | FoodInventoryController    |/api/food-inventory/*id*                        | DELETE       |/|/ (HTTP Status Code: 204)    |   Löscht ein Food-Objekt aus dem FoodInventory.    |
 | RecipeController           |/api/recipe/                                    | POST         |[ingredients] |recipe    |   Erstellt ein Rezept.    |
-| RecipeController           |/api/recipe/random?tags=veggie,dessert     | POST         |/|recipe    |   Erstellt ein zufälliges Rezept.    |
+| RecipeController           |/api/recipe/random?tags=veggie,dessert          | POST         |/|recipe    |   Erstellt ein zufälliges Rezept.    |
 | RecipeController           |/api/recipe/*id*                                | GET          |/|recipe    |   Bekommt ein Rezept zu einer ID.    |
 | MealController             |/api/meal/                                      | POST         |date, mealName |meal    |   Erstellt eine Mahlzeit.    |
 | MealController             |/api/meal/:*id*                                 | GET          |/|meal oder [meal]    |   Bekommt eine Mahlzeit oder eine Liste an Mahlzeiten.    |
 | MealController             |/api/meal/*id*                                  | DELETE       |/|/ (HTTP Status Code: 204)    |   Löscht eine Mahlzeit.    |
 | MealController             |/api/meal/*id*                                  | POST         |date|meal    |   Ändert eine Mahlzeit.    |
-| AccountController          |/api/account/                                   | POST         |username,passwordHash|account (ohne password)    |   Erstellt einen Account.    |
-| AccountController          |/api/account/*id*                               | GET          |/|account (ohne password)   |   Erhält einen Account.    |
+| AccountController          |/api/account/                                   | POST         |username,passwordHash|account (password zensiert)    |   Erstellt einen Account.    |
+| AccountController          |/api/account/*id*                               | GET          |/|account (password zensiert)   |   Erhält einen Account.    |
