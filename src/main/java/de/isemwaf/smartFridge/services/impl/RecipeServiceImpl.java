@@ -13,8 +13,8 @@ import java.net.URL;
 public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
-    public static final String sponacularRecipeURL = "https://api.spoonacular.com/recipes/";
-    public static final String sponacularAPIKey = "a1762976c3ac4015aedb6285143cee50";
+    public static final String spoonacularRecipeURL = "https://api.spoonacular.com/recipes/";
+    public static final String spoonacularAPIKey = "a1762976c3ac4015aedb6285143cee50";
 
     @Autowired
     public RecipeServiceImpl(RecipeRepository recipeRepository) {
@@ -34,7 +34,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe getRecipeBasedOnIngredients(IngredientList ingredientList) {
         StringBuilder sb = new StringBuilder();
-        sb.append(sponacularRecipeURL);
+        sb.append(spoonacularRecipeURL);
         sb.append("findByIngredients?ingredients=");
         sb.append(ingredientList.getIngredientList().get(0).getIngredient());
         ingredientList.getIngredientList().remove(0);
@@ -42,13 +42,16 @@ public class RecipeServiceImpl implements RecipeService {
             ingredientList.getIngredientList().forEach(s -> sb.append(s.getIngredient()));
         }
         sb.append("&number=1&apiKey=");
-        sb.append(sponacularAPIKey);
+        sb.append(spoonacularAPIKey);
         String spectacularQuery = sb.toString();
         try {
             String json = Utility.getJsonAnswer(new URL(spectacularQuery));
             long recipeID = Utility.getFirstRecipeId(json);
-            json = Utility.getJsonAnswer(new URL(sponacularRecipeURL+recipeID+"/information?includeNutrition=true&apiKey="+sponacularAPIKey));
-
+            json = Utility.getJsonAnswer(new URL(spoonacularRecipeURL +recipeID+"/information?includeNutrition=true&apiKey="+ spoonacularAPIKey));
+            Recipe newRecipe = Utility.getRecipeInformationFromJson(json);
+            json = Utility.getJsonAnswer(new URL(spoonacularRecipeURL +recipeID+"/analyzedInstructions"));
+            newRecipe = Utility.addStepsToRecipe(json,newRecipe);
+            return newRecipe;
 
         } catch (Exception e) {
             e.printStackTrace();

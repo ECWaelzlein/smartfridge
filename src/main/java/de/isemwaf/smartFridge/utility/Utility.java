@@ -46,6 +46,12 @@ public class Utility {
         return "Not Found";
     }
 
+    /**
+     * Ruf eine Rest-API (nur GET) auf und gibt den json-String zurück.
+     * @param apiCall Endpunkt, der angesprochen wird (ganze URL).
+     * @return json-String (Rest-Antwort)
+     * @throws IOException falls beim Verbindungsaufbau etas nicht funktioniert
+     */
     public static String getJsonAnswer(URL apiCall) throws IOException {
         HttpURLConnection con = (HttpURLConnection) apiCall.openConnection();
         con.setRequestMethod("GET");
@@ -64,6 +70,12 @@ public class Utility {
         return null;
     }
 
+    /**
+     * Sucht aus der spoonacular Antwort die erste Recipe-ID heraus
+     * @param json spoonacular Antwort
+     * @return erste Recipe-ID
+     * @throws JSONException falls das parsen nicht funktioniert
+     */
     public static long getFirstRecipeId(String json) throws JSONException {
 
         JSONObject jsonObject = new JSONArray(json).getJSONObject(0);
@@ -72,6 +84,12 @@ public class Utility {
 
     }
 
+    /**
+     * Erstellt aus der json-Antwort von spoonacular die richtigen Informationen für ein Recipe heraus.
+     * @param jsonString json-Antwort von spoonacular
+     * @return ein neues Recipe
+     * @throws JSONException falls das parsen nicht funktioniert
+     */
     public static Recipe getRecipeInformationFromJson(String jsonString) throws JSONException{
         JSONObject recipeJSON = new JSONObject(jsonString);
         JSONObject nutrition = recipeJSON.getJSONObject("nutrition");
@@ -100,5 +118,17 @@ public class Utility {
         }
         return recipe;
 
+    }
+
+    /**
+     * Füllt die steps in recipe mit denen aus dem json-String
+     * @param json Json, der von spoonacular zurückgegeben wurde
+     * @param recipe Recipe, dass bearbeitet werden soll
+     * @return gibt das bearbeitete Recipe zurück
+     * @throws JSONException falls das parsen nicht funktioniert
+     */
+    public static Recipe addStepsToRecipe(String json, Recipe recipe) throws JSONException{
+        recipe.setSteps(json);
+        return recipe;
     }
 }
