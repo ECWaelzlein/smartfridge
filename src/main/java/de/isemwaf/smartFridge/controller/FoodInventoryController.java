@@ -23,7 +23,7 @@ public class FoodInventoryController {
     public FoodInventoryController(FoodInventoryService foodInventoryService) {
         this.foodInventoryService = foodInventoryService;
     }
-    @GetMapping(path = {"/api/foodinventory/{id}", "/api/foodinventory"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = {"/api/food-inventory/{id}", "/api/foodinventory"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FoodInventory>> getFoodInventory(@PathVariable Optional<Long> id, @RequestParam String userId)
     {
         List<FoodInventory> foodInventories = new ArrayList<>();
@@ -40,7 +40,7 @@ public class FoodInventoryController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(path = "/api/foodinventory", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/api/food-inventory", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FoodInventory> saveFoodInventory(@RequestBody @Valid FoodInventoryModel foodInventoryModel, BindingResult bindingResult)
     {
         if(bindingResult.hasErrors())
@@ -51,7 +51,7 @@ public class FoodInventoryController {
         return new ResponseEntity<>(createdFoodInventory, HttpStatus.CREATED);
     }
 
-    @DeleteMapping(path = "/api/foodinventory/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(path = "/api/food-inventory/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FoodInventory> deleteFoodInventory(@PathVariable long id)
     {
         foodInventoryService.deleteItem(id);
