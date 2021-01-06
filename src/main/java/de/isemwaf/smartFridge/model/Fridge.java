@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-public class Fridge {
+public class Fridge extends SuperEntity {
     private long id;
     private List<FoodInventory> inventory;
     private Account account;
