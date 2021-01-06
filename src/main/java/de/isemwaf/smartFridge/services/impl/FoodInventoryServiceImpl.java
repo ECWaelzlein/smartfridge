@@ -1,53 +1,53 @@
 package de.isemwaf.smartFridge.services.impl;
 
-import de.isemwaf.smartFridge.model.Food;
 import de.isemwaf.smartFridge.model.FoodInventory;
+import de.isemwaf.smartFridge.model.json.FoodInventoryModel;
 import de.isemwaf.smartFridge.repositories.FoodInventoryRepository;
 import de.isemwaf.smartFridge.services.FoodInventoryService;
+import de.isemwaf.smartFridge.services.FoodService;
+import de.isemwaf.smartFridge.services.FridgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FoodInventoryServiceImpl implements FoodInventoryService {
 
     private final FoodInventoryRepository foodInventoryRepository;
+    private final FridgeService fridgeService;
+    private final FoodService foodService;
+
     @Autowired
-    public FoodInventoryServiceImpl(FoodInventoryRepository foodInventoryRepository) {
+    public FoodInventoryServiceImpl(FoodInventoryRepository foodInventoryRepository, FridgeService fridgeService, FoodService foodService) {
         this.foodInventoryRepository = foodInventoryRepository;
+        this.fridgeService = fridgeService;
+        this.foodService = foodService;
     }
 
     @Override
-    public Food saveItem(FoodInventory foodInventory) {
-        return foodInventoryRepository.save(foodInventory).getFood();
+    public FoodInventory saveItem(FoodInventoryModel foodInventoryModel) {
+        FoodInventory foodInventory = new FoodInventory();
+
+        foodInventory.setFood(foodService.getFood(Long.parseLong(foodInventoryModel.getFoodId())));
+        foodInventory.setFridge(fridgeService.getFridgeByAccountId(Long.parseLong(foodInventoryModel.getUserId())));
+        foodInventory.setExpirationDate(foodInventoryModel.getExpirationDate());
+
+        return foodInventoryRepository.save(foodInventory);
     }
 
     @Override
-    public List<FoodInventory> getItem(long id) {
-        List<FoodInventory> foodInventoryList = new ArrayList<>();
-        if(id >= 0)
-        {
-            Optional<FoodInventory> foodInventory = foodInventoryRepository.findById(id);
-            foodInventory.ifPresent(foodInventoryList::add);
-        }
-        else
-        {
-            foodInventoryList.addAll(foodInventoryRepository.findAll());
-        }
-        return foodInventoryList;
+    public FoodInventory getItem(long id) {
+        return foodInventoryRepository.findById(id).isPresent() ? foodInventoryRepository.findById(id).get() : null;
     }
 
     @Override
-    public long deleteItem(long id) {
-        try {
-            foodInventoryRepository.deleteById(id);
-            return id;
-        }
-        catch(Exception e){
-         return -1;
-        }
+    public void deleteItem(long id) {
+        foodInventoryRepository.deleteById(id);
+    }
+
+    @Override
+    public List<FoodInventory> getAllItems(long userId) {
+        return foodInventoryRepository.findAllByFridge_Id(fridgeService.getFridgeByAccountId(userId).getId());
     }
 }

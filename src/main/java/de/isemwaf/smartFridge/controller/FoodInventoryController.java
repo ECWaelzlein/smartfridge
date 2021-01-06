@@ -2,6 +2,7 @@ package de.isemwaf.smartFridge.controller;
 
 import de.isemwaf.smartFridge.model.Food;
 import de.isemwaf.smartFridge.model.FoodInventory;
+import de.isemwaf.smartFridge.model.json.FoodInventoryModel;
 import de.isemwaf.smartFridge.services.FoodInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,35 +24,37 @@ public class FoodInventoryController {
         this.foodInventoryService = foodInventoryService;
     }
     @GetMapping(path = {"/api/foodinventory/{id}", "/api/foodinventory"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<FoodInventory>> getFoodInventory(@PathVariable Optional<Long> id)
+    public ResponseEntity<List<FoodInventory>> getFoodInventory(@PathVariable Optional<Long> id, @RequestParam String userId)
     {
         List<FoodInventory> foodInventories = new ArrayList<>();
         if(id.isPresent()) {
-            foodInventories.addAll(foodInventoryService.getItem(id.get()));
+            foodInventories.add(foodInventoryService.getItem(id.get()));
             if(foodInventories.isEmpty())  { return new ResponseEntity<>(HttpStatus.NO_CONTENT); }
             else { return new ResponseEntity<>(foodInventories,HttpStatus.OK);}
         }
-        else{
-            foodInventories.addAll(foodInventoryService.getItem(-1));
+        else if (!userId.isEmpty()){
+            foodInventories.addAll(foodInventoryService.getAllItems(Long.parseLong(userId)));
             return new ResponseEntity<>(foodInventories, HttpStatus.OK);
         }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(path = "/api/foodinventory", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Food> saveFoodInventory(@Valid FoodInventory foodInventory, BindingResult bindingResult)
+    public ResponseEntity<FoodInventory> saveFoodInventory(@RequestBody @Valid FoodInventoryModel foodInventoryModel, BindingResult bindingResult)
     {
         if(bindingResult.hasErrors())
         {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-       Food createdFood = foodInventoryService.saveItem(foodInventory);
-       return new ResponseEntity<>(createdFood, HttpStatus.CREATED);
+        FoodInventory createdFoodInventory = foodInventoryService.saveItem(foodInventoryModel);
+        return new ResponseEntity<>(createdFoodInventory, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/api/foodinventory/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> deleteFoodInventory(@PathVariable long id)
+    public ResponseEntity<FoodInventory> deleteFoodInventory(@PathVariable long id)
     {
-        long response = foodInventoryService.deleteItem(id);
-        return response > 0 ? new ResponseEntity<>(id, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        foodInventoryService.deleteItem(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

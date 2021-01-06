@@ -14,6 +14,7 @@ public class FoodInventory extends SuperEntity {
     private long Id;
     private Food food;
     private Fridge fridge;
+    private Date expirationDate;
 
     @Id
     @GeneratedValue(
@@ -50,8 +51,6 @@ public class FoodInventory extends SuperEntity {
     public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
     }
-
-    private Date expirationDate;
 
     @ManyToOne
     @NotAudited

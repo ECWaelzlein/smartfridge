@@ -27,4 +27,9 @@ public class FridgeServiceImpl implements FridgeService {
     public Fridge getFridge(long id) {
         return fridgeRepository.findById(id).isPresent() ? fridgeRepository.findById(id).get() : null;
     }
+
+    @Override
+    public Fridge getFridgeByAccountId(long userId) {
+        return fridgeRepository.findByAccount_Id(userId);
+    }
 }
