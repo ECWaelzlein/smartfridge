@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController()
@@ -33,7 +34,7 @@ public class RecipeController {
     }
 
     @PostMapping(path = "/api/recipe", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Recipe> createRecipeBasedOnIngredients(@RequestBody IngredientList ingredientList, BindingResult bindingResult) {
+    public ResponseEntity<Recipe> createRecipeBasedOnIngredients(@Valid @RequestBody IngredientList ingredientList, BindingResult bindingResult) {
         Recipe recipe = new Recipe();
 
         //search for recipes based on the ingredients and return 1 recipe
