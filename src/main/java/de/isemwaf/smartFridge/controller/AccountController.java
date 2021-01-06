@@ -51,11 +51,11 @@ public class AccountController {
         account.setPassword(accountModel.getPasswordHash());
         account.setUsername(accountModel.getUsername());
         account = accountService.createAccount(account);
-        account.setPassword("*****");
 
         fridge.setAccount(account);
         fridge.setInventory(new ArrayList<>(Collections.emptyList()));
         fridgeService.createFridge(fridge);
+        account.setPassword("*****");
 
         return new ResponseEntity<>(account, HttpStatus.CREATED);
     }
