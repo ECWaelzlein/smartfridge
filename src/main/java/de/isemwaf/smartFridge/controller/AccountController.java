@@ -34,6 +34,7 @@ public class AccountController {
         if (account == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        account.setPassword("*****");
 
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
@@ -50,6 +51,7 @@ public class AccountController {
         account.setPassword(accountModel.getPasswordHash());
         account.setUsername(accountModel.getUsername());
         account = accountService.createAccount(account);
+        account.setPassword("*****");
 
         fridge.setAccount(account);
         fridge.setInventory(new ArrayList<>(Collections.emptyList()));
