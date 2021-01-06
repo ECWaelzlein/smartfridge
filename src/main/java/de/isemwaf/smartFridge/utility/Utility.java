@@ -115,7 +115,9 @@ public class Utility {
             JSONObject measures = jsonObject.getJSONObject("measures").getJSONObject("metric");
             ingredient.put("amount", measures.getDouble("amount"));
             ingredient.put("unit", measures.getString("unitShort"));
+            ingredientsToSave.put(ingredient);
         }
+        recipe.setIngredients(ingredientsToSave.toString());
         return recipe;
 
     }
