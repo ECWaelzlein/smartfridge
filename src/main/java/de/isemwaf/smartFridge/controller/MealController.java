@@ -31,9 +31,9 @@ public class MealController {
      * @return Gibt die Liste als Json zurück.
      */
     @GetMapping(path = "api/meal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Meal>> getMeals(@PathVariable Optional<Long> id){
+    public ResponseEntity<List<Meal>> getMeals(@PathVariable Optional<Long> id, @RequestParam Long userId){
         if(id.isEmpty()) {
-            return new ResponseEntity<>(mealService.fetchAllMeals(),HttpStatus.OK);
+            return new ResponseEntity<>(mealService.fetchAllMeals(userId),HttpStatus.OK);
         }
         else {
             List<Meal> mealList= mealService.findMeal(id.get()).stream().collect(Collectors.toList());

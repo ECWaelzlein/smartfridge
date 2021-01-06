@@ -32,9 +32,13 @@ public class FoodController {
         String quantity = Utility.getProductQuantity(foodInformation);
 
         Food food = new Food();
-        food.setBarcode(barcode);
-        food.setName(name);
-        food.setQuantity(quantity);
+        if (name != null && quantity != null) {
+            food.setBarcode(barcode);
+            food.setName(name);
+            food.setQuantity(quantity);
+        } else {
+            return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         food = foodService.createFood(food);
 

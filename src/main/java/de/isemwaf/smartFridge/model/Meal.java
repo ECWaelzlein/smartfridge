@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Audited(withModifiedFlag = true)
-public class Meal extends SuperEntity{
+public class Meal extends SuperEntity {
     long id;
     Date date;
     Recipe recipe;

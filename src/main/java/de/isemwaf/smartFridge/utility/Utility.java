@@ -31,7 +31,7 @@ public class Utility {
             e.printStackTrace();
         }
 
-        return "Not Found";
+        return null;
     }
 
     public static String getProductQuantity(String productJson) {
@@ -43,7 +43,7 @@ public class Utility {
             e.printStackTrace();
         }
 
-        return "Not Found";
+        return null;
     }
 
     /**

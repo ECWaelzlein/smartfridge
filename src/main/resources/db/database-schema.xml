@@ -258,6 +258,9 @@
             <column  name="recipe_id"  type="BigInt">
                 <constraints  nullable="false" foreignKeyName="fk_id_recipe" references="recipe(id)"/>
             </column>
+            <column  name="account_id"  type="BigInt">
+                <constraints  nullable="false" foreignKeyName="fk_id_account" references="account(id)"/>
+            </column>
             <column  name="created"  type="timestamp">
                 <constraints  nullable="false"/>
             </column>

@@ -1,7 +1,6 @@
 package de.isemwaf.smartFridge.model;
 
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 

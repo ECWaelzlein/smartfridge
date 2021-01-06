@@ -23,15 +23,14 @@ public class ShoppingListController {
         this.mealService = mealService;
     }
 
-    @GetMapping (path = {"/api/shopping-list/{userId}", "/"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<String>> getShoppingList(@PathVariable Long userId)
-    {
+    @GetMapping(path = {"/api/shopping-list/{userId}", "/"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<String>> getShoppingList(@PathVariable Long userId) {
         List<Meal> mealList = mealService.fetchAllMeals(userId);
         List<String> shoppingList = new ArrayList<>();
-         for (Meal meal:mealList){
-             shoppingList.add(meal.getRecipe().getIngredients());
-         }
-         return new ResponseEntity<>(shoppingList, HttpStatus.OK);
+        for (Meal meal : mealList) {
+            shoppingList.add(meal.getRecipe().getIngredients());
+        }
+        return new ResponseEntity<>(shoppingList, HttpStatus.OK);
     }
 
 }
