@@ -50,8 +50,8 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public String getFoodInformation(String barcode) {
         try {
-            URL url = new URL(OPEN_FOOD_FACTS_URL + barcode + ".json");
-            String json = Utility.getJsonAnswer(url);
+
+            String json = Utility.getJsonAnswer(OPEN_FOOD_FACTS_URL + barcode + ".json");
             if(json != null && !json.isEmpty())
                 return json;
         } catch (IOException e) {

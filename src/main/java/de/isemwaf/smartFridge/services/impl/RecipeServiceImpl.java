@@ -36,19 +36,13 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe getRecipeBasedOnIngredients(IngredientList ingredientList) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(spoonacularRecipeURL);
-        sb.append("findByIngredients?ingredients=");
-        sb.append(ingredientList.getIngredientList().get(0).getIngredient());
-        ingredientList.getIngredientList().remove(0);
-        if (!ingredientList.getIngredientList().isEmpty()){
-            ingredientList.getIngredientList().forEach(s -> sb.append(s.getIngredient()));
-        }
-        sb.append("&number=1&apiKey=");
-        sb.append(spoonacularAPIKey);
-        String spectacularQuery = sb.toString();
+        String spectacularQuery = spoonacularRecipeURL +
+                "findByIngredients?ingredients=" +
+                String.join(",", ingredientList.getStringIngredientList()) +
+                "&number=1&apiKey=" +
+                spoonacularAPIKey;
         try {
-            String json = Utility.getJsonAnswer(new URL(spectacularQuery));
+            String json = Utility.getJsonAnswer(spectacularQuery);
             long recipeID = Utility.getFirstRecipeId(json);
             return composeRecipeByID(recipeID);
 
@@ -62,7 +56,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe getRandomRecipe(String tags) {
         try {
-            String json = Utility.getJsonAnswer(new URL(spoonacularRecipeURL+"random?number=1&tags="+tags));
+            String json = Utility.getJsonAnswer(spoonacularRecipeURL+"random?number=1&tags="+tags+"&apiKey="+spoonacularAPIKey);
             long recipeID = Utility.getFirstRandomRecipeId(json);
             return composeRecipeByID(recipeID);
         } catch (IOException | JSONException e) {
@@ -73,10 +67,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     private Recipe composeRecipeByID(long recipeID) throws JSONException, IOException {
-        String json = Utility.getJsonAnswer(new URL(spoonacularRecipeURL +recipeID+"/information?includeNutrition=true&apiKey="+ spoonacularAPIKey));
-        Recipe newRecipe = Utility.getRecipeInformationFromJson(json);
-        json = Utility.getJsonAnswer(new URL(spoonacularRecipeURL +recipeID+"/analyzedInstructions"));
-        newRecipe = Utility.addStepsToRecipe(json,newRecipe);
-        return newRecipe;
+        String json = Utility.getJsonAnswer(spoonacularRecipeURL +recipeID+"/information?includeNutrition=true&apiKey="+ spoonacularAPIKey);
+        return Utility.getRecipeInformationFromJson(json);
     }
 }

@@ -36,7 +36,7 @@ public class Recipe extends SuperEntity{
         this.id = id;
     }
 
-    @Column(length = 50, nullable = false)
+    @Column(nullable = false)
     @NotBlank
     public String getName() {
         return name;

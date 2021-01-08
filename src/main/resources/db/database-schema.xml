@@ -123,9 +123,9 @@
             <column name="id" type="BigInt">
                 <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_recipe"/>
             </column>
-            <column name="name" type="varchar(50)"/>
-            <column name="ingredients" type="varchar(250)"/>
-            <column name="steps" type="varchar(500)"/>
+            <column name="name" type="varchar(100)"/>
+            <column name="ingredients" type="text"/>
+            <column name="steps" type="text"/>
             <column name="proteins" type="float"/>
             <column name="carbs" type="float"/>
             <column name="fats" type="float"/>
@@ -158,9 +158,9 @@
             <column name="fats_mod" type="Boolean"/>
             <column name="calories_mod" type="Boolean"/>
             <column name="servings_mod" type="Boolean"/>
-            <column name="name" type="varchar(50)"/>
-            <column name="ingredients" type="varchar(250)"/>
-            <column name="steps" type="varchar(500)"/>
+            <column name="name" type="varchar(100)"/>
+            <column name="ingredients" type="text"/>
+            <column name="steps" type="text"/>
             <column name="proteins" type="float"/>
             <column name="carbs" type="float"/>
             <column name="fats" type="float"/>
