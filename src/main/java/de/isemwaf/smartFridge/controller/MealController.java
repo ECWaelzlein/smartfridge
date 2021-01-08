@@ -30,8 +30,8 @@ public class MealController {
      * @param id Id des Meals. Wenn nicht angegeben, werden alle Meals zurückgegeben.
      * @return Gibt die Liste als Json zurück.
      */
-    @GetMapping(path = "api/meal/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Meal>> getMeals(@PathVariable Optional<Long> id, @RequestParam Long userId){
+    @GetMapping(path = {"api/meal/{id}", "api/meal"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Meal>> getMeals(@PathVariable(name = "id",required = false) Optional<Long> id, @RequestParam Long userId){
         if(id.isEmpty()) {
             return new ResponseEntity<>(mealService.fetchAllMeals(userId),HttpStatus.OK);
         }
