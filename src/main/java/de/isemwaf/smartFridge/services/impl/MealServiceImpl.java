@@ -1,8 +1,11 @@
 package de.isemwaf.smartFridge.services.impl;
 
 import de.isemwaf.smartFridge.model.Meal;
+import de.isemwaf.smartFridge.model.json.MealModel;
 import de.isemwaf.smartFridge.repositories.MealRepository;
+import de.isemwaf.smartFridge.services.AccountService;
 import de.isemwaf.smartFridge.services.MealService;
+import de.isemwaf.smartFridge.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,47 +16,36 @@ import java.util.Optional;
 public class MealServiceImpl implements MealService {
 
     private final MealRepository mealRepository;
+    private final RecipeService recipeService;
+    private final AccountService accountService;
 
     @Autowired
-    public MealServiceImpl(MealRepository mealRepository) {
+    public MealServiceImpl(MealRepository mealRepository, RecipeService recipeService, AccountService accountService) {
         this.mealRepository = mealRepository;
+        this.recipeService = recipeService;
+        this.accountService = accountService;
     }
 
 
-    /**
-     * Speichert oder ändert ein Meal
-     * @param meal zu speicherndes Meal
-     * @return gibt die ID des gespeicherten Meals zurück
-     */
+
     @Override
     public Meal saveMeal(Meal meal) {
         return mealRepository.save(meal);
     }
 
-    /**
-     * Sucht ein Meal mit einer bestimmten Id heraus
-     * @param id Id des Meals
-     * @return gibt ein optional mit einem Meal zurück.
-     */
+
     @Override
     public Optional<Meal> findMeal(long id) {
         return mealRepository.findById(id);
     }
 
-    /**
-     * Gibt alle Meals der Person als Liste zurück.
-     * @return Liste aller Meals
-     */
+
     @Override
     public List<Meal> fetchAllMeals(long userId) {
         return mealRepository.findAllByAccount_Id(userId);
     }
 
-    /**
-     * Löscht ein Meal mit der entsprechenden ID
-     * @param id ID des Meals
-     * @return Gibt true zurück, falls die ID nicht null ist.
-     */
+
     @Override
     public boolean deleteMeal(long id) {
         try {
@@ -62,5 +54,15 @@ public class MealServiceImpl implements MealService {
         } catch (IllegalArgumentException e) {
             return false;
         }
+    }
+
+
+    @Override
+    public Meal createMeal(MealModel mealModel) {
+        Meal meal = new Meal();
+        meal.setDate(mealModel.getDate());
+        meal.setAccount(accountService.getAccount(mealModel.getUserId()));
+        meal.setRecipe(recipeService.getRecipe(mealModel.getRecipeId()));
+        return mealRepository.save(meal);
     }
 }

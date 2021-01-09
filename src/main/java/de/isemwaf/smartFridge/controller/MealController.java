@@ -1,6 +1,7 @@
 package de.isemwaf.smartFridge.controller;
 
 import de.isemwaf.smartFridge.model.Meal;
+import de.isemwaf.smartFridge.model.json.MealModel;
 import de.isemwaf.smartFridge.services.MealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,16 +60,18 @@ public class MealController {
 
     /**
      * Speichert ein Meal in die Datenbank.
-     * @param meal Meal, welches gespeichert werden soll
+     * @param mealModel Meal, welches gespeichert werden soll
      * @param bindingResult überprüft ob param valide sind
      * @return gibt das Meal zurück, wenn erfolgreich, ansonsten HTTP-Code 422
      */
     @PostMapping(path ="/api/meal", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Meal> addMeal(@RequestBody @Valid Meal meal, BindingResult bindingResult){
+    public ResponseEntity<Meal> addMeal(@RequestBody @Valid MealModel mealModel, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
-            return new ResponseEntity<>(null,HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        meal = mealService.saveMeal(meal);
+        //keine Überprüfung ob die Ids existieren, dann kann das meal nicht gespeichert werden.
+        Meal meal = mealService.createMeal(mealModel);
+
         return new ResponseEntity<>(meal,HttpStatus.OK);
     }
 
