@@ -146,9 +146,14 @@
     <changeSet id="addTableRecipeAud" author="smartFridge">
         <createTable tableName="recipe_aud">
             <column name="id" type="BigInt">
-                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_recipe_aud"/>
+                <constraints nullable="false"/>
             </column>
-            <column name="rev" type="BigInt"/>
+            <column name="rev" type="BigInt">
+                <constraints referencedTableName="revision"
+                             foreignKeyName="fk_recipe_revision"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
             <column name="revtype" type="TinyInt"/>
             <column name="name_mod" type="Boolean"/>
             <column name="ingredients_mod" type="Boolean"/>
@@ -167,6 +172,7 @@
             <column name="calories" type="float"/>
             <column name="servings" type="float"/>
         </createTable>
+        <addPrimaryKey tableName="recipe_aud" columnNames="id,rev"/>
     </changeSet>
 
     <changeSet  id="createTableFridge"  author="smartFridge">
@@ -216,9 +222,14 @@
     <changeSet id="addTableFoodInventoryAud" author="smartFridge">
         <createTable tableName="food_inventory_aud">
             <column name="id" type="BigInt">
-                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_foodinventory_aud"/>
+                <constraints  nullable="false"/>
             </column>
-            <column name="rev" type="BigInt"/>
+            <column name="rev" type="BigInt">
+                <constraints referencedTableName="revision"
+                             foreignKeyName="fk_food_inventory_revision"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
             <column name="revtype" type="TinyInt"/>
             <column name="expiration_date_mod" type="Boolean"/>
             <column name="food_mod" type="Boolean"/>
@@ -227,14 +238,20 @@
             </column>
             <column  name="expiration_date"  type="timestamp"/>
         </createTable>
+        <addPrimaryKey tableName="food_inventory_aud" columnNames="id,rev"/>
     </changeSet>
 
     <changeSet id="addTableFoodAud" author="smartFridge">
         <createTable tableName="food_aud">
-            <column name="id" type="BigInt">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_food_aud"/>
+            <column name="id" type="BigInt" >
+                <constraints nullable="false"/>
             </column>
-            <column name="rev" type="BigInt"/>
+            <column name="rev" type="BigInt">
+                <constraints referencedTableName="revision"
+                             foreignKeyName="fk_food_revision"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
             <column name="revtype" type="TinyInt"/>
             <column name="barcode_mod" type="Boolean"/>
             <column name="category_mod" type="Boolean"/>
@@ -245,6 +262,7 @@
             <column name="quantity" type="varchar(20)"/>
             <column name="name" type="varchar(20)"/>
         </createTable>
+        <addPrimaryKey tableName="food_aud" columnNames="id,rev"/>
     </changeSet>
 
     <changeSet id="addTableMeal" author="smartFridge">
@@ -276,21 +294,32 @@
     <changeSet id="addTableMealAud" author="smartFridge">
         <createTable tableName="meal_aud">
             <column name="id" type="BigInt">
-                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_meal_aud"/>
+                <constraints  nullable="false"/>
             </column>
-            <column name="rev" type="BigInt"/>
+            <column name="rev" type="BigInt">
+                <constraints referencedTableName="revision"
+                             foreignKeyName="fk_meal_revision"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
             <column name="revtype" type="TinyInt"/>
             <column name="date" type="timestamp"/>
             <column name="date_mod" type="Boolean"/>
         </createTable>
+        <addPrimaryKey tableName="meal_aud" columnNames="id,rev"/>
     </changeSet>
 
     <changeSet id="addTableAccountAud" author="smartFridge">
         <createTable tableName="account_aud">
             <column name="id" type="BigInt">
-                <constraints  primaryKey="true"  nullable="false" primaryKeyName="pk_account_aud"/>
+                <constraints  nullable="false" />
             </column>
-            <column name="rev" type="BigInt"/>
+            <column name="rev" type="BigInt">
+                <constraints referencedTableName="revision"
+                             foreignKeyName="fk_account_revision"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
             <column name="revtype" type="TinyInt"/>
             <column name="username_mod" type="Boolean"/>
             <column name="password_mod" type="Boolean"/>
@@ -301,6 +330,7 @@
                 <constraints  nullable="false"/>
             </column>
         </createTable>
+        <addPrimaryKey tableName="account_aud" columnNames="id,rev"/>
     </changeSet>
 
 </databaseChangeLog>

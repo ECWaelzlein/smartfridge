@@ -1,5 +1,6 @@
 package de.isemwaf.smartFridge.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -54,6 +55,7 @@ public class FoodInventory extends SuperEntity {
 
     @ManyToOne
     @NotAudited
+    @JsonBackReference
     public Fridge getFridge() {
         return fridge;
     }

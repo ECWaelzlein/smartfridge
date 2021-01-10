@@ -1,5 +1,7 @@
 package de.isemwaf.smartFridge.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -28,6 +30,7 @@ public class Fridge extends SuperEntity {
     }
 
     @OneToMany(mappedBy = "fridge")
+    @JsonManagedReference
     public List<FoodInventory> getInventory() {
         return inventory;
     }
