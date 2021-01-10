@@ -31,6 +31,7 @@ Der Request Body besteht aus einem JSON String.
 | FoodController             |/api/food/*id*                                  | GET          |/|food| Fragt ein Lebensmittel an.                               |
 | FoodController             |/api/food/*id*                                  | DELETE       |/|/ (HTTP Status Code: 204)| Löscht ein Lebensmittel.                                 |
 | FoodInventoryController    |/api/food-inventory/                            | POST         |foodId, userId, expDate| foodInventory      |   Legt ein Food-Objekt in das FoodInventory.    |
+| FoodInventoryController    |/api/food-inventory/expire?days=                | GET          |/| [foodInventory]      |   Bekommt eine Liste aller in x Tagen ablaufenden FoodInventories    |
 | FoodInventoryController    |/api/food-inventory/:*id*                       | GET          |/| foodInventory oder   [foodInventory]   |   Bekommt ein FoodInventory-Objekt oder eine Liste von allen Objekten.    |
 | FoodInventoryController    |/api/food-inventory/*id*                        | DELETE       |/|/ (HTTP Status Code: 204)    |   Löscht ein Food-Objekt aus dem FoodInventory.    |
 | RecipeController           |/api/recipe/                                    | POST         |[ingredients] |recipe    |   Erstellt ein Rezept.    |

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController()
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FoodInventoryController {
     private final FoodInventoryService foodInventoryService;
     @Autowired
@@ -56,5 +57,12 @@ public class FoodInventoryController {
     {
         foodInventoryService.deleteItem(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(path = "/api/food-inventory/expire")
+    public ResponseEntity<List<FoodInventory>> getExpiringFoods(@RequestParam int days){
+        if(days < 0)
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(foodInventoryService.getSoonExpiringFood(days), HttpStatus.OK);
     }
 }

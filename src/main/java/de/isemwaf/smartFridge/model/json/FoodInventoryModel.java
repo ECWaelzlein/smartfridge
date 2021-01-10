@@ -1,5 +1,7 @@
 package de.isemwaf.smartFridge.model.json;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -28,6 +30,7 @@ public class FoodInventoryModel {
     }
 
     @NotNull
+    @Temporal(TemporalType.DATE)
     public Date getExpirationDate() {
         return expirationDate;
     }

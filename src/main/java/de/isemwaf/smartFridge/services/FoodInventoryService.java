@@ -11,4 +11,5 @@ public interface FoodInventoryService {
     FoodInventory getItem(long id);
     void deleteItem(long id);
     List<FoodInventory> getAllItems(long userId);
+    List<FoodInventory> getSoonExpiringFood(int days);
 }

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AccountController {
     private final AccountService accountService;
     private final FridgeService fridgeService;
