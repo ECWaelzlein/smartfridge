@@ -49,7 +49,7 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        account.setPassword(accountModel.getPasswordHash());
+        account.setPassword(accountModel.getPassword());
         account.setUsername(accountModel.getUsername());
         account = accountService.createAccount(account);
 

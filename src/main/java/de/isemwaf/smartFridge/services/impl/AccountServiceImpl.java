@@ -4,19 +4,24 @@ import de.isemwaf.smartFridge.model.Account;
 import de.isemwaf.smartFridge.repositories.AccountRepository;
 import de.isemwaf.smartFridge.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AccountServiceImpl implements AccountService {
 
+    private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
+
     @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository) {
+    public AccountServiceImpl(PasswordEncoder passwordEncoder, AccountRepository accountRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.accountRepository = accountRepository;
     }
 
     @Override
     public Account createAccount(Account account) {
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
         return accountRepository.save(account);
     }
 

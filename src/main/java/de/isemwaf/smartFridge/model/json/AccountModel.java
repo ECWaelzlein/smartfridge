@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 
 public class AccountModel {
     private String username;
-    private String passwordHash;
+    private String password;
 
     @NotBlank
     public String getUsername() {
@@ -16,11 +16,11 @@ public class AccountModel {
     }
 
     @NotBlank
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
