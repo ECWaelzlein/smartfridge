@@ -19,6 +19,6 @@ public class AccountUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         Account account = accountRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
 
-        return User.withUsername(account.getUsername()).password(account.getPassword()).build();
+        return User.withUsername(account.getUsername()).password(account.getPassword()).authorities("ROLE_USER").build();
     }
 }
