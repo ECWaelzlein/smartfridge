@@ -53,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .httpBasic();
-        httpSecurity.cors().and();
+        httpSecurity.cors().disable();
     }
 
     @Bean
