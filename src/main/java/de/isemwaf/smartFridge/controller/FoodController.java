@@ -27,22 +27,26 @@ public class FoodController {
 
     @PostMapping(path = {"/api/food"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Food> createFoodWithBarcode(@RequestBody String barcode) {
-        String foodInformation = foodService.getFoodInformation(barcode);
-
-        String name = Utility.getProductName(foodInformation);
-        String quantity = Utility.getProductQuantity(foodInformation);
-
-        Food food = new Food();
-        if (name != null && quantity != null) {
-            food.setBarcode(barcode);
-            food.setName(name);
-            food.setQuantity(quantity);
+        Food food;
+        Optional<Food> foodOptional = foodService.searchForBarcode(barcode);
+        if (foodOptional.isPresent()) {
+            food = foodOptional.get();
         } else {
-            return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            String foodInformation = foodService.getFoodInformation(barcode);
+
+            String name = Utility.getProductName(foodInformation);
+            String quantity = Utility.getProductQuantity(foodInformation);
+
+            food = new Food();
+            if (name != null && quantity != null) {
+                food.setBarcode(barcode);
+                food.setName(name);
+                food.setQuantity(quantity);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            food = foodService.createFood(food);
         }
-
-        food = foodService.createFood(food);
-
         return new ResponseEntity<>(food, HttpStatus.OK);
     }
 

@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FoodServiceImpl implements FoodService {
@@ -40,6 +41,11 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public Food getFood(long id) {
         return foodRepository.findById(id).isPresent() ? foodRepository.findById(id).get() : null;
+    }
+
+    @Override
+    public Optional<Food> searchForBarcode(String barcode) {
+        return foodRepository.findFirstByBarcode(barcode);
     }
 
     @Override
