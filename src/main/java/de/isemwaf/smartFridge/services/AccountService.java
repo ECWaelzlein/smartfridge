@@ -5,5 +5,7 @@ import de.isemwaf.smartFridge.model.Account;
 public interface AccountService {
     Account createAccount(Account account);
 
-    Account getAccount(long id);
+    Account getAccount(String username);
+
+    Account getAccountById(Long id);
 }

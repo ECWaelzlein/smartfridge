@@ -5,6 +5,7 @@ import de.isemwaf.smartFridge.model.Fridge;
 import de.isemwaf.smartFridge.model.json.AccountModel;
 import de.isemwaf.smartFridge.services.AccountService;
 import de.isemwaf.smartFridge.services.FridgeService;
+import de.isemwaf.smartFridge.utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,9 +29,9 @@ public class AccountController {
         this.fridgeService = fridgeService;
     }
 
-    @GetMapping(path = "/api/account/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Account> getAccount(@PathVariable String id) {
-        Account account = accountService.getAccount(Long.parseLong(id));
+    @GetMapping(path = "/api/account", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Account> getAccount() {
+        Account account = accountService.getAccount(Utility.getAccountFromSecurity().getUsername());
 
         if (account == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

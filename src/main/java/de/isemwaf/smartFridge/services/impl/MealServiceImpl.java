@@ -61,7 +61,7 @@ public class MealServiceImpl implements MealService {
     public Meal createMeal(MealModel mealModel) {
         Meal meal = new Meal();
         meal.setDate(mealModel.getDate());
-        meal.setAccount(accountService.getAccount(mealModel.getUserId()));
+        meal.setAccount(accountService.getAccountById(mealModel.getUserId()));
         meal.setRecipe(recipeService.getRecipe(mealModel.getRecipeId()));
         return mealRepository.save(meal);
     }

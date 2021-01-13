@@ -26,7 +26,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getAccount(long id) {
+    public Account getAccount(String username) {
+        return accountRepository.findByUsername(username).isPresent() ? accountRepository.findByUsername(username).get() : null;
+    }
+
+    @Override
+    public Account getAccountById(Long id) {
         return accountRepository.findById(id).isPresent() ? accountRepository.findById(id).get() : null;
     }
 }

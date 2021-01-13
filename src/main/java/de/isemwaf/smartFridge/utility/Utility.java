@@ -1,9 +1,12 @@
 package de.isemwaf.smartFridge.utility;
 
+import de.isemwaf.smartFridge.details.AccountUserDetails;
 import de.isemwaf.smartFridge.model.Recipe;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -143,4 +146,7 @@ public class Utility {
 
     }
 
+    public static AccountUserDetails getAccountFromSecurity() {
+        return (AccountUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
 }
