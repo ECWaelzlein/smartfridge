@@ -333,4 +333,13 @@
         <addPrimaryKey tableName="account_aud" columnNames="id,rev"/>
     </changeSet>
 
+    <changeSet id="addImageURLtoRecipe" author="smartFridge">
+        <addColumn tableName="recipe">
+            <column name="recipe_imageurl" type="varchar(100)"/>
+        </addColumn>
+        <addColumn tableName="recipe_aud">
+            <column name="recipe_imageurl" type="varchar(100)"/>
+            <column name="recipe_imageurl_mod" type="boolean"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

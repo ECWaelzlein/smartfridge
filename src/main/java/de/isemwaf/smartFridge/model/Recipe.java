@@ -18,6 +18,10 @@ public class Recipe extends SuperEntity{
     private float calories;
     private float servings;
 
+
+
+    private String recipeImageURL;
+
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
@@ -109,5 +113,14 @@ public class Recipe extends SuperEntity{
 
     public void setServings(float servings) {
         this.servings = servings;
+    }
+
+    @Column(nullable = false)
+    public String getRecipeImageURL() {
+        return recipeImageURL;
+    }
+
+    public void setRecipeImageURL(String recipeImageURL) {
+        this.recipeImageURL = recipeImageURL;
     }
 }

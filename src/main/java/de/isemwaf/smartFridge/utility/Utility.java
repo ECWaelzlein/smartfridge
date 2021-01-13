@@ -142,6 +142,7 @@ public class Utility {
         }
         recipe.setIngredients(ingredientsToSave.toString());
         recipe.setSteps(recipeJSON.getString("instructions"));
+        recipe.setRecipeImageURL("https://spoonacular.com/recipeImages/"+recipeJSON.getString("id")+"-556x370.jpg");
         return recipe;
 
     }

@@ -42,7 +42,7 @@ class UtilityTest {
      */
     @Test
     void getRecipeInformationFromJson() {
-        Path path = Paths.get("src/test/resources/jsonSpoonacularAnswer.txt");
+        Path path = Paths.get("src/test/resources/jsonSpoonacularAnswer.json");
         try {
             String read = Files.lines(path).collect(Collectors.joining());
             Recipe recipe = Utility.getRecipeInformationFromJson(read);
@@ -52,6 +52,7 @@ class UtilityTest {
             assertEquals(recipe.getCarbs(), 83.71, 0.01);
             assertEquals(recipe.getProteins(), 18.98, 0.01);
             assertEquals(recipe.getName(), "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs");
+            assertEquals(recipe.getRecipeImageURL(), "https://spoonacular.com/recipeImages/716429-556x370.jpg");
         }catch (IOException | JSONException e) {
             e.printStackTrace();
             fail("Exception thrown");
