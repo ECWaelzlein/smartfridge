@@ -37,6 +37,21 @@ public class Utility {
         return null;
     }
 
+    public static String getProductImage(String productJson) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(productJson).getJSONObject("product");
+
+            return jsonObject.getString("image_small_url");
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public static String getProductQuantity(String productJson) {
 
         try {
@@ -142,7 +157,7 @@ public class Utility {
         }
         recipe.setIngredients(ingredientsToSave.toString());
         recipe.setSteps(recipeJSON.getString("instructions"));
-        recipe.setRecipeImageURL("https://spoonacular.com/recipeImages/"+recipeJSON.getString("id")+"-556x370.jpg");
+        recipe.setRecipeImageURL("https://spoonacular.com/recipeImages/"+recipeJSON.getString("id")+"-312x231.jpg");
         return recipe;
 
     }

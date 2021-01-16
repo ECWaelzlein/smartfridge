@@ -11,6 +11,7 @@ public class Food extends SuperEntity {
     private String barcode;
     private String quantity;
     private String name;
+    private String imageURL;
 
     @Id
     @GeneratedValue(
@@ -57,5 +58,12 @@ public class Food extends SuperEntity {
         this.name = name;
     }
 
+    @Column
+    public String getImageURL() {
+        return imageURL;
+    }
 
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
 }

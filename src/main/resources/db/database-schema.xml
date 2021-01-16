@@ -342,4 +342,14 @@
             <column name="recipe_imageurl_mod" type="boolean"/>
         </addColumn>
     </changeSet>
+
+    <changeSet id="addImageURLtoFood" author="smartFridge">
+        <addColumn tableName="food">
+            <column name="imageurl" type="varchar(100)"/>
+        </addColumn>
+        <addColumn tableName="food_aud">
+            <column name="imageurl" type="varchar(100)"/>
+            <column name="imageurl_mod" type="boolean"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

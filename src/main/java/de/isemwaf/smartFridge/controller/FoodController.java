@@ -36,12 +36,13 @@ public class FoodController {
 
             String name = Utility.getProductName(foodInformation);
             String quantity = Utility.getProductQuantity(foodInformation);
-
+            String imageURL = Utility.getProductImage(foodInformation);
             food = new Food();
             if (name != null && quantity != null) {
                 food.setBarcode(barcode);
                 food.setName(name);
                 food.setQuantity(quantity);
+                food.setImageURL(imageURL);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
