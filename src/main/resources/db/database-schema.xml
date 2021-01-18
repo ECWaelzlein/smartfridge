@@ -260,7 +260,7 @@
             <column name="barcode" type="varchar(20)"/>
             <column name="category" type="varchar(20)"/>
             <column name="quantity" type="varchar(20)"/>
-            <column name="name" type="varchar(20)"/>
+            <column name="name" type="text"/>
         </createTable>
         <addPrimaryKey tableName="food_aud" columnNames="id,rev"/>
     </changeSet>
