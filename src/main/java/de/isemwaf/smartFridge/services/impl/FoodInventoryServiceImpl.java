@@ -57,9 +57,9 @@ public class FoodInventoryServiceImpl implements FoodInventoryService {
     }
 
     @Override
-    public List<FoodInventory> getSoonExpiringFood(int days) {
+    public List<FoodInventory> getSoonExpiringFood(int days, long userId) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, days);
-        return foodInventoryRepository.findAllByExpirationDateLessThanEqual(cal.getTime());
+        return foodInventoryRepository.findAllByExpirationDateLessThanEqualAndFridge_Account_Id(cal.getTime(), userId);
     }
 }

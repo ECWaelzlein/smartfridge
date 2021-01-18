@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface FoodInventoryRepository extends JpaRepository<FoodInventory, Long> {
     List<FoodInventory> findAllByFridge_Id(long id);
-    List<FoodInventory> findAllByExpirationDateLessThanEqual(Date expDate);
+    List<FoodInventory> findAllByExpirationDateLessThanEqualAndFridge_Account_Id(Date expDate, long userId);
 }
