@@ -105,7 +105,7 @@
             <column name="barcode" type="varchar(20)"/>
             <column name="category" type="varchar(20)"/>
             <column name="quantity" type="varchar(20)"/>
-            <column name="name" type="varchar(20)"/>
+            <column name="name" type="text"/>
             <column  name="created"  type="timestamp">
                 <constraints  nullable="false"/>
             </column>
