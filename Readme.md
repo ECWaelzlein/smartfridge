@@ -14,11 +14,11 @@ Es wird folgende Api verwendet, um Rezepte (z.B. basierend auf den Zutaten etc.)
 | FoodController             |/api/food/*id*                                  | GET          |/|food| Fragt ein Lebensmittel an.                               |
 | FoodController             |/api/food/*id*                                  | DELETE       |/|/ (HTTP Status Code: 204)| Löscht ein Lebensmittel.                                 |
 | FoodInventoryController    |/api/food-inventory                             | POST         |foodId, userId, expDate| foodInventory      |   Legt ein Food-Objekt in das FoodInventory.    |
-| FoodInventoryController    |/api/food-inventory/expire?days=                | GET          |/| [foodInventory]      |   Bekommt eine Liste aller in x Tagen ablaufenden FoodInventories    |
+| FoodInventoryController    |/api/food-inventory/expire?days=*3*             | GET          |/| [foodInventory]      |   Bekommt eine Liste aller in x Tagen ablaufenden FoodInventories    |
 | FoodInventoryController    |/api/food-inventory/:*id*                       | GET          |/| foodInventory oder   [foodInventory]   |   Bekommt ein FoodInventory-Objekt oder eine Liste von allen Objekten.    |
 | FoodInventoryController    |/api/food-inventory/*id*                        | DELETE       |/|/ (HTTP Status Code: 204)    |   Löscht ein Food-Objekt aus dem FoodInventory.    |
 | RecipeController           |/api/recipe                                     | POST         |[ingredients] |recipe    |   Erstellt ein Rezept.    |
-| RecipeController           |/api/recipe/random?tags=veggie,dessert          | POST         |/|recipe    |   Erstellt ein zufälliges Rezept.    |
+| RecipeController           |/api/recipe/random?tags=*veggie,dessert*        | POST         |/|recipe    |   Erstellt ein zufälliges Rezept.    |
 | RecipeController           |/api/recipe/*id*                                | GET          |/|recipe    |   Bekommt ein Rezept zu einer ID.    |
 | MealController             |/api/meal                                       | POST         |date, userId, recipeId |meal    |   Erstellt eine Mahlzeit.    |
 | MealController             |/api/meal/:*id*                                 | GET          |/|meal oder [meal]    |   Bekommt eine Mahlzeit oder eine Liste an Mahlzeiten.    |
