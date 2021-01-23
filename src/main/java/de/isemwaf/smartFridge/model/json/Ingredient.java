@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 public class Ingredient {
     private String ingredient;
 
-    @NotBlank
+    @NotBlank(message = "Ingredient darf nicht leer sein")
     public String getIngredient() {
         return ingredient;
     }

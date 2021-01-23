@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -41,13 +43,10 @@ public class AccountController {
     }
 
     @PostMapping(path = "/api/account", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Account> createAccount(@Valid @RequestBody AccountModel accountModel, BindingResult bindingResult) {
+    public ResponseEntity<Account> createAccount(@Valid @RequestBody AccountModel accountModel) {
         Account account = new Account();
         Fridge fridge = new Fridge();
 
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
 
         account.setPassword(accountModel.getPassword());
         account.setUsername(accountModel.getUsername());

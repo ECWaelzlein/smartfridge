@@ -51,7 +51,7 @@ public class MealServiceImpl implements MealService {
         try {
             mealRepository.deleteById(id);
             return true;
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e)  {
             return false;
         }
     }

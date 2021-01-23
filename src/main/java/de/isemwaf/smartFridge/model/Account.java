@@ -1,5 +1,6 @@
 package de.isemwaf.smartFridge.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -43,6 +44,7 @@ public class Account extends SuperEntity {
 
     @Column(length = 120, nullable = false)
     @NotBlank
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

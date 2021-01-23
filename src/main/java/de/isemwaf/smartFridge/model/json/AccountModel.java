@@ -6,7 +6,7 @@ public class AccountModel {
     private String username;
     private String password;
 
-    @NotBlank
+    @NotBlank(message = "Username darf nicht leer sein")
     public String getUsername() {
         return username;
     }
@@ -15,7 +15,7 @@ public class AccountModel {
         this.username = username;
     }
 
-    @NotBlank
+    @NotBlank(message = "Password darf nicht leer sein")
     public String getPassword() {
         return password;
     }

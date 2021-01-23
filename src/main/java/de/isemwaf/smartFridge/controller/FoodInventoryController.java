@@ -2,14 +2,12 @@ package de.isemwaf.smartFridge.controller;
 
 import de.isemwaf.smartFridge.model.FoodInventory;
 import de.isemwaf.smartFridge.model.json.FoodInventoryModel;
-import de.isemwaf.smartFridge.services.AccountService;
 import de.isemwaf.smartFridge.services.FoodInventoryService;
 import de.isemwaf.smartFridge.utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -44,12 +42,9 @@ public class FoodInventoryController {
     }
 
     @PostMapping(path = "/api/food-inventory", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FoodInventory> saveFoodInventory(@RequestBody @Valid FoodInventoryModel foodInventoryModel, BindingResult bindingResult)
+    public ResponseEntity<FoodInventory> saveFoodInventory(@RequestBody @Valid FoodInventoryModel foodInventoryModel)
     {
-        if(bindingResult.hasErrors())
-        {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
         FoodInventory createdFoodInventory = foodInventoryService.saveItem(foodInventoryModel);
         return new ResponseEntity<>(createdFoodInventory, HttpStatus.CREATED);
     }

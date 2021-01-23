@@ -4,10 +4,10 @@ import de.isemwaf.smartFridge.model.Meal;
 import de.isemwaf.smartFridge.model.json.MealModel;
 import de.isemwaf.smartFridge.services.MealService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -37,8 +37,17 @@ public class MealController {
             return new ResponseEntity<>(mealService.fetchAllMeals(userId),HttpStatus.OK);
         }
         else {
-            List<Meal> mealList= mealService.findMeal(id.get()).stream().collect(Collectors.toList());
-            return new ResponseEntity<>(mealList,HttpStatus.OK);
+            Optional<Meal> meal = mealService.findMeal(id.get());
+
+            if(meal.isPresent()){
+                List<Meal> mealList= meal.stream().collect(Collectors.toList());
+                return new ResponseEntity<>(mealList,HttpStatus.OK);
+            }
+            else{
+                throw new EmptyResultDataAccessException("Invalid id",11);
+            }
+
+
         }
     }
 
@@ -61,14 +70,10 @@ public class MealController {
     /**
      * Speichert ein Meal in die Datenbank.
      * @param mealModel Meal, welches gespeichert werden soll
-     * @param bindingResult überprüft ob param valide sind
      * @return gibt das Meal zurück, wenn erfolgreich, ansonsten HTTP-Code 422
      */
     @PostMapping(path ="/api/meal", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Meal> addMeal(@RequestBody @Valid MealModel mealModel, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+    public ResponseEntity<Meal> addMeal(@RequestBody @Valid MealModel mealModel){
         //keine Überprüfung ob die Ids existieren, dann kann das meal nicht gespeichert werden.
         Meal meal = mealService.createMeal(mealModel);
 

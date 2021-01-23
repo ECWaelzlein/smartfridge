@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class IngredientList {
     private List<Ingredient> ingredientList;
 
-    @NotBlank
+    @NotBlank(message = "Die Liste darf nicht null sein")
     public List<Ingredient> getIngredientList() {
         return ingredientList;
     }

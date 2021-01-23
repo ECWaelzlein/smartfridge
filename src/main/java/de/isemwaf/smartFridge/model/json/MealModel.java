@@ -1,6 +1,5 @@
 package de.isemwaf.smartFridge.model.json;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -9,7 +8,7 @@ public class MealModel {
     long recipeId;
     Date date;
 
-    @NotNull
+    @NotNull(message = "Die UserId darf nicht leer sein")
     public long getUserId() {
         return userId;
     }
@@ -18,7 +17,7 @@ public class MealModel {
         this.userId = userId;
     }
 
-    @NotNull
+    @NotNull(message = "Die RecipeId darf nicht leer sein")
     public long getRecipeId() {
         return recipeId;
     }
@@ -27,7 +26,7 @@ public class MealModel {
         this.recipeId = recipeId;
     }
 
-    @NotNull
+    @NotNull(message = "Das Datum darf nicht leer sein")
     public Date getDate() {
         return date;
     }

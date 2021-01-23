@@ -11,7 +11,7 @@ public class FoodInventoryModel {
     String foodId;
     Date expirationDate;
 
-    @NotBlank
+    @NotBlank(message = "Userid darf nicht leer sein")
     public String getUserId() {
         return userId;
     }
@@ -20,7 +20,7 @@ public class FoodInventoryModel {
         this.userId = userId;
     }
 
-    @NotBlank
+    @NotBlank(message = "FoodId darf nicht leer sein")
     public String getFoodId() {
         return foodId;
     }
@@ -29,7 +29,7 @@ public class FoodInventoryModel {
         this.foodId = foodId;
     }
 
-    @NotNull
+    @NotNull(message = "Das Verfallsdatum darf nicht leer sein")
     @Temporal(TemporalType.DATE)
     public Date getExpirationDate() {
         return expirationDate;
