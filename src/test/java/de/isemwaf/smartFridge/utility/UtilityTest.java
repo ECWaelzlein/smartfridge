@@ -52,7 +52,7 @@ class UtilityTest {
             assertEquals(recipe.getCarbs(), 83.71, 0.01);
             assertEquals(recipe.getProteins(), 18.98, 0.01);
             assertEquals(recipe.getName(), "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs");
-            assertEquals(recipe.getRecipeImageURL(), "https://spoonacular.com/recipeImages/716429-556x370.jpg");
+            assertEquals(recipe.getRecipeImageURL(), "https://spoonacular.com/recipeImages/716429-312x231.jpg");
         }catch (IOException | JSONException e) {
             e.printStackTrace();
             fail("Exception thrown");

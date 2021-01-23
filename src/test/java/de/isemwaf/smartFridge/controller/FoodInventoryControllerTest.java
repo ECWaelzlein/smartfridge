@@ -11,10 +11,8 @@ import de.isemwaf.smartFridge.services.FoodInventoryService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
@@ -50,6 +48,7 @@ public class FoodInventoryControllerTest {
     }
 
     @Test
+    @WithMockUser("Test")
     public void testFoodInventoryGetter() throws Exception
     {
         Food food = new Food();
@@ -68,10 +67,13 @@ public class FoodInventoryControllerTest {
         inventory.setCreated(new Date());
         inventory.setLastModified(new Date());
 
+        Mockito.when(foodInventoryService.getItem(1)).thenReturn(inventory);
+        Mockito.when(foodInventoryService.getItem(-1)).thenThrow(new EmptyResultDataAccessException("Invalid id", 11));
         int id = 1;
-        mockMvc.perform(get("/api/foodinventory/" + id)).andExpect(status().isOk()).andExpect(jsonPath("$[0].id", Matchers.equalTo("1")));
+        mockMvc.perform(get("/api/food-inventory/" + id+"?userId=1")).andExpect(status().isOk())
+                .andExpect(jsonPath("$[0]['id']", Matchers.equalTo(1)));
         id = -1;
-        mockMvc.perform(get("/api/foodinventory/" + id)).andExpect(status().isOk());
+        mockMvc.perform(get("/api/food-inventory/" + id+"?userId=1")).andExpect(status().isUnprocessableEntity());
     }
 
     @Test
