@@ -65,9 +65,7 @@ provider "aws" {
 
 provider "helm" {
   kubernetes {
-    host                   = data.aws_eks_cluster.cluster.endpoint
-    cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-    token                  = data.aws_eks_cluster_auth.cluster.token
+    config_path = "kubeconfig_smartfridge-eks-dev-gruppe2"
   }
 }
 
@@ -125,14 +123,20 @@ resource "null_resource" "curl_policy" {
 
 resource "aws_iam_policy" "worker_policy" {
   depends_on = [null_resource.curl_policy]
-  name        = "AWSLoadBalancerControllerIAMPolicy2"
+  name        = "AWSLoadBalancerControllerIAMPolicy"
   description = "Worker policy for the ALB Ingress"
 
   policy = data.local_file.iam-policy.content
 }
 
 module "eks" {
-  depends_on = [module.vpc, module.rds-smartfridge-dev, aws_iam_policy.worker_policy, aws_security_group.worker_group_reinhard]
+  depends_on = [
+    module.vpc,
+    module.rds-smartfridge-dev,
+    aws_iam_policy.worker_policy,
+    aws_security_group.worker_group_reinhard,
+    data.aws_subnet_ids.vpc.ids
+  ]
   source  = "terraform-aws-modules/eks/aws"
   version = "13.2.1"
 
@@ -237,7 +241,7 @@ resource "aws_security_group" "worker_group_reinhard" {
 }
 
 module "rds-smartfridge-dev" {
-  depends_on = [module.vpc, data.aws_subnet_ids.vpc]
+  depends_on = [module.vpc, data.aws_subnet_ids.vpc.ids]
   source  = "terraform-aws-modules/rds/aws"
   version = "2.20.0"
 
@@ -298,6 +302,29 @@ module "jenkins" {
 
 module "tools-ingress" {
   source = "./kubernetes-ingress"
-  depends_on = [helm_release.sonarqube]
+  depends_on = [helm_release.sonarqube, helm_release.ingress-alb, module.jenkins]
   namespace = var.namespace
+}
+
+data "aws_route53_zone" "g2-fridge" {
+  name = "g2.myvirtualfridge.net"
+}
+
+data "aws_elb" "g2-fridge-elb" {
+  name = "k8s-tools-toolsing-82c694fda4"
+}
+
+resource "aws_route53_record" "www" {
+  depends_on = [module.tools-ingress, data.aws_route53_zone.g2-fridge]
+
+  zone_id = data.aws_route53_zone.g2-fridge.zone_id
+  name    = "dev.g2.myvirtualfridge.net"
+  type    = "A"
+  allow_overwrite = true
+
+  alias {
+    name                   = data.aws_elb.g2-fridge-elb.dns_name
+    zone_id                = data.aws_elb.g2-fridge-elb.zone_id
+    evaluate_target_health = true
+  }
 }
