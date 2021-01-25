@@ -4,11 +4,10 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class MealModel {
-    long userId;
     long recipeId;
     Date date;
+    long userId;
 
-    @NotNull(message = "Die UserId darf nicht leer sein")
     public long getUserId() {
         return userId;
     }

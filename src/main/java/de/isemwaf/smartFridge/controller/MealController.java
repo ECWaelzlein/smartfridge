@@ -76,7 +76,7 @@ public class MealController {
      */
     @PostMapping(path ="/api/meal", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Meal> addMeal(@RequestBody @Valid MealModel mealModel){
-        //keine Überprüfung ob die Ids existieren, dann kann das meal nicht gespeichert werden.
+        mealModel.setUserId(Utility.getAccountFromSecurity().getAccountId());
         Meal meal = mealService.createMeal(mealModel);
 
         return new ResponseEntity<>(meal,HttpStatus.OK);
