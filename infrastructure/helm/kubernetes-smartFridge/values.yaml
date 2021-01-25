@@ -1,0 +1,25 @@
+sonarqube:
+  db:
+    dbName: sonarqube
+    hostName: sonarqube
+  image:
+    name: sonarqube
+    tag: 7.9.5
+    pullPolicy: Always
+
+smartFridge:
+  db:
+    dbName: smart-fridge
+    hostName: smart-fridge
+  image:
+    name: smart-fridge
+    tag: 1
+    pullPolicy: Always
+
+smartFridgeFrontend:
+  image:
+    name: smart-fridge-frontend
+    tag: 1
+    pullPolicy: Always
+
+namespace: dev

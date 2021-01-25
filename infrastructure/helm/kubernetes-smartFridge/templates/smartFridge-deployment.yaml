@@ -1,0 +1,35 @@
+{{ $dbSmartFridgeUsername := required "dbSmartFridgeUsername is a required value" .Values.dbSmartFridgeUsername }}
+{{ $dbSmartFridgeHostName := required "dbSmartFridgeHostName is a required value" .Values.dbSmartFridgeHostName }}
+{{ $dbSmartFridgePassword := required "dbSmartFridgePassword is a required value" .Values.dbSmartFridgePassword }}
+{{ $namespace := required "namespace is a required value" .Values.namespace }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: smart-fridge-backend
+  name: smart-fridge-backend
+  namespace: {{$namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smart-fridge-backend
+  template:
+    metadata:
+      labels:
+        app: smart-fridge-backend
+    spec:
+      containers:
+        - name: smart-fridge-backend
+          image: "gitlab/{{.Values.smartFridge.image.name}}:{{.Values.smartFridge.image.tag}}"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://{{$dbSmartFridgeHostName}}:5432/{{.Values.smartFridge.db.dbName}}"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "{{$dbSmartFridgeUsername}}"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "{{$dbSmartFridgePassword}}"
+          imagePullPolicy: "{{.Values.smartFridge.image.pullPolicy}}"
