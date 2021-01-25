@@ -77,9 +77,9 @@ module "vpc" {
 
   cidr = "10.0.0.0/16"
 
-  azs             = ["eu-west-1a", "eu-west-1b", "euw1-az3"]
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+  azs             = ["eu-west-1a"]
+  private_subnets = ["10.0.1.0/24"]
+  public_subnets  = ["10.0.101.0/24"]
 
   enable_dns_hostnames = true
   enable_nat_gateway = true
@@ -135,7 +135,7 @@ module "eks" {
     module.rds-smartfridge-dev,
     aws_iam_policy.worker_policy,
     aws_security_group.worker_group_reinhard,
-    data.aws_subnet_ids.vpc.ids
+    data.aws_subnet_ids.vpc
   ]
   source  = "terraform-aws-modules/eks/aws"
   version = "13.2.1"
@@ -241,7 +241,7 @@ resource "aws_security_group" "worker_group_reinhard" {
 }
 
 module "rds-smartfridge-dev" {
-  depends_on = [module.vpc, data.aws_subnet_ids.vpc.ids]
+  depends_on = [module.vpc, data.aws_subnet_ids.vpc]
   source  = "terraform-aws-modules/rds/aws"
   version = "2.20.0"
 
