@@ -1,0 +1,24 @@
+{{ $namespace := required "namespace is a required value" .Values.namespace }}
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: smart-fridge-frontend
+  namespace: {{$namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smart-fridge-frontend
+  template:
+    metadata:
+      labels:
+        app: smart-fridge-frontend
+    spec:
+      containers:
+        - name: smart-fridge-frontend
+          image: "gitlab/{{.Values.smartFridgeFrontend.image.name}}:{{.Values.smartFridgeFrontend.image.tag}}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+      restartPolicy: "{{.Values.smartFridgeFrontend.image.pullPolicy}}"

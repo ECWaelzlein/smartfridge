@@ -1,0 +1,14 @@
+{{ $namespace := required "namespace is a required value" .Values.namespace }}
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: smart-fridge-frontend-service
+  namespace: {{$namespace}}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      protocol: TCP
+  selector:
+    app: smart-fridge-frontend

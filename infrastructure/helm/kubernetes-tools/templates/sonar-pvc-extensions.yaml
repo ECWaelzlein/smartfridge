@@ -1,0 +1,14 @@
+{{ $namespace := required "namespace is a required value" .Values.namespace }}
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonar-extensions
+  namespace: {{$namespace}}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: gp2
+  resources:
+    requests:
+      storage: 5Gi

@@ -1,0 +1,10 @@
+sonarqube:
+  db:
+    dbName: sonarqube
+    hostName: sonarqube
+  image:
+    name: sonarqube
+    tag: 7.9.5-community
+    pullPolicy: Always
+
+namespace: tools
