@@ -3,6 +3,7 @@ package de.isemwaf.smartFridge.controller;
 import de.isemwaf.smartFridge.model.Meal;
 import de.isemwaf.smartFridge.model.json.MealModel;
 import de.isemwaf.smartFridge.services.MealService;
+import de.isemwaf.smartFridge.utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -32,8 +33,9 @@ public class MealController {
      * @return Gibt die Liste als Json zurück.
      */
     @GetMapping(path = {"api/meal/{id}", "api/meal"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Meal>> getMeals(@PathVariable(name = "id",required = false) Optional<Long> id, @RequestParam Long userId){
+    public ResponseEntity<List<Meal>> getMeals(@PathVariable(name = "id",required = false) Optional<Long> id){
         if(id.isEmpty()) {
+            long userId = Utility.getAccountFromSecurity().getAccountId();
             return new ResponseEntity<>(mealService.fetchAllMeals(userId),HttpStatus.OK);
         }
         else {
