@@ -2,6 +2,7 @@ package de.isemwaf.smartFridge.controller;
 
 import de.isemwaf.smartFridge.model.Meal;
 import de.isemwaf.smartFridge.services.MealService;
+import de.isemwaf.smartFridge.utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,8 +25,9 @@ public class ShoppingListController {
         this.mealService = mealService;
     }
 
-    @GetMapping(path = {"/api/shopping-list/{userId}", "/"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<String>> getShoppingList(@PathVariable Long userId) {
+    @GetMapping(path = {"/api/shopping-list", "/"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<String>> getShoppingList() {
+        long userId = Utility.getAccountFromSecurity().getAccountId();
         List<Meal> mealList = mealService.fetchAllMeals(userId);
         List<String> shoppingList = new ArrayList<>();
         for (Meal meal : mealList) {
