@@ -46,3 +46,7 @@ variable "sonarPath2" {
 variable "namespace" {
   type = string
 }
+
+variable "httpsCertificateArn" {
+  type = string
+}

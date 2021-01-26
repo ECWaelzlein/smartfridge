@@ -77,9 +77,9 @@ module "vpc" {
 
   cidr = "10.0.0.0/16"
 
-  azs             = ["eu-west-1a"]
-  private_subnets = ["10.0.1.0/24"]
-  public_subnets  = ["10.0.101.0/24"]
+  azs             = ["eu-west-1a", "eu-west-1b"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24"]
 
   enable_dns_hostnames = true
   enable_nat_gateway = true
@@ -220,12 +220,12 @@ resource "helm_release" "sonarqube" {
   }
   set {
     name  = "dbSonarqubeHostName"
-    value = module.rds-smartfridge-dev.this_db_instance_endpoint
+    value = "${module.rds-smartfridge-dev.this_db_instance_endpoint}/${module.rds-smartfridge-dev.this_db_instance_name}"
   }
 }
 
 resource "aws_security_group" "worker_group_reinhard" {
-  depends_on = [module.vpc, data.aws_vpc.vpc]
+  depends_on = [module.vpc, data.aws_vpc.vpc, data.aws_subnet_ids.vpc]
   name_prefix = "worker_group_reinhard"
   vpc_id      = module.vpc.vpc_id
 
@@ -277,6 +277,8 @@ module "rds-smartfridge-dev" {
   # DB subnet group
   subnet_ids = data.aws_subnet_ids.vpc.ids
 
+  vpc_security_group_ids = [aws_security_group.worker_group_reinhard.id]
+
   # DB parameter group
   family = "postgres12"
 
@@ -296,7 +298,7 @@ module "jenkins" {
   jenkins_context_path = "/jenkins"
   create_namespace = true
   namespace = var.namespace
-  jenkins_image = "jenkins/jenkins:2.60.3"
+  jenkins_image = "jenkins/jenkins:2.276"
   depends_on = [module.vpc, module.eks, data.aws_eks_cluster.cluster]
 }
 
@@ -304,13 +306,15 @@ module "tools-ingress" {
   source = "./kubernetes-ingress"
   depends_on = [helm_release.sonarqube, helm_release.ingress-alb, module.jenkins]
   namespace = var.namespace
+  httpsCertificateArn = "arn:aws:acm:eu-west-1:484755436758:certificate/683d4775-d956-42fa-b446-2ea7e9330f69"
 }
 
 data "aws_route53_zone" "g2-fridge" {
   name = "g2.myvirtualfridge.net"
 }
 
-data "aws_elb" "g2-fridge-elb" {
+data "aws_alb" "g2-fridge-alb" {
+  depends_on = [module.tools-ingress]
   name = "k8s-tools-toolsing-82c694fda4"
 }
 
@@ -323,8 +327,8 @@ resource "aws_route53_record" "www" {
   allow_overwrite = true
 
   alias {
-    name                   = data.aws_elb.g2-fridge-elb.dns_name
-    zone_id                = data.aws_elb.g2-fridge-elb.zone_id
+    name                   = data.aws_alb.g2-fridge-alb.dns_name
+    zone_id                = data.aws_alb.g2-fridge-alb.zone_id
     evaluate_target_health = true
   }
 }

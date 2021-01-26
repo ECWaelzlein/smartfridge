@@ -6,10 +6,10 @@ resource "kubernetes_ingress" "tools-ingress" {
       "kubernetes.io/ingress.class": "alb"
       "alb.ingress.kubernetes.io/scheme": "internet-facing"
       "alb.ingress.kubernetes.io/target-type": "ip"
-      #"alb.ingress.kubernetes.io/listen-ports": "[{\"HTTP\": 80}, {\"HTTPS\":443}]"
-      "alb.ingress.kubernetes.io/listen-ports": "[{\"HTTP\": 80}]"
+      "alb.ingress.kubernetes.io/listen-ports": "[{\"HTTP\": 80}, {\"HTTPS\":443}]"
+      #"alb.ingress.kubernetes.io/listen-ports": "[{\"HTTP\": 80}]"
       "alb.ingress.kubernetes.io/group": "myapp"
-      #"alb.ingress.kubernetes.io/certificate-arn": "arn:aws:acm:us-east-2:484755436758:certificate/2ea87eaa-a826-4df8-9400-80f17c6fb77f"
+      "alb.ingress.kubernetes.io/certificate-arn": var.httpsCertificateArn
     }
   }
 
