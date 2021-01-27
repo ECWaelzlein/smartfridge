@@ -36,7 +36,7 @@ public class MealController {
     public ResponseEntity<List<Meal>> getMeals(@PathVariable(name = "id",required = false) Optional<Long> id){
         if(id.isEmpty()) {
             long userId = Utility.getAccountFromSecurity().getAccountId();
-            return new ResponseEntity<>(mealService.fetchAllMeals(userId),HttpStatus.OK);
+            return new ResponseEntity<>(mealService.fetchUpcomingMealsByUser(userId, new Date()),HttpStatus.OK);
         }
         else {
             Optional<Meal> meal = mealService.findMeal(id.get());
@@ -48,8 +48,6 @@ public class MealController {
             else{
                 throw new EmptyResultDataAccessException("Invalid id",11);
             }
-
-
         }
     }
 

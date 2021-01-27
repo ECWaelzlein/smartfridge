@@ -3,6 +3,7 @@ package de.isemwaf.smartFridge.services;
 import de.isemwaf.smartFridge.model.Meal;
 import de.isemwaf.smartFridge.model.json.MealModel;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,8 @@ public interface MealService {
      * @return Gibt true zurück, falls die ID nicht null ist.
      */
     boolean deleteMeal(long id);
+
+    List<Meal> fetchUpcomingMealsByUser(long userId, Date date);
 
     /**
      * Erstellt auf Basis eines mealModels ein Meal, speichert dies in der Datenbank und gibt das Meal zurück.

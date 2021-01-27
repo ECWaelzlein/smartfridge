@@ -9,6 +9,7 @@ import de.isemwaf.smartFridge.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +55,11 @@ public class MealServiceImpl implements MealService {
         } catch (IllegalArgumentException e)  {
             return false;
         }
+    }
+
+    @Override
+    public List<Meal> fetchUpcomingMealsByUser(long userId, Date date) {
+        return mealRepository.findAllByAccount_IdAndDateGreaterThanEqual(userId,date);
     }
 
 

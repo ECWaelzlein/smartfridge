@@ -72,5 +72,5 @@ class MealControllerTest {
     void changeMealInvalidBody() throws Exception {
         int id = -1;
         mockMvc.perform(post("/api/meal/"+id)).andExpect(status().is(422));
-    }*/
+    }
 }
