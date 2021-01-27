@@ -6,9 +6,11 @@ import de.isemwaf.smartFridge.repositories.MealRepository;
 import de.isemwaf.smartFridge.services.AccountService;
 import de.isemwaf.smartFridge.services.MealService;
 import de.isemwaf.smartFridge.services.RecipeService;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -59,7 +61,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public List<Meal> fetchUpcomingMealsByUser(long userId, Date date) {
-        return mealRepository.findAllByAccount_IdAndDateGreaterThanEqualOrderByDateAsc(userId,date);
+        return mealRepository.findAllByAccount_IdAndDateGreaterThanEqualOrderByDateAsc(userId, DateUtils.truncate(date, Calendar.DAY_OF_MONTH));
     }
 
 
