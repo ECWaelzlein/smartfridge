@@ -28,3 +28,12 @@ variable "namespace" {
 variable "dbDevAdminUsername" {
   default = "smartfridge_db_admin"
 }
+
+variable "dbSonarqubeUserPassword" {
+  type = string
+}
+
+variable "dbSonarqubeUsername" {
+  type = string
+  default = "sonarqube"
+}

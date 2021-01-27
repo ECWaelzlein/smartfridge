@@ -9,8 +9,9 @@ data "aws_eks_cluster_auth" "cluster" {
 data "aws_subnet_ids" "vpc" {
   vpc_id = module.vpc.vpc_id
   filter {
-    name   = "tag:Name"
-    values = ["subnet-private-gruppe2"]
+    name = "tag:Name"
+    values = [
+      "subnet-private-gruppe2"]
   }
 }
 
@@ -31,18 +32,19 @@ data "aws_iam_user" "user_ElisabethWaelzlein" {
 }
 
 data "local_file" "iam-policy" {
-  depends_on = [null_resource.curl_policy]
+  depends_on = [
+    null_resource.curl_policy]
   filename = "iam-policy.json"
 }
 
 terraform {
   backend "s3" {
-    bucket         = "terraform-state-gruppe2"
-    key            = "global/s3/terraform.tfstate"
-    region         = "eu-central-1"
+    bucket = "terraform-state-gruppe2"
+    key = "global/s3/terraform.tfstate"
+    region = "eu-central-1"
 
     dynamodb_table = "terraform-locks"
-    encrypt        = true
+    encrypt = true
   }
 
   required_providers {
@@ -53,10 +55,10 @@ terraform {
 }
 
 provider "kubernetes" {
-  host                   = data.aws_eks_cluster.cluster.endpoint
+  host = data.aws_eks_cluster.cluster.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-  token                  = data.aws_eks_cluster_auth.cluster.token
-  load_config_file       = false
+  token = data.aws_eks_cluster_auth.cluster.token
+  load_config_file = false
 }
 
 provider "aws" {
@@ -70,16 +72,22 @@ provider "helm" {
 }
 
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
+  source = "terraform-aws-modules/vpc/aws"
   version = "2.66.0"
 
   name = "smartfridge-vpc-gruppe2"
 
   cidr = "10.0.0.0/16"
 
-  azs             = ["eu-west-1a", "eu-west-1b"]
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
-  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24"]
+  azs = [
+    "eu-west-1a",
+    "eu-west-1b"]
+  private_subnets = [
+    "10.0.1.0/24",
+    "10.0.2.0/24"]
+  public_subnets = [
+    "10.0.101.0/24",
+    "10.0.102.0/24"]
 
   enable_dns_hostnames = true
   enable_nat_gateway = true
@@ -87,18 +95,18 @@ module "vpc" {
 
   public_subnet_tags = {
     Name = "subnet-public-gruppe2"
-    "kubernetes.io/cluster/${var.eks-name-dev}"   = "shared"
-    "kubernetes.io/role/elb"                      = "1"
+    "kubernetes.io/cluster/${var.eks-name-dev}" = "shared"
+    "kubernetes.io/role/elb" = "1"
   }
 
   private_subnet_tags = {
     Name = "subnet-private-gruppe2"
-    "kubernetes.io/cluster/${var.eks-name-dev}"   = "shared"
-    "kubernetes.io/role/internal-elb"             = "1"
+    "kubernetes.io/cluster/${var.eks-name-dev}" = "shared"
+    "kubernetes.io/role/internal-elb" = "1"
   }
 
   tags = {
-    Owner       = var.owner
+    Owner = var.owner
     Environment = var.environment
     "kubernetes.io/cluster/${var.eks-name-dev}" = "shared"
   }
@@ -109,7 +117,9 @@ module "vpc" {
 }
 
 resource "null_resource" "kubectl-apply-target-bindings" {
-  depends_on = [module.eks, data.aws_eks_cluster.cluster]
+  depends_on = [
+    module.eks,
+    data.aws_eks_cluster.cluster]
   provisioner "local-exec" {
     command = "kubectl apply -k \"github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master\" --kubeconfig kubeconfig_smartfridge-eks-dev-gruppe2"
   }
@@ -122,8 +132,9 @@ resource "null_resource" "curl_policy" {
 }
 
 resource "aws_iam_policy" "worker_policy" {
-  depends_on = [null_resource.curl_policy]
-  name        = "AWSLoadBalancerControllerIAMPolicy"
+  depends_on = [
+    null_resource.curl_policy]
+  name = "AWSLoadBalancerControllerIAMPolicy"
   description = "Worker policy for the ALB Ingress"
 
   policy = data.local_file.iam-policy.content
@@ -133,14 +144,16 @@ module "eks" {
   depends_on = [
     module.vpc,
     module.rds-smartfridge-dev,
+    module.rds-sonarqube,
     aws_iam_policy.worker_policy,
     aws_security_group.worker_group_reinhard,
     data.aws_subnet_ids.vpc
   ]
-  source  = "terraform-aws-modules/eks/aws"
+  source = "terraform-aws-modules/eks/aws"
   version = "13.2.1"
 
-  workers_additional_policies = [aws_iam_policy.worker_policy.arn]
+  workers_additional_policies = [
+    aws_iam_policy.worker_policy.arn]
 
   cluster_name = var.eks-name-dev
   cluster_version = "1.18"
@@ -149,17 +162,20 @@ module "eks" {
 
   map_users = [
     {
-      groups = ["system:masters"],
+      groups = [
+        "system:masters"],
       userarn = data.aws_iam_user.user_thilo.arn,
       username = data.aws_iam_user.user_thilo.user_name
     },
     {
-      groups = ["system:masters"],
+      groups = [
+        "system:masters"],
       userarn = data.aws_iam_user.user_thorben.arn,
       username = data.aws_iam_user.user_thorben.user_name
     },
     {
-      groups = ["system:masters"],
+      groups = [
+        "system:masters"],
       userarn = data.aws_iam_user.user_ElisabethWaelzlein.arn,
       username = data.aws_iam_user.user_ElisabethWaelzlein.user_name
     }
@@ -168,71 +184,85 @@ module "eks" {
   worker_groups = [
     {
       instance_type = "t2.micro"
-      asg_max_size  = 5
+      asg_max_size = 5
       asg_desired_capacity = 5
       asg_min_size = 5
-      additional_security_group_ids = [aws_security_group.worker_group_reinhard.id]
+      additional_security_group_ids = [
+        aws_security_group.worker_group_reinhard.id]
       name = "reinhard"
     },
     {
       instance_type = "t2.medium"
-      asg_max_size  = 1
+      asg_max_size = 1
       asg_desired_capacity = 1
       asg_min_size = 1
-      additional_security_group_ids = [aws_security_group.worker_group_reinhard.id]
+      additional_security_group_ids = [
+        aws_security_group.worker_group_reinhard.id]
       name = "reinhard-medium"
     }
   ]
 }
 
 resource "helm_release" "ingress-alb" {
-  depends_on = [module.eks, data.aws_eks_cluster.cluster, null_resource.kubectl-apply-target-bindings]
-  name       = "ingress"
-  chart      = "aws-load-balancer-controller"
+  depends_on = [
+    module.eks,
+    data.aws_eks_cluster.cluster,
+    null_resource.kubectl-apply-target-bindings]
+  name = "ingress"
+  chart = "aws-load-balancer-controller"
   repository = "https://aws.github.io/eks-charts"
   create_namespace = true
   namespace = "tools"
 
   set {
-    name  = "clusterName"
+    name = "clusterName"
     value = data.aws_eks_cluster.cluster.name
+  }
+  set {
+    name = "vpcId"
+    value = data.aws_vpc.vpc.id
   }
 }
 
 resource "helm_release" "sonarqube" {
-  depends_on = [module.eks, data.aws_eks_cluster.cluster]
-  name       = "sonarqube"
-  chart      = "../helm/kubernetes-tools"
+  depends_on = [
+    module.eks,
+    data.aws_eks_cluster.cluster]
+  name = "sonarqube"
+  chart = "../helm/kubernetes-tools"
   create_namespace = true
   namespace = "tools"
 
   set {
-    name  = "dbSonarqubePassword"
-    value = var.dbDevAdminPassword
+    name = "dbSonarqubePassword"
+    value = var.dbSonarqubeUserPassword
   }
   set {
-    name  = "dbSonarqubeUsername"
-    value = var.dbDevAdminUsername
+    name = "dbSonarqubeUsername"
+    value = var.dbSonarqubeUsername
   }
   set {
-    name  = "dbSonarqubeServerName"
-    value = module.rds-smartfridge-dev.this_db_instance_name
+    name = "dbSonarqubeServerName"
+    value = module.rds-sonarqube.this_db_instance_name
   }
   set {
-    name  = "dbSonarqubeHostName"
-    value = "${module.rds-smartfridge-dev.this_db_instance_endpoint}/${module.rds-smartfridge-dev.this_db_instance_name}"
+    name = "dbSonarqubeHostName"
+    value = module.rds-sonarqube.this_db_instance_endpoint
   }
 }
 
 resource "aws_security_group" "worker_group_reinhard" {
-  depends_on = [module.vpc, data.aws_vpc.vpc, data.aws_subnet_ids.vpc]
+  depends_on = [
+    module.vpc,
+    data.aws_vpc.vpc,
+    data.aws_subnet_ids.vpc]
   name_prefix = "worker_group_reinhard"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id = module.vpc.vpc_id
 
   ingress {
     from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
+    to_port = 22
+    protocol = "tcp"
 
     cidr_blocks = [
       "10.0.0.0/8",
@@ -240,16 +270,49 @@ resource "aws_security_group" "worker_group_reinhard" {
   }
 }
 
+resource "aws_security_group" "rds_accept_all_from_vpc" {
+  description = "Security group to allow worker groups of the eks the access to the rds."
+  depends_on = [
+    module.vpc,
+    data.aws_vpc.vpc,
+    data.aws_subnet_ids.vpc,
+    aws_security_group.worker_group_reinhard]
+  name_prefix = "rds_accept_all_from_vpc"
+  vpc_id = module.vpc.vpc_id
+
+  ingress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+
+    security_groups = [
+      aws_security_group.worker_group_reinhard.id
+    ]
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = [
+      "0.0.0.0/0"
+    ]
+  }
+}
+
 module "rds-smartfridge-dev" {
-  depends_on = [module.vpc, data.aws_subnet_ids.vpc]
-  source  = "terraform-aws-modules/rds/aws"
+  depends_on = [
+    module.vpc,
+    data.aws_subnet_ids.vpc,
+    aws_security_group.rds_accept_all_from_vpc]
+  source = "terraform-aws-modules/rds/aws"
   version = "2.20.0"
 
   identifier = "smartfridge-db-dev"
 
-  engine            = "postgres"
-  engine_version    = "12.4"
-  instance_class    = "db.t2.micro"
+  engine = "postgres"
+  engine_version = "12.4"
+  instance_class = "db.t2.micro"
   allocated_storage = 5
   storage_encrypted = false
 
@@ -258,26 +321,31 @@ module "rds-smartfridge-dev" {
   username = var.dbDevAdminUsername
 
   password = var.dbDevAdminPassword
-  port     = "5432"
+  port = "5432"
 
   maintenance_window = "Mon:00:00-Mon:03:00"
-  backup_window      = "03:00-06:00"
+  backup_window = "03:00-06:00"
   apply_immediately = true
 
   # disable backups to create DB faster
   backup_retention_period = 0
 
   tags = {
-    Owner       = var.owner
+    Owner = var.owner
     Environment = var.environment
   }
 
-  enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
+  ca_cert_identifier = ""
+
+  enabled_cloudwatch_logs_exports = [
+    "postgresql",
+    "upgrade"]
 
   # DB subnet group
   subnet_ids = data.aws_subnet_ids.vpc.ids
 
-  vpc_security_group_ids = [aws_security_group.worker_group_reinhard.id]
+  vpc_security_group_ids = [
+    aws_security_group.rds_accept_all_from_vpc.id]
 
   # DB parameter group
   family = "postgres12"
@@ -292,19 +360,86 @@ module "rds-smartfridge-dev" {
   deletion_protection = false
 }
 
+module "rds-sonarqube" {
+  depends_on = [
+    module.vpc,
+    data.aws_subnet_ids.vpc,
+    aws_security_group.rds_accept_all_from_vpc]
+  source = "terraform-aws-modules/rds/aws"
+  version = "2.20.0"
+
+  identifier = "sonarqube-db"
+
+  engine = "postgres"
+  engine_version = "12.4"
+  instance_class = "db.t2.micro"
+  allocated_storage = 5
+  storage_encrypted = false
+
+  name = "sonarqube"
+
+  username = var.dbSonarqubeUsername
+
+  password = var.dbSonarqubeUserPassword
+  port = "5432"
+
+  maintenance_window = "Mon:00:00-Mon:03:00"
+  backup_window = "03:00-06:00"
+  apply_immediately = true
+
+  # disable backups to create DB faster
+  backup_retention_period = 0
+
+  tags = {
+    Owner = var.owner
+    Environment = var.environment
+  }
+
+  ca_cert_identifier = ""
+
+  enabled_cloudwatch_logs_exports = [
+    "postgresql",
+    "upgrade"]
+
+  # DB subnet group
+  subnet_ids = data.aws_subnet_ids.vpc.ids
+
+  vpc_security_group_ids = [
+    aws_security_group.rds_accept_all_from_vpc.id]
+
+  # DB parameter group
+  family = "postgres12"
+
+  # DB option group
+  major_engine_version = "12"
+
+  # Snapshot name upon DB deletion
+  final_snapshot_identifier = "sonarqube"
+
+  # Database Deletion Protection
+  deletion_protection = false
+}
+
+
 module "jenkins" {
-  source  = "./jenkins"
+  source = "./jenkins"
 
   jenkins_context_path = "/jenkins"
   create_namespace = true
   namespace = var.namespace
   jenkins_image = "jenkins/jenkins:2.276"
-  depends_on = [module.vpc, module.eks, data.aws_eks_cluster.cluster]
+  depends_on = [
+    module.vpc,
+    module.eks,
+    data.aws_eks_cluster.cluster]
 }
 
 module "tools-ingress" {
   source = "./kubernetes-ingress"
-  depends_on = [helm_release.sonarqube, helm_release.ingress-alb, module.jenkins]
+  depends_on = [
+    helm_release.sonarqube,
+    helm_release.ingress-alb,
+    module.jenkins]
   namespace = var.namespace
   httpsCertificateArn = "arn:aws:acm:eu-west-1:484755436758:certificate/683d4775-d956-42fa-b446-2ea7e9330f69"
 }
@@ -314,21 +449,24 @@ data "aws_route53_zone" "g2-fridge" {
 }
 
 data "aws_alb" "g2-fridge-alb" {
-  depends_on = [module.tools-ingress]
+  depends_on = [
+    module.tools-ingress]
   name = "k8s-tools-toolsing-82c694fda4"
 }
 
 resource "aws_route53_record" "www" {
-  depends_on = [module.tools-ingress, data.aws_route53_zone.g2-fridge]
+  depends_on = [
+    module.tools-ingress,
+    data.aws_route53_zone.g2-fridge]
 
   zone_id = data.aws_route53_zone.g2-fridge.zone_id
-  name    = "dev.g2.myvirtualfridge.net"
-  type    = "A"
+  name = "dev.g2.myvirtualfridge.net"
+  type = "A"
   allow_overwrite = true
 
   alias {
-    name                   = data.aws_alb.g2-fridge-alb.dns_name
-    zone_id                = data.aws_alb.g2-fridge-alb.zone_id
+    name = data.aws_alb.g2-fridge-alb.dns_name
+    zone_id = data.aws_alb.g2-fridge-alb.zone_id
     evaluate_target_health = true
   }
 }

@@ -7,15 +7,25 @@ resource "kubernetes_ingress" "tools-ingress" {
       "alb.ingress.kubernetes.io/scheme": "internet-facing"
       "alb.ingress.kubernetes.io/target-type": "ip"
       "alb.ingress.kubernetes.io/listen-ports": "[{\"HTTP\": 80}, {\"HTTPS\":443}]"
-      #"alb.ingress.kubernetes.io/listen-ports": "[{\"HTTP\": 80}]"
-      "alb.ingress.kubernetes.io/group": "myapp"
+      "alb.ingress.kubernetes.io/group": "tools"
       "alb.ingress.kubernetes.io/certificate-arn": var.httpsCertificateArn
+      "alb.ingress.kubernetes.io/actions.ssl-redirect": "{\"Type\": \"redirect\", \"RedirectConfig\": { \"Protocol\": \"HTTPS\", \"Port\": \"443\", \"StatusCode\": \"HTTP_301\"}}"
     }
   }
 
   spec {
     rule {
       http {
+
+        path {
+          backend {
+            service_name = "ssl-redirect"
+            service_port = "use-annotation"
+          }
+
+          path = "/*"
+        }
+
         path {
           backend {
             service_name = var.jenkinsName

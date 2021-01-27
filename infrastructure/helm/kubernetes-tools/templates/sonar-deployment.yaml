@@ -73,7 +73,7 @@ spec:
           - name: "SONARQUBE_JDBC_USERNAME"
             value: "{{$dbSonarqubeUsername}}"
           - name: "SONARQUBE_JDBC_URL"
-            value: "jdbc:postgresql://{{$dbSonarqubeHostName}}/{{.Values.sonarqube.db.dbName}}"
+            value: "jdbc:postgresql://{{$dbSonarqubeHostName}}/{{$dbSonarqubeServerName}}"
           - name: "SONARQUBE_JDBC_PASSWORD"
             valueFrom:
               secretKeyRef:
