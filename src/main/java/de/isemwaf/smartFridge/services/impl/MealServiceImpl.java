@@ -59,7 +59,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public List<Meal> fetchUpcomingMealsByUser(long userId, Date date) {
-        return mealRepository.findAllByAccount_IdAndDateGreaterThanEqual(userId,date);
+        return mealRepository.findAllByAccount_IdAndDateGreaterThanEqualOrderByDateAsc(userId,date);
     }
 
 

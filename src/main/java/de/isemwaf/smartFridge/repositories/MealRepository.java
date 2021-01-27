@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface MealRepository extends JpaRepository<Meal, Long> {
     List<Meal> findAllByAccount_Id(long userId);
-    List<Meal> findAllByAccount_IdAndDateGreaterThanEqual(long id, Date date);
+    List<Meal> findAllByAccount_IdAndDateGreaterThanEqualOrderByDateAsc(long id, Date date);
 }
