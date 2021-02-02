@@ -227,7 +227,8 @@ resource "helm_release" "ingress-alb" {
 resource "helm_release" "sonarqube" {
   depends_on = [
     module.eks,
-    data.aws_eks_cluster.cluster]
+    data.aws_eks_cluster.cluster
+  ]
   name = "sonarqube"
   chart = "../helm/kubernetes-tools"
   create_namespace = true
@@ -421,7 +422,7 @@ module "rds-sonarqube" {
 }
 
 
-module "jenkins" {
+/*module "jenkins" {
   source = "./jenkins"
 
   jenkins_context_path = "/jenkins"
@@ -432,6 +433,15 @@ module "jenkins" {
     module.vpc,
     module.eks,
     data.aws_eks_cluster.cluster]
+}*/
+
+resource "null_resource" "helm-release-jenkins" {
+  depends_on = [
+    module.eks,
+    data.aws_eks_cluster.cluster]
+  provisioner "local-exec" {
+    command = "helm repo add jenkins https://charts.jenkins.io;helm repo update;helm install jenkins jenkins/jenkins -n tools --kubeconfig kubeconfig_smartfridge-eks-dev-gruppe2"
+  }
 }
 
 module "tools-ingress" {
@@ -439,7 +449,7 @@ module "tools-ingress" {
   depends_on = [
     helm_release.sonarqube,
     helm_release.ingress-alb,
-    module.jenkins]
+    null_resource.helm-release-jenkins]
   namespace = var.namespace
   httpsCertificateArn = "arn:aws:acm:eu-west-1:484755436758:certificate/683d4775-d956-42fa-b446-2ea7e9330f69"
 }
