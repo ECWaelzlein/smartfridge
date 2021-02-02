@@ -3,6 +3,7 @@ pipeline {
     tools {
         maven 'maven'
         dockerTool 'docker'
+        jdk 'jdk15'
     }
     stages {
         stage('Build') {
