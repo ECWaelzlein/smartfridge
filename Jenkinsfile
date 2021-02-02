@@ -1,16 +1,25 @@
 pipeline {
     agent any
+    tools {
+        maven 'maven'
+        docker 'docker'
+    }
     stages {
         stage('Build') {
             steps {
                 sh 'mvn clean package -DskipTests'
             }
         }
-        stage('Test with Sonarqube') {
+        /*stage('Test with Sonarqube') {
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube-server') {
                     sh 'mvn verify sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=$SONAR_HOST_URL -Ptest'
                 }
+            }
+        }*/
+        stage('Test') {
+            steps {
+                sh 'mvn verify'
             }
         }
         stage('Build Docker Image') {
@@ -27,7 +36,7 @@ pipeline {
                 script {
                     GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
                     SHORT_COMMIT = "${GIT_COMMIT_HASH[0..7]}"
-                    docker.withRegistry('https://registry.gitlab.com/master-intelligente-systeme/ise/smartfridge', 'gitlabCredentials') {
+                    docker.withRegistry('https://registry.gitlab.com/master-intelligente-systeme/ise/smartfridge', 'jenkins-deploy-token') {
                         app.push("$SHORT_COMMIT")
                         app.push("latest")
                     }
