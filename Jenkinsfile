@@ -27,7 +27,7 @@ pipeline {
             steps {
                 echo '=== Building Docker Image ==='
                 script {
-                    app = docker.build("smartFridge")
+                    app = docker.build("smart-fridge-backend")
                 }
             }
         }
