@@ -1,11 +1,5 @@
-pipeline {
-    agent any
-    tools {
-        maven 'maven'
-        dockerTool 'docker'
-        jdk 'jdk15'
-    }
-    stages {
+podTemplate {
+    node(jenkins/jenkins-jenkins-agent) {
         stage('Build') {
             steps {
                 sh 'mvn clean package -DskipTests'
