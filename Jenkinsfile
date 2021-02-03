@@ -4,11 +4,11 @@ pipeline {
             yamlFile 'KubernetesPod.yaml'
         }
     }
+    environment {
+        GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
+        SHORT_COMMIT = "${GIT_COMMIT_HASH[0..7]}"
+    }
     stages{
-        environment {
-            GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
-            SHORT_COMMIT = "${GIT_COMMIT_HASH[0..7]}"
-        }
         stage('Build Project') {
             steps {
                 container('maven') {
