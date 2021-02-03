@@ -1,6 +1,6 @@
 metadata:
   labels:
-    some-label: some-label-value
+    some-label: jenkins-agent
 spec:
   containers:
     - name: jnlp
@@ -8,7 +8,7 @@ spec:
         - name: CONTAINER_ENV_VAR
           value: jnlp
     - name: maven
-      image: maven:3.3.9-jdk-8-alpine
+      image: maven:3.6.3-openjdk-15-slim
       command:
         - cat
       tty: true
