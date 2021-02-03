@@ -17,31 +17,36 @@ pipeline {
         }
     }
     stages{
-        stage('Build and Test Project') {
+        stage('Build Project') {
             container('maven') {
-                stage('Build') {
+                steps {
                     sh 'mvn clean package -DskipTests'
                 }
-                /*stage('Test with Sonarqube') {
-                withSonarQubeEnv(installationName: 'sonarqube-server') {
-                sh 'mvn verify sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=$SONAR_HOST_URL -Ptest'
-                }
-                }*/
-                stage('Test') {
+            }
+        }
+        stage('Test Project') {
+            container('maven') {
+                steps {
+                    /*withSonarQubeEnv(installationName: 'sonarqube-server') {
+                        sh 'mvn verify sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=$SONAR_HOST_URL -Ptest'
+                    }*/
                     sh 'mvn verify'
                 }
             }
         }
-        stage('Build and Push Image') {
+        stage('Build Image') {
             container('docker') {
-                stage('Build Docker Image') {
+                steps {
                     echo '=== Building Docker Image ==='
                     script {
                         app = docker.build("smart-fridge-backend")
                     }
                 }
-
-                stage('Push Docker Image') {
+            }
+        }
+        stage('Push Image') {
+            container('docker') {
+                steps {
                     echo '=== Pushing Docker Image ==='
                     script {
                         GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
