@@ -16,7 +16,7 @@ spec:
         - name: CONTAINER_ENV_VAR
           value: maven
     - name: docker
-      image: docker:20.10.3
+      image: docker:20.10-git
       command:
         - cat
       tty: true
