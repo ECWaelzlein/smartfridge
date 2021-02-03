@@ -23,14 +23,14 @@ pipeline {
            }
         }
         stage('Build Image') {
+            environment {
+                GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
+                SHORT_COMMIT = "${GIT_COMMIT_HASH[0..7]}"
+            }
             steps {
                 container('docker') {
                     withCredentials([usernamePassword(credentialsId: 'gitlab-jenkins', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh 'docker login -u $USERNAME -p $PASSWORD registry.gitlab.com'
-                    }
-                    environment {
-                        GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
-                        SHORT_COMMIT = "${GIT_COMMIT_HASH[0..7]}"
                     }
                     echo '=== Building Docker Image ==='
                     sh 'docker build -t "registry.gitlab.com/master-intelligente-systeme/ise/smartfridge/smart-fridge-backend:$SHORT_COMMIT" .'
