@@ -34,8 +34,10 @@ pipeline {
         }
         stage('Push Image') {
             steps {
-                GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
-                SHORT_COMMIT = "${GIT_COMMIT_HASH[0..7]}"
+                step {
+                    GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
+                    SHORT_COMMIT = "${GIT_COMMIT_HASH[0..7]}"
+                }
                 container('docker') {
                     echo '=== Pushing Docker Image ==='
                     script {
