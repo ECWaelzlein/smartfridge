@@ -42,6 +42,7 @@ pipeline {
                 container('docker') {
                     echo '=== Pushing Docker Image ==='
                     sh 'docker push "registry.gitlab.com/master-intelligente-systeme/ise/smartfridge/smart-fridge-backend:$SHORT_COMMIT"'
+                    sh 'docker push "registry.gitlab.com/master-intelligente-systeme/ise/smartfridge/smart-fridge-backend:latest"'
                 }
             }
         }
