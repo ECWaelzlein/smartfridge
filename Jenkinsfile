@@ -34,7 +34,7 @@ pipeline {
                     }
                     echo '=== Building Docker Image ==='
                     sh 'docker build -t "registry.gitlab.com/master-intelligente-systeme/ise/smartfridge/smart-fridge-backend:$SHORT_COMMIT" .'
-                    sh 'docker tag "registry.gitlab.com/master-intelligente-systeme/ise/smartfridge/smart-fridge-backend:$SHORT_COMMIT" "registry.gitlab.com/master-intelligente-systeme/ise/smartfridge/smart-fridge-backend:latest'
+                    sh 'docker tag "registry.gitlab.com/master-intelligente-systeme/ise/smartfridge/smart-fridge-backend:$SHORT_COMMIT" "registry.gitlab.com/master-intelligente-systeme/ise/smartfridge/smart-fridge-backend:latest"'
                 }
             }
         }
