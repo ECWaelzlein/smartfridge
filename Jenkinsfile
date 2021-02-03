@@ -2,7 +2,7 @@ podTemplate (containers: [
     containerTemplate(name: 'maven', image: 'maven:3.6.3-openjdk-15-slim', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'docker', image: 'docker:20.10.3', ttyEnabled: true, command: 'cat')
     ]) {
-    node(jenkins/jenkins-jenkins-agent) {
+    node("jenkins/jenkins-jenkins-agent") {
         stage('Build and Test Project') {
             container('maven') {
                 stage('Build') {
