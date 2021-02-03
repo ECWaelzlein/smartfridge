@@ -22,13 +22,13 @@ pipeline {
                 stage('Build') {
                     sh 'mvn clean package -DskipTests'
                 }
-            /*stage('Test with Sonarqube') {
-            withSonarQubeEnv(installationName: 'sonarqube-server') {
-            sh 'mvn verify sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=$SONAR_HOST_URL -Ptest'
-            }
-            }*/
-            stage('Test') {
-                sh 'mvn verify'
+                /*stage('Test with Sonarqube') {
+                withSonarQubeEnv(installationName: 'sonarqube-server') {
+                sh 'mvn verify sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=$SONAR_HOST_URL -Ptest'
+                }
+                }*/
+                stage('Test') {
+                    sh 'mvn verify'
                 }
             }
         }
@@ -37,7 +37,8 @@ pipeline {
                 stage('Build Docker Image') {
                     echo '=== Building Docker Image ==='
                     script {
-                    app = docker.build("smart-fridge-backend")
+                        app = docker.build("smart-fridge-backend")
+                    }
                 }
 
                 stage('Push Docker Image') {
