@@ -12,7 +12,7 @@ echo "$sonarqubeToken"
 qualityGateId=$(curl -u "admin:$password" -X POST --url "https://sonar.dev.g2.myvirtualfridge.net/api/qualitygates/create?name=smart-fridge" -s | jq -r '.id')
 echo "Created new quality gate."
 
-curl -u "admin:$password" -X POST --url "https://sonar.dev.g2.myvirtualfridge.net/api/qualitygates/create_condition?gateId=$qualityGateId&metric=line_coverage&error=100&op=LT" -s
+curl -u "admin:$password" -X POST --url "https://sonar.dev.g2.myvirtualfridge.net/api/qualitygates/create_condition?gateId=$qualityGateId&metric=line_coverage&error=10&op=LT" -s
 echo "Added condition 'line coverage' to quality gate."
 
 curl -u "admin:$password" -X POST --url "https://sonar.dev.g2.myvirtualfridge.net/api/qualitygates/set_as_default?id=$qualityGateId" -s

@@ -252,6 +252,24 @@ resource "helm_release" "sonarqube" {
   }
 }
 
+resource "random_string" "password" {
+  length = 16
+  special = true
+}
+
+resource "null_resource" "setup-sonarqube-server" {
+  depends_on = [helm_release.sonarqube]
+
+  provisioner "local-exec" {
+    command = "sh /sonarqube/setupSonarqubeServer.sh ${random_string.password.result}"
+    interpreter = ["bin/bash"]
+  }
+
+  lifecycle {
+    ignore_changes = ["provisioner"]
+  }
+}
+
 resource "aws_security_group" "worker_group_reinhard" {
   depends_on = [
     module.vpc,
@@ -420,20 +438,6 @@ module "rds-sonarqube" {
   # Database Deletion Protection
   deletion_protection = false
 }
-
-
-/*module "jenkins" {
-  source = "./jenkins"
-
-  jenkins_context_path = "/jenkins"
-  create_namespace = true
-  namespace = var.namespace
-  jenkins_image = "jenkins/jenkins:2.276"
-  depends_on = [
-    module.vpc,
-    module.eks,
-    data.aws_eks_cluster.cluster]
-}*/
 
 resource "null_resource" "helm-release-jenkins" {
   depends_on = [
