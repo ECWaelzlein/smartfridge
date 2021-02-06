@@ -439,7 +439,7 @@ resource "null_resource" "helm-release-jenkins" {
     module.eks,
     data.aws_eks_cluster.cluster]
   provisioner "local-exec" {
-    command = "helm repo add jenkins https://charts.jenkins.io;helm repo update;helm install jenkins jenkins/jenkins -n tools --kubeconfig kubeconfig_smartfridge-eks-dev-gruppe2 --set controller.jenkinsUriPrefix=/jenkins --set controller.jenkinsUrl=https://dev.g2.myvirtualfridge.net/jenkins"
+    command = "helm repo add jenkins https://charts.jenkins.io;helm repo update;helm install -f jenkins-values.yaml jenkins jenkins/jenkins -n tools --kubeconfig kubeconfig_smartfridge-eks-dev-gruppe2"
   }
 }
 
