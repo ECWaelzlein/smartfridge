@@ -37,3 +37,45 @@ variable "dbSonarqubeUsername" {
   type = string
   default = "sonarqube"
 }
+
+variable "sonarURL" {
+  type = string
+  default = "sonar.dev.g2.myvirtualfridge.net"
+}
+
+variable "jenkinsURL" {
+  type = string
+  default = "dev.g2.myvirtualfridge.net"
+}
+
+variable "jenkinsServicePath1" {
+  type = string
+  default = "/jenkins/*"
+}
+
+variable "jenkinsServicePath2" {
+  type = string
+  default = "/jenkins"
+
+}
+
+variable "sonarServicePath1" {
+  type = string
+  default = "/sonarqube/*"
+}
+
+variable "sonarServicePath2" {
+  type = string
+  default = "/*"
+
+}
+
+variable "sonarPort" {
+  default = 9000
+  type = number
+}
+
+variable "jenkinsPort" {
+  default = 8080
+  type = number
+}

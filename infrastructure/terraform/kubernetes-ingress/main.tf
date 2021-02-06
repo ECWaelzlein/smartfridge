@@ -15,6 +15,7 @@ resource "kubernetes_ingress" "tools-ingress" {
 
   spec {
     rule {
+      host = var.jenkinsURL
       http {
 
         path {
@@ -44,22 +45,27 @@ resource "kubernetes_ingress" "tools-ingress" {
           path = var.jenkinsPath2
         }
 
+
+      }
+    }
+    rule {
+      host = var.sonarURL
+      http {
         path {
           backend {
-            service_name = var.sonarName
-            service_port = var.sonarPort
+            service_name = "ssl-redirect"
+            service_port = "use-annotation"
           }
 
-          path = var.sonarPath1
+          path = "/*"
         }
-
         path {
           backend {
             service_name = var.sonarName
             service_port = var.sonarPort
           }
 
-          path = var.sonarPath2
+          path ="/*"
         }
       }
     }

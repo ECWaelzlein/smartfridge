@@ -38,3 +38,4 @@ build/
 terraform.tfstate
 terraform.tfstate.backup
 kubeconfig_smartfridge-eks-dev-gruppe2
+/infrastructure/terraform/iam-policy.json

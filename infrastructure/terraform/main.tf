@@ -58,7 +58,7 @@ provider "kubernetes" {
   host = data.aws_eks_cluster.cluster.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
   token = data.aws_eks_cluster_auth.cluster.token
-  load_config_file = false
+  //load_config_file = false
 }
 
 provider "aws" {
@@ -451,7 +451,8 @@ module "tools-ingress" {
     helm_release.ingress-alb,
     null_resource.helm-release-jenkins]
   namespace = var.namespace
-  httpsCertificateArn = "arn:aws:acm:eu-west-1:484755436758:certificate/683d4775-d956-42fa-b446-2ea7e9330f69"
+  httpsCertificateArn = "arn:aws:acm:eu-west-1:484755436758:certificate/9b50d339-f993-4ed2-9eab-72e8fddc9dad"
+  sonarURL = var.sonarURL
 }
 
 data "aws_route53_zone" "g2-fridge" {
@@ -471,6 +472,23 @@ resource "aws_route53_record" "www" {
 
   zone_id = data.aws_route53_zone.g2-fridge.zone_id
   name = "dev.g2.myvirtualfridge.net"
+  type = "A"
+  allow_overwrite = true
+
+  alias {
+    name = data.aws_alb.g2-fridge-alb.dns_name
+    zone_id = data.aws_alb.g2-fridge-alb.zone_id
+    evaluate_target_health = true
+  }
+}
+
+resource "aws_route53_record" "sonarRecord" {
+  depends_on = [
+    module.tools-ingress,
+    data.aws_route53_zone.g2-fridge]
+
+  zone_id = data.aws_route53_zone.g2-fridge.zone_id
+  name = var.sonarURL
   type = "A"
   allow_overwrite = true
 

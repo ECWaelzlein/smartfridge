@@ -33,15 +33,15 @@ variable "sonarPort" {
   type = number
 }
 
-variable "sonarPath1" {
+variable "sonarURL" {
   type = string
-  default = "/sonarqube/*"
 }
 
-variable "sonarPath2" {
+variable "jenkinsURL" {
   type = string
-  default = "/sonarqube"
+  default = "dev.g2.myvirtualfridge.net"
 }
+
 
 variable "namespace" {
   type = string
