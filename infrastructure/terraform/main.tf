@@ -261,7 +261,7 @@ resource "null_resource" "setup-sonarqube-server" {
   depends_on = [helm_release.sonarqube]
 
   provisioner "local-exec" {
-    command = "sh /sonarqube/setupSonarqubeServer.sh ${random_string.password.result}"
+    command = "/sonarqube/setupSonarqubeServer.sh ${random_string.password.result}"
   }
 }
 
