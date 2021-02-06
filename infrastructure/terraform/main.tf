@@ -264,10 +264,6 @@ resource "null_resource" "setup-sonarqube-server" {
     command = "sh /sonarqube/setupSonarqubeServer.sh ${random_string.password.result}"
     interpreter = ["bin/bash"]
   }
-
-  lifecycle {
-    ignore_changes = ["provisioner"]
-  }
 }
 
 resource "aws_security_group" "worker_group_reinhard" {
