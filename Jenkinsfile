@@ -23,7 +23,7 @@ pipeline {
             steps {
                 container('maven') {
                    withSonarQubeEnv(installationName: 'sonarqube-server') {
-                       sh 'mvn verify sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=$SONAR_HOST_URL'
+                       sh 'mvn verify -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=$SONAR_HOST_URL'
                    }
                }
            }
