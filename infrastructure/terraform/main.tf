@@ -262,7 +262,6 @@ resource "null_resource" "setup-sonarqube-server" {
 
   provisioner "local-exec" {
     command = "sh /sonarqube/setupSonarqubeServer.sh ${random_string.password.result}"
-    interpreter = ["bin/bash"]
   }
 }
 
