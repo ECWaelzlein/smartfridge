@@ -8,3 +8,4 @@ controller:
     -gitlab-oauth 1.10
     -gitlab-api 1.0.6
     -gitlab-branch-source 1.5.4
+    -sonar 2.13
