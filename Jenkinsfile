@@ -22,7 +22,9 @@ pipeline {
         stage('Test Project') {
             steps {
                 container('maven') {
-                   sh 'mvn verify sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=$SONAR_HOST_URL'
+                   withSonarQubeEnv('sonarqube') {
+                       sh 'mvn verify sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=$SONAR_HOST_URL'
+                   }
                }
            }
         }
