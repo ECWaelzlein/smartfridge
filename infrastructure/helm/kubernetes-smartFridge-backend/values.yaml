@@ -12,14 +12,9 @@ smartFridge:
     dbName: smart-fridge
     hostName: smart-fridge
   image:
-    name: smart-fridge
-    tag: 1
+    name: smart-fridge-backend
+    tag: latest
     pullPolicy: Always
-
-smartFridgeFrontend:
-  image:
-    name: smart-fridge-frontend
-    tag: 1
-    pullPolicy: Always
+    registry: registry.gitlab.com/master-intelligente-systeme/ise/smartfridge
 
 namespace: dev

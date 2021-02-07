@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: smart-fridge-backend
-          image: "gitlab/{{.Values.smartFridge.image.name}}:{{.Values.smartFridge.image.tag}}"
+          image: "{{.Values.smartFridge.image.registry}}/{{.Values.smartFridge.image.name}}:{{.Values.smartFridge.image.tag}}"
           ports:
             - containerPort: 8080
           env:
@@ -33,3 +33,5 @@ spec:
             - name: SPRING_DATASOURCE_PASSWORD
               value: "{{$dbSmartFridgePassword}}"
           imagePullPolicy: "{{.Values.smartFridge.image.pullPolicy}}"
+      imagePullSecrets:
+        - name: registry-credentials
