@@ -10,14 +10,13 @@ import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.URL;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
     public static final String spoonacularRecipeURL = "https://api.spoonacular.com/recipes/";
-    public static final String spoonacularAPIKey = "a1762976c3ac4015aedb6285143cee50";
+    public static final String spoonacularApiPassphrase = "a1762976c3ac4015aedb6285143cee50";
 
     @Autowired
     public RecipeServiceImpl(RecipeRepository recipeRepository) {
@@ -40,7 +39,7 @@ public class RecipeServiceImpl implements RecipeService {
                 "findByIngredients?ingredients=" +
                 String.join(",", ingredientList.getStringIngredientList()) +
                 "&number=1&apiKey=" +
-                spoonacularAPIKey;
+                spoonacularApiPassphrase;
         try {
             String json = Utility.getJsonAnswer(spectacularQuery);
             long recipeID = Utility.getFirstRecipeId(json);
@@ -56,7 +55,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe getRandomRecipe(String tags) {
         try {
-            String json = Utility.getJsonAnswer(spoonacularRecipeURL+"random?number=1&tags="+tags+"&apiKey="+spoonacularAPIKey);
+            String json = Utility.getJsonAnswer(spoonacularRecipeURL+"random?number=1&tags="+tags+"&apiKey="+ spoonacularApiPassphrase);
             long recipeID = Utility.getFirstRandomRecipeId(json);
             return composeRecipeByID(recipeID);
         } catch (IOException | JSONException e) {
@@ -67,7 +66,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     private Recipe composeRecipeByID(long recipeID) throws JSONException, IOException {
-        String json = Utility.getJsonAnswer(spoonacularRecipeURL +recipeID+"/information?includeNutrition=true&apiKey="+ spoonacularAPIKey);
+        String json = Utility.getJsonAnswer(spoonacularRecipeURL +recipeID+"/information?includeNutrition=true&apiKey="+ spoonacularApiPassphrase);
         return Utility.getRecipeInformationFromJson(json);
     }
 }
