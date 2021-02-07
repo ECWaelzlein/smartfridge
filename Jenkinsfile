@@ -15,7 +15,9 @@ pipeline {
         stage('Build Project') {
             steps {
                 container('maven') {
+                    updateGitlabCommitStatus name: 'build', state: 'pending'
                     sh 'mvn clean package -DskipTests'
+                    updateGitlabCommitStatus name: 'build', state: 'success'
                 }
             }
         }
@@ -23,7 +25,9 @@ pipeline {
             steps {
                 container('maven') {
                    withSonarQubeEnv('sonarqube') {
+                       updateGitlabCommitStatus name: 'test', state: 'pending'
                        sh 'mvn verify sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=$SONAR_HOST_URL'
+                       updateGitlabCommitStatus name: 'test', state: 'success'
                    }
                }
            }
@@ -35,8 +39,10 @@ pipeline {
                         sh 'docker login -u $USERNAME -p $PASSWORD registry.gitlab.com'
                     }
                     echo '=== Building Docker Image ==='
+                    updateGitlabCommitStatus name: 'build docker', state: 'pending'
                     sh 'docker build -t "registry.gitlab.com/master-intelligente-systeme/ise/smartfridge/smart-fridge-backend:$SHORT_COMMIT" .'
                     sh 'docker tag "registry.gitlab.com/master-intelligente-systeme/ise/smartfridge/smart-fridge-backend:$SHORT_COMMIT" "registry.gitlab.com/master-intelligente-systeme/ise/smartfridge/smart-fridge-backend:latest"'
+                    updateGitlabCommitStatus name: 'build docker', state: 'success'
                 }
             }
         }
@@ -44,7 +50,9 @@ pipeline {
             steps {
                 container('docker') {
                     echo '=== Pushing Docker Image ==='
+                    updateGitlabCommitStatus name: 'pushing docker', state: 'pending'
                     sh 'docker push "registry.gitlab.com/master-intelligente-systeme/ise/smartfridge/smart-fridge-backend"'
+                    updateGitlabCommitStatus name: 'pushing docker', state: 'success'
                 }
             }
         }
