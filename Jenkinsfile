@@ -11,6 +11,9 @@ pipeline {
         GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
         SHORT_COMMIT = "${GIT_COMMIT_HASH[0..7]}"
     }
+    options {
+          gitlabBuilds(builds: ['build', 'test', 'build docker', 'push docker'])
+    }
     stages{
         stage('Build Project') {
             steps {
@@ -19,6 +22,11 @@ pipeline {
                     sh 'mvn clean package -DskipTests'
                     updateGitlabCommitStatus name: 'build', state: 'success'
                 }
+            }
+            post {
+                  failure {
+                    updateGitlabCommitStatus name: 'build', state: 'failed'
+                  }
             }
         }
         stage('Test Project') {
@@ -30,6 +38,11 @@ pipeline {
                        updateGitlabCommitStatus name: 'test', state: 'success'
                    }
                }
+           }
+           post {
+                 failure {
+                   updateGitlabCommitStatus name: 'test', state: 'failed'
+                 }
            }
         }
         stage('Build Image') {
@@ -45,16 +58,26 @@ pipeline {
                     updateGitlabCommitStatus name: 'build docker', state: 'success'
                 }
             }
+            post {
+                 failure {
+                   updateGitlabCommitStatus name: 'build docker', state: 'failed'
+                 }
+           }
         }
         stage('Push Image') {
             steps {
                 container('docker') {
                     echo '=== Pushing Docker Image ==='
-                    updateGitlabCommitStatus name: 'pushing docker', state: 'pending'
+                    updateGitlabCommitStatus name: 'push docker', state: 'pending'
                     sh 'docker push "registry.gitlab.com/master-intelligente-systeme/ise/smartfridge/smart-fridge-backend"'
-                    updateGitlabCommitStatus name: 'pushing docker', state: 'success'
+                    updateGitlabCommitStatus name: 'push docker', state: 'success'
                 }
             }
+            post {
+                 failure {
+                   updateGitlabCommitStatus name: 'push docker', state: 'failed'
+                 }
+           }
         }
     }
 }
