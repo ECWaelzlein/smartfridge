@@ -466,9 +466,15 @@ data "aws_alb" "g2-fridge-alb" {
   name = "k8s-tools-toolsing-82c694fda4"
 }
 
+resource "time_sleep" "wait_30_seconds" {
+  depends_on = [module.tools-ingress]
+
+  create_duration = "30s"
+}
+
 resource "aws_route53_record" "www" {
   depends_on = [
-    module.tools-ingress,
+    time_sleep.wait_30_seconds,
     data.aws_route53_zone.g2-fridge]
 
   zone_id = data.aws_route53_zone.g2-fridge.zone_id
@@ -485,7 +491,7 @@ resource "aws_route53_record" "www" {
 
 resource "aws_route53_record" "sonarRecord" {
   depends_on = [
-    module.tools-ingress,
+    time_sleep.wait_30_seconds,
     data.aws_route53_zone.g2-fridge]
 
   zone_id = data.aws_route53_zone.g2-fridge.zone_id
