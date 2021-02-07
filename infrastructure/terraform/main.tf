@@ -183,19 +183,19 @@ module "eks" {
 
   worker_groups = [
     {
-      instance_type = "t2.micro"
-      asg_max_size = 5
-      asg_desired_capacity = 5
-      asg_min_size = 5
+      instance_type = "t2.small"
+      asg_max_size = 6
+      asg_desired_capacity = 4
+      asg_min_size = 4
       additional_security_group_ids = [
         aws_security_group.worker_group_reinhard.id]
-      name = "reinhard"
+      name = "reinhard-small"
     },
     {
       instance_type = "t2.medium"
-      asg_max_size = 1
-      asg_desired_capacity = 1
-      asg_min_size = 1
+      asg_max_size = 3
+      asg_desired_capacity = 2
+      asg_min_size = 2
       additional_security_group_ids = [
         aws_security_group.worker_group_reinhard.id]
       name = "reinhard-medium"
@@ -466,15 +466,17 @@ data "aws_alb" "g2-fridge-alb" {
   name = "k8s-tools-toolsing-82c694fda4"
 }
 
-resource "time_sleep" "wait_30_seconds" {
+resource "time_sleep" "wait_30_seconds_for_ingress" {
   depends_on = [module.tools-ingress]
 
   create_duration = "30s"
 }
 
+
+
 resource "aws_route53_record" "www" {
   depends_on = [
-    time_sleep.wait_30_seconds,
+    time_sleep.wait_30_seconds_for_ingress,
     data.aws_route53_zone.g2-fridge]
 
   zone_id = data.aws_route53_zone.g2-fridge.zone_id
@@ -491,7 +493,7 @@ resource "aws_route53_record" "www" {
 
 resource "aws_route53_record" "sonarRecord" {
   depends_on = [
-    time_sleep.wait_30_seconds,
+    time_sleep.wait_30_seconds_for_ingress,
     data.aws_route53_zone.g2-fridge]
 
   zone_id = data.aws_route53_zone.g2-fridge.zone_id
