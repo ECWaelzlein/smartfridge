@@ -255,13 +255,15 @@ resource "helm_release" "sonarqube" {
 resource "random_string" "password" {
   length = 16
   special = true
+  override_special = "!@#$%&*()-_=+[]:?"
 }
 
 resource "null_resource" "setup-sonarqube-server" {
-  depends_on = [helm_release.sonarqube]
+  depends_on = [helm_release.sonarqube,
+                aws_route53_record.sonarRecord]
 
   provisioner "local-exec" {
-    command = "./sonarqube/setupSonarqubeServer.sh ${random_string.password.result}"
+    command = "./sonarqube/setupSonarqubeServer.sh '${random_string.password.result}'"
   }
 }
 

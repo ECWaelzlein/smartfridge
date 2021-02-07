@@ -2,6 +2,8 @@
 
 password=$1
 
+echo "New password is $password"
+
 echo "Setting a new password for the sonarqube admin user."
 curl -u "admin:admin" -X POST --url "https://sonar.dev.g2.myvirtualfridge.net/api/users/change_password?login=admin&password=$password&previousPassword=admin" -s
 
