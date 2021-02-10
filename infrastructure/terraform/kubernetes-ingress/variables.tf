@@ -42,6 +42,11 @@ variable "jenkinsURL" {
   default = "dev.g2.myvirtualfridge.net"
 }
 
+variable "devURL" {
+  type = string
+  default = "develop.g2.myvirtualfridge.net"
+}
+
 
 variable "namespace" {
   type = string

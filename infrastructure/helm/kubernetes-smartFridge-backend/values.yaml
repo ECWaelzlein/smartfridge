@@ -9,7 +9,7 @@ sonarqube:
 
 smartFridge:
   db:
-    dbName: smart-fridge
+    dbName: smartfridgeDbDev
     hostName: smart-fridge
   image:
     name: smart-fridge-backend

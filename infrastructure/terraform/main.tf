@@ -454,6 +454,7 @@ module "tools-ingress" {
   namespace = var.namespace
   httpsCertificateArn = "arn:aws:acm:eu-west-1:484755436758:certificate/9b50d339-f993-4ed2-9eab-72e8fddc9dad"
   sonarURL = var.sonarURL
+  devURL = var.devURL
 }
 
 data "aws_route53_zone" "g2-fridge" {
@@ -519,7 +520,7 @@ resource "aws_route53_record" "devRecord" {
     data.aws_route53_zone.g2-fridge]
 
   zone_id = data.aws_route53_zone.g2-fridge.zone_id
-  name = "develop.g2.mywirtualfridge.net"
+  name = var.devURL
   type = "A"
   allow_overwrite = true
 

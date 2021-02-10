@@ -79,3 +79,8 @@ variable "jenkinsPort" {
   default = 8080
   type = number
 }
+
+variable "devURL" {
+  type = string
+  default = "develop.g2.myvirtualfridge.net"
+}

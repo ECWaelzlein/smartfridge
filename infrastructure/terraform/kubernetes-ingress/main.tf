@@ -102,7 +102,7 @@ resource "kubernetes_ingress" "dev-ingress" {
 
   spec {
     rule {
-      host = var.jenkinsURL
+      host = var.devURL
       http {
 
         path {
