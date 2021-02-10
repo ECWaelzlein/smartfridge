@@ -4,9 +4,6 @@ pipeline {
             yamlFile 'KubernetesPod.yaml'
         }
     }
-    triggers {
-
-    }
     options {
           gitlabBuilds(builds: ['deploy'])
     }
