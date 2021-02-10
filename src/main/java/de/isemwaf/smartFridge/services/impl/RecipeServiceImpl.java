@@ -43,7 +43,8 @@ public class RecipeServiceImpl implements RecipeService {
         try {
             String json = Utility.getJsonAnswer(spectacularQuery);
             long recipeID = Utility.getFirstRecipeId(json);
-            return composeRecipeByID(recipeID);
+            String json2 = Utility.getJsonAnswer(spoonacularRecipeURL +recipeID+"/information?includeNutrition=true&apiKey="+ spoonacularApiPassphrase);
+            return Utility.getRecipeInformationFromJson(json2);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,16 +58,17 @@ public class RecipeServiceImpl implements RecipeService {
         try {
             String json = Utility.getJsonAnswer(spoonacularRecipeURL+"random?number=1&tags="+tags+"&apiKey="+ spoonacularApiPassphrase);
             long recipeID = Utility.getFirstRandomRecipeId(json);
-            return composeRecipeByID(recipeID);
-        } catch (IOException | JSONException e) {
+            String json2 = Utility.getJsonAnswer(spoonacularRecipeURL +recipeID+"/information?includeNutrition=true&apiKey="+ spoonacularApiPassphrase);
+            return Utility.getRecipeInformationFromJson(json2);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return null;
     }
 
-    private Recipe composeRecipeByID(long recipeID) throws JSONException, IOException {
+    /*private Recipe composeRecipeByID(long recipeID) throws JSONException, IOException {
         String json = Utility.getJsonAnswer(spoonacularRecipeURL +recipeID+"/information?includeNutrition=true&apiKey="+ spoonacularApiPassphrase);
         return Utility.getRecipeInformationFromJson(json);
-    }
+    }*/
 }
