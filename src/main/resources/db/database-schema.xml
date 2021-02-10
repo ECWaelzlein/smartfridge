@@ -5,10 +5,6 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <preConditions>
-        <runningAs  username="smartFridge"/>
-    </preConditions>
-
     <changeSet  author="smartFridge"  id="createSequence_food_id">
         <createSequence  dataType="int"
                          incrementBy="1"
