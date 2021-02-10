@@ -460,11 +460,6 @@ data "aws_route53_zone" "g2-fridge" {
   name = "g2.myvirtualfridge.net"
 }
 
-data "aws_alb" "g2-fridge-alb" {
-  depends_on = [
-    module.tools-ingress]
-  name = "k8s-tools-toolsing-82c694fda4"
-}
 
 resource "time_sleep" "wait_30_seconds_for_ingress" {
   depends_on = [module.tools-ingress]
@@ -472,7 +467,17 @@ resource "time_sleep" "wait_30_seconds_for_ingress" {
   create_duration = "30s"
 }
 
+data "aws_alb" "g2-fridge-alb-tools" {
+  depends_on = [
+    module.tools-ingress]
+  name = "k8s-tools-toolsing-82c694fda4"
+}
 
+data "aws_alb" "g2-fridge-alb-dev" {
+  depends_on = [
+    module.tools-ingress]
+  name = "k8s-dev-devingre-5c76d5163b"
+}
 
 resource "aws_route53_record" "www" {
   depends_on = [
@@ -485,8 +490,8 @@ resource "aws_route53_record" "www" {
   allow_overwrite = true
 
   alias {
-    name = data.aws_alb.g2-fridge-alb.dns_name
-    zone_id = data.aws_alb.g2-fridge-alb.zone_id
+    name = data.aws_alb.g2-fridge-alb-tools.dns_name
+    zone_id = data.aws_alb.g2-fridge-alb-tools.zone_id
     evaluate_target_health = true
   }
 }
@@ -502,8 +507,25 @@ resource "aws_route53_record" "sonarRecord" {
   allow_overwrite = true
 
   alias {
-    name = data.aws_alb.g2-fridge-alb.dns_name
-    zone_id = data.aws_alb.g2-fridge-alb.zone_id
+    name = data.aws_alb.g2-fridge-alb-tools.dns_name
+    zone_id = data.aws_alb.g2-fridge-alb-tools.zone_id
+    evaluate_target_health = true
+  }
+}
+
+resource "aws_route53_record" "devRecord" {
+  depends_on = [
+    time_sleep.wait_30_seconds_for_ingress,
+    data.aws_route53_zone.g2-fridge]
+
+  zone_id = data.aws_route53_zone.g2-fridge.zone_id
+  name = "develop.g2.mywirtualfridge.net"
+  type = "A"
+  allow_overwrite = true
+
+  alias {
+    name = data.aws_alb.g2-fridge-alb-dev.dns_name
+    zone_id = data.aws_alb.g2-fridge-alb-dev.zone_id
     evaluate_target_health = true
   }
 }

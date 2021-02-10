@@ -15,6 +15,14 @@ spec:
       env:
         - name: CONTAINER_ENV_VAR
           value: maven
+    - name: helm
+        image: alpine/helm:3.5.2
+        command:
+          - cat
+        tty: true
+        env:
+          - name: CONTAINER_ENV_VAR
+            value: helm
     - name: docker
       image: docker:20.10.3
       command:
@@ -26,6 +34,7 @@ spec:
       volumeMounts:
         - mountPath: /var/run/docker.sock
           name: docker-sock
+
   volumes:
     - hostPath:
         path: /var/run/docker.sock
