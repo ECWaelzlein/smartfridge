@@ -37,8 +37,8 @@ spec:
               path: /api/health
               port: 8080
               httpHeaders:
-                - name: Accept
-                    value: application/json
+              - name: Accept
+                value: application/json
             initialDelaySeconds: 10
             periodSeconds: 5
           readinessProbe:
@@ -46,8 +46,8 @@ spec:
               path: /api/health
               port: 8080
               httpHeaders:
-                - name: Accept
-                    value: application/json
+              - name: Accept
+                value: application/json
             initialDelaySeconds: 10
             periodSeconds: 5
           imagePullPolicy: "{{.Values.smartFridge.image.pullPolicy}}"
