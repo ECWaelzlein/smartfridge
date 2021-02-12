@@ -32,6 +32,24 @@ spec:
               value: "{{$dbSmartFridgeUsername}}"
             - name: SPRING_DATASOURCE_PASSWORD
               value: "{{$dbSmartFridgePassword}}"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8080
+              httpHeaders:
+                - name: Accept
+                    value: application/json
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8080
+              httpHeaders:
+                - name: Accept
+                    value: application/json
+            initialDelaySeconds: 10
+            periodSeconds: 5
           imagePullPolicy: "{{.Values.smartFridge.image.pullPolicy}}"
       imagePullSecrets:
         - name: registry-credentials
