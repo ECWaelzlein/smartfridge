@@ -61,6 +61,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @Bulkhead(name = "recipeService", fallbackMethod = "getDefaultRecipe")
     public Recipe getRandomRecipe(String tags) {
         try {
             String json = Utility.getJsonAnswer(spoonacularRecipeURL+"random?number=1&tags="+tags+"&apiKey="+ spoonacularApiPassphrase);
