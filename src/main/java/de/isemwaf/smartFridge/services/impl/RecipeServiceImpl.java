@@ -5,11 +5,9 @@ import de.isemwaf.smartFridge.model.json.IngredientList;
 import de.isemwaf.smartFridge.repositories.RecipeRepository;
 import de.isemwaf.smartFridge.services.RecipeService;
 import de.isemwaf.smartFridge.utility.Utility;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
@@ -34,6 +32,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @Bulkhead(name = "recipeService", fallbackMethod = "getDefaultRecipe")
     public Recipe getRecipeBasedOnIngredients(IngredientList ingredientList) {
         String spectacularQuery = spoonacularRecipeURL +
                 "findByIngredients?ingredients=" +
@@ -51,6 +50,14 @@ public class RecipeServiceImpl implements RecipeService {
         }
 
         return null;
+    }
+
+    private Recipe getDefaultRecipe() {
+        Recipe recipe = new Recipe();
+
+        recipe.setName("No recipe found!");
+
+        return recipe;
     }
 
     @Override

@@ -17,9 +17,6 @@ public class Recipe extends SuperEntity{
     private float fats;
     private float calories;
     private float servings;
-
-
-
     private String recipeImageURL;
 
     @Id
