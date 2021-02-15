@@ -1,6 +1,6 @@
 package de.isemwaf.smartFridge.configuration;
 
-import de.isemwaf.smartFridge.services.AccountUserDetailsService;
+import de.isemwaf.smartFridge.services.impl.AccountUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

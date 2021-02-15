@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.isemwaf.smartFridge.model.Recipe;
 import de.isemwaf.smartFridge.model.json.IngredientList;
 import de.isemwaf.smartFridge.repositories.AccountRepository;
-import de.isemwaf.smartFridge.services.AccountUserDetailsService;
+import de.isemwaf.smartFridge.services.impl.AccountUserDetailsService;
 import de.isemwaf.smartFridge.services.RecipeService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;

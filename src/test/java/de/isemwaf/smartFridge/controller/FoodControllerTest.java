@@ -2,7 +2,7 @@ package de.isemwaf.smartFridge.controller;
 
 import de.isemwaf.smartFridge.model.Food;
 import de.isemwaf.smartFridge.repositories.AccountRepository;
-import de.isemwaf.smartFridge.services.AccountUserDetailsService;
+import de.isemwaf.smartFridge.services.impl.AccountUserDetailsService;
 import de.isemwaf.smartFridge.services.FoodService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;

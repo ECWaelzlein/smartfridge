@@ -6,7 +6,7 @@ import de.isemwaf.smartFridge.model.FoodInventory;
 import de.isemwaf.smartFridge.model.Fridge;
 import de.isemwaf.smartFridge.model.json.FoodInventoryModel;
 import de.isemwaf.smartFridge.repositories.AccountRepository;
-import de.isemwaf.smartFridge.services.AccountUserDetailsService;
+import de.isemwaf.smartFridge.services.impl.AccountUserDetailsService;
 import de.isemwaf.smartFridge.services.FoodInventoryService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;

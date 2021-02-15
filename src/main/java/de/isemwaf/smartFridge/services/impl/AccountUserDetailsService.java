@@ -1,4 +1,4 @@
-package de.isemwaf.smartFridge.services;
+package de.isemwaf.smartFridge.services.impl;
 
 import de.isemwaf.smartFridge.details.AccountUserDetails;
 import de.isemwaf.smartFridge.model.Account;
