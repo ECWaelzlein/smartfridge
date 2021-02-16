@@ -20,7 +20,7 @@ spec:
       labels:
         app: smart-fridge-backend
       annotations:
-        commithash: "{{.Values.smartFridgeFrontend.commithash}}"
+        commithash: "{{.Values.smartFridge.commithash}}"
     spec:
       containers:
         - name: smart-fridge-backend
