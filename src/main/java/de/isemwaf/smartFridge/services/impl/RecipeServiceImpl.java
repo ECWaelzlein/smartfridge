@@ -52,7 +52,7 @@ public class RecipeServiceImpl implements RecipeService {
         return null;
     }
 
-    private Recipe getDefaultRecipe(IngredientList ingredientList, Throwable throwable) {
+    private Recipe getDefaultRecipe(String tags, Throwable throwable) {
         Recipe recipe = new Recipe();
 
         recipe.setName("No recipe found!");
