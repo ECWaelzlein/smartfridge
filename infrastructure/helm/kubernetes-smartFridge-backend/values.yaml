@@ -16,5 +16,5 @@ smartFridge:
     tag: latest
     pullPolicy: Always
     registry: registry.gitlab.com/master-intelligente-systeme/ise/smartfridge
-
+  comitthash: 0a3ec703
 namespace: dev
