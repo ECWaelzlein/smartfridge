@@ -47,6 +47,11 @@ variable "devURL" {
   default = "develop.g2.myvirtualfridge.net"
 }
 
+variable "prodURL" {
+  type = string
+  default = "production.g2.myvirtualfridge.net"
+}
+
 
 variable "namespace" {
   type = string
