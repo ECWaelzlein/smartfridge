@@ -16,9 +16,7 @@ pipeline {
                                      string(credentialsId: 'jenkins-read-registry-access', variable: 'JENKINS_REG_ACC'),
                                      usernamePassword(credentialsId: 'db-smartfridge-prod', usernameVariable: 'DB_USERNAME', passwordVariable: 'DB_PASSWORD'),
                                      string(credentialsId: 'db-smartfridge-host-prod', variable: 'DB_HOST')]) {
-
                         sh 'helm upgrade -i -n prod --set dbSmartFridgeUsername="$DB_USERNAME" --set dbSmartFridgePassword="$DB_PASSWORD" --set namespace="prod" --set dbSmartFridgeHostName="$DB_HOST" --set smartFridge.db.dbName="smartfridgeDbProd" --set smartFridge.commithash="$SHORT_COMMIT" --set registryCredentials="$JENKINS_REG_ACC" smartfridge-backend-prod ./infrastructure/helm/kubernetes-smartFridge-backend --kubeconfig $CONFIG --wait'
-
                     }
                 }
                 updateGitlabCommitStatus name: 'deploy', state: 'success'

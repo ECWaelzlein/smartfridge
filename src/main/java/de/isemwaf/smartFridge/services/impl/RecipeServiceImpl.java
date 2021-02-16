@@ -60,7 +60,6 @@ public class RecipeServiceImpl implements RecipeService {
         return recipe;
     }
 
-
     private Recipe getDefaultRecipe(String tags, Throwable throwable) {
         Recipe recipe = new Recipe();
 
