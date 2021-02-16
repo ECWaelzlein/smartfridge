@@ -32,7 +32,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    @Bulkhead(name = "recipeService", fallbackMethod = "getDefaultRecipe")
+    @Bulkhead(name = "recipeService", fallbackMethod = "getDefaultRecipeBasedOnIngredients")
     public Recipe getRecipeBasedOnIngredients(IngredientList ingredientList) {
         String spectacularQuery = spoonacularRecipeURL +
                 "findByIngredients?ingredients=" +
@@ -52,7 +52,15 @@ public class RecipeServiceImpl implements RecipeService {
         return null;
     }
 
-    private Recipe getDefaultRecipe(IngredientList ingredientList, Throwable throwable) {
+    private Recipe getDefaultRecipeBasedOnIngredients(IngredientList ingredientList, Throwable throwable) {
+        Recipe recipe = new Recipe();
+
+        recipe.setName("No recipe found!");
+
+        return recipe;
+    }
+
+    private Recipe getDefaultRecipe(String tags, Throwable throwable) {
         Recipe recipe = new Recipe();
 
         recipe.setName("No recipe found!");

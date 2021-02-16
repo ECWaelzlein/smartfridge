@@ -3,6 +3,11 @@ variable "dbDevAdminPassword" {
   description = "Admin user password of the development postgres database."
 }
 
+variable "dbProdAdminPassword" {
+  type = string
+  description = "Admin user password of the production postgres database."
+}
+
 variable "owner" {
   type = string
   description = "The owner of the corresponding resources."
@@ -26,6 +31,10 @@ variable "namespace" {
 }
 
 variable "dbDevAdminUsername" {
+  default = "smartfridge_db_admin"
+}
+
+variable "dbProdAdminUsername" {
   default = "smartfridge_db_admin"
 }
 
@@ -83,4 +92,9 @@ variable "jenkinsPort" {
 variable "devURL" {
   type = string
   default = "develop.g2.myvirtualfridge.net"
+}
+
+variable "prodURL" {
+  type = string
+  default = "production.g2.myvirtualfridge.net"
 }
