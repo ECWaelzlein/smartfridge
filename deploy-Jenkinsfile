@@ -7,6 +7,10 @@ pipeline {
     options {
           gitlabBuilds(builds: ['deploy'])
     }
+    environment {
+                GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
+                SHORT_COMMIT = "${GIT_COMMIT_HASH[0..7]}"
+        }
     stages{
         stage('Deploy to Cluster'){
             steps{
@@ -16,7 +20,7 @@ pipeline {
                                      string(credentialsId: 'jenkins-read-registry-access', variable: 'JENKINS_REG_ACC'),
                                      usernamePassword(credentialsId: 'db-smartfridge-dev', usernameVariable: 'DB_USERNAME', passwordVariable: 'DB_PASSWORD'),
                                      string(credentialsId: 'db-smartfridge-host-dev', variable: 'DB_HOST')]) {
-                        sh "helm upgrade -i -n dev --set dbSmartFridgeUsername=$DB_USERNAME --set dbSmartFridgePassword='$DB_PASSWORD' --set dbSmartFridgeHostName='$DB_HOST' --set registryCredentials='$JENKINS_REG_ACC' smartfridge-backend-dev ./infrastructure/helm/kubernetes-smartFridge-backend --kubeconfig $CONFIG --wait"
+                        sh 'helm upgrade -i -n dev --set dbSmartFridgeUsername="$DB_USERNAME" --set dbSmartFridgePassword="$DB_PASSWORD" --set dbSmartFridgeHostName="$DB_HOST" --set smartFridge.commithash="$SHORT_COMMIT" --set registryCredentials="$JENKINS_REG_ACC" smartfridge-backend-dev ./infrastructure/helm/kubernetes-smartFridge-backend --kubeconfig $CONFIG --wait'
                     }
                 }
                 updateGitlabCommitStatus name: 'deploy', state: 'success'

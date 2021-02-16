@@ -436,6 +436,66 @@ module "rds-sonarqube" {
   deletion_protection = false
 }
 
+module "rds-smartfridge-prod" {
+  depends_on = [
+    module.vpc,
+    data.aws_subnet_ids.vpc,
+    aws_security_group.rds_accept_all_from_vpc]
+  source = "terraform-aws-modules/rds/aws"
+  version = "2.20.0"
+
+  identifier = "smartfridge-prod"
+
+  engine = "postgres"
+  engine_version = "12.4"
+  instance_class = "db.t2.micro"
+  allocated_storage = 5
+  storage_encrypted = false
+
+  name = "smartfridgeDbProd"
+
+  username = var.dbProdAdminUsername
+
+  password = var.dbProdAdminPassword
+  port = "5432"
+
+  maintenance_window = "Mon:00:00-Mon:03:00"
+  backup_window = "03:00-06:00"
+  apply_immediately = true
+
+  # disable backups to create DB faster
+  backup_retention_period = 0
+
+  tags = {
+    Owner = var.owner
+    Environment = var.environment
+  }
+
+  ca_cert_identifier = ""
+
+  enabled_cloudwatch_logs_exports = [
+    "postgresql",
+    "upgrade"]
+
+  # DB subnet group
+  subnet_ids = data.aws_subnet_ids.vpc.ids
+
+  vpc_security_group_ids = [
+    aws_security_group.rds_accept_all_from_vpc.id]
+
+  # DB parameter group
+  family = "postgres12"
+
+  # DB option group
+  major_engine_version = "12"
+
+  # Snapshot name upon DB deletion
+  final_snapshot_identifier = "smartfridgeDbProd"
+
+  # Database Deletion Protection
+  deletion_protection = false
+}
+
 resource "null_resource" "helm-release-jenkins" {
   depends_on = [
     module.eks,
@@ -480,6 +540,11 @@ data "aws_alb" "g2-fridge-alb-dev" {
   name = "k8s-dev-devingre-5c76d5163b"
 }
 
+data "aws_alb" "g2-fridge-alb-prod" {
+  depends_on = [
+    module.tools-ingress]
+  name = "k8s-prod-prodingr-79b4cd940f"
+}
 resource "aws_route53_record" "www" {
   depends_on = [
     time_sleep.wait_30_seconds_for_ingress,
@@ -527,6 +592,23 @@ resource "aws_route53_record" "devRecord" {
   alias {
     name = data.aws_alb.g2-fridge-alb-dev.dns_name
     zone_id = data.aws_alb.g2-fridge-alb-dev.zone_id
+    evaluate_target_health = true
+  }
+}
+
+resource "aws_route53_record" "prodRecord" {
+  depends_on = [
+    time_sleep.wait_30_seconds_for_ingress,
+    data.aws_route53_zone.g2-fridge]
+
+  zone_id = data.aws_route53_zone.g2-fridge.zone_id
+  name = var.prodURL
+  type = "A"
+  allow_overwrite = true
+
+  alias {
+    name = data.aws_alb.g2-fridge-alb-prod.dns_name
+    zone_id = data.aws_alb.g2-fridge-alb-prod.zone_id
     evaluate_target_health = true
   }
 }
