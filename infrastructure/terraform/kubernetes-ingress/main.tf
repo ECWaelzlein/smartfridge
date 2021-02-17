@@ -138,61 +138,6 @@ resource "kubernetes_ingress" "dev-ingress" {
   }
 }
 
-resource "kubernetes_ingress" "prod-ingress" {
-  depends_on = [kubernetes_service.smart-fridge-backend-service-prod,
-    kubernetes_service.smart-fridge-frontend-service-prod]
-  metadata {
-    name = "prod-ingress"
-    namespace = "prod"
-    annotations = {
-      "kubernetes.io/ingress.class": "alb"
-      "alb.ingress.kubernetes.io/scheme": "internet-facing"
-      "alb.ingress.kubernetes.io/target-type": "ip"
-      "alb.ingress.kubernetes.io/listen-ports": "[{\"HTTP\": 80}, {\"HTTPS\":443}]"
-      "alb.ingress.kubernetes.io/group": "tools"
-      "alb.ingress.kubernetes.io/certificate-arn": "arn:aws:acm:eu-west-1:484755436758:certificate/a915f5c0-aa36-4f32-9891-1dd257c6f8cc"
-      "alb.ingress.kubernetes.io/actions.ssl-redirect": "{\"Type\": \"redirect\", \"RedirectConfig\": { \"Protocol\": \"HTTPS\", \"Port\": \"443\", \"StatusCode\": \"HTTP_301\"}}"
-    }
-  }
-
-  spec {
-    rule {
-      host = var.prodURL
-      http {
-
-        path {
-          backend {
-            service_name = "ssl-redirect"
-            service_port = "use-annotation"
-          }
-
-          path = "/*"
-        }
-
-        path {
-          backend {
-            service_name = "smart-fridge-backend-service-prod"
-            service_port = 8080
-          }
-
-          path = "/api/*"
-        }
-
-        path {
-          backend {
-            service_name = "smart-fridge-frontend-service-prod"
-            service_port = 80
-          }
-
-          path = "/*"
-        }
-
-      }
-    }
-
-  }
-}
-
 resource "kubernetes_ingress" "tools-ingress" {
   metadata {
     name = var.name
