@@ -24,7 +24,7 @@ public class ShoppingListController {
         this.mealService = mealService;
     }
 
-    @GetMapping(path = {"/api/shopping-list", "/"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = {"/api/shopping-list"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @Cacheable(cacheNames = "cache", cacheManager = "cacheManager")
     public ResponseEntity<List<String>> getShoppingList() {
         long userId = Utility.getAccountFromSecurity().getAccountId();
